@@ -1,0 +1,9 @@
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/vue/
+      suffix: .jsp
+  datasource:
+    data-username: emilien
+    data-password: unknow
+    url: jdbc:mysql://192.168.1.16/test
