@@ -10,9 +10,12 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import com.sun.istack.NotNull;
 
+import lombok.Data;
+
 @EntityScan
 @Table(name = "Personne")
-public class Personne {
+@Data
+public class People {
 
 	@Id
 	@NotNull
@@ -25,24 +28,8 @@ public class Personne {
 	@Column(nullable = false)
 	private String name;
 
-	public Personne() {
+	public People() {
 
-	}
-
-	public String getSurname() {
-		return surname;
-	}
-
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public Long getIdSource() {

@@ -11,48 +11,48 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.annotation.Id;
 
 //@EntityScan
-public class Creneau {
+public class Slot {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	@Column(nullable = false)
-	private Timestamp debut;
+	private Timestamp start;
 	@Column(nullable = false)
-	private Timestamp fin;
+	private Timestamp end;
 	@ManyToMany()
-	private ListePersonnes<Perrsonne> participants;
+	private PeopleList<People> participants;
 	@Column(nullable = false)
-	private String nom;
-	private Localisation lieu;
+	private String name;
+	private Localisation position;
 	public Timestamp getDebut() {
-		return debut;
+		return start;
 	}
 	public void setDebut(Timestamp debut) {
-		this.debut = debut;
+		this.start = debut;
 	}
 	public Timestamp getFin() {
-		return fin;
+		return end;
 	}
 	public void setFin(Timestamp fin) {
-		this.fin = fin;
+		this.end = fin;
 	}
 	public String getNom() {
-		return nom;
+		return name;
 	}
 	public void setNom(String nom) {
-		this.nom = nom;
+		this.name = nom;
 	}
-	public ListePersonnes<?> getParticipants() {
+	public PeopleList<?> getParticipants() {
 		return participants;
 	}
-	public void setParticipants(ListePersonnes<Perrsonne> participants) {
+	public void setParticipants(PeopleList<People> participants) {
 		this.participants = participants;
 	}
 	public Localisation getLieu() {
-		return lieu;
+		return position;
 	}
 	public void setLieu(Localisation lieu) {
-		this.lieu = lieu;
+		this.position = lieu;
 	}
 }
