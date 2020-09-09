@@ -4,13 +4,15 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import com.sun.istack.NotNull;
 
 @EntityScan
-public class Perrsonne {
+@Table(name = "Personne")
+public class Personne {
 
 	@Id
 	@NotNull
@@ -23,7 +25,7 @@ public class Perrsonne {
 	@Column(nullable = false)
 	private String name;
 
-	public Perrsonne() {
+	public Personne() {
 
 	}
 
