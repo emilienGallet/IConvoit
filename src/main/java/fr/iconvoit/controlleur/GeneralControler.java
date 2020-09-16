@@ -5,9 +5,9 @@ import org.springframework.web.SpringServletContainerInitializer;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class GeneralControlleur extends SpringServletContainerInitializer {
+public class GeneralControler extends SpringServletContainerInitializer {
 
-	public GeneralControlleur() {
+	public GeneralControler() {
 		// TODO Auto-generated constructor stub
 		
 	}
