@@ -114,10 +114,12 @@ public class Car {
     }
 
     public static void main (String[] args){
+        /*
         Car c = new Car("red","toyota","AA-123-BB",4);
         System.out.println("--------#1--------");
         c.setRegistration("Ap-005-AU");
         System.out.println(c.getRegistration());
+        */
         
     }
 }
