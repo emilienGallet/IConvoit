@@ -33,17 +33,26 @@ All : Specifications ,UML at https://app.lucidchart.com/documents/edit/45b3bf73-
 1. Write code in English : 
 	1. notation : /20
 	1. commentary
-1. indenter/formatter votre code correctement
+1. indent / format your code correctly
 	1. notation : /20
 	1. commentary
-1. ne pas mélanger espaces et tabulations (idéalement, ne pas utiliser de tabulations)
+1. do not mix spaces and tabs (ideally, do not use tabs)
 	1. notation : /20
 	1. commentary
-1. garder votre code propre: pas de variables globales/statiques, choisir des noms correctement (packages, classes, etc), suivre les conventions (e.g., java convention), utiliser des constantes pour les valeurs constantes, …
-
+1. keep your code clean: no global/static variables, choose names correctly (packages, classes, etc), follow conventions (e.g., java convention), use constants for constant values:
+	1. notation : /20
+	1. commentary
 #### You writing software so :
 
-1. tester beaucoup et souvent,
-1. automatiser les tests qui peuvent l’être,
-1. documenter comment utiliser, compiler, tester et lancer votre projet,
-1. documenter comment comprendre et reprendre votre projet.
+1. test a lot and often
+	1. notation : /20
+	1. commentary
+1. automate tests that can be automated
+	1. notation : /20
+	1. commentary
+1. document how to use, compile, test and launch your project
+	1. notation : /20
+	1. commentary
+1. document how to understand and take over your project
+	1. notation : /20
+	1. commentary
