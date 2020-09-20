@@ -1,13 +1,13 @@
 package fr.iconvoit.entity;
 
 import java.security.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.ManyToMany;
 
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.annotation.Id;
 
 //@EntityScan
@@ -21,7 +21,7 @@ public class Slot {
 	@Column(nullable = false)
 	private Timestamp end;
 	@ManyToMany()
-	private PeopleList<People> participants;
+	private ArrayList<People> participants;
 	@Column(nullable = false)
 	private String name;
 	private Localisation position;
@@ -43,10 +43,10 @@ public class Slot {
 	public void setNom(String nom) {
 		this.name = nom;
 	}
-	public PeopleList<?> getParticipants() {
+	public ArrayList<?> getParticipants() {
 		return participants;
 	}
-	public void setParticipants(PeopleList<People> participants) {
+	public void setParticipants(ArrayList<People> participants) {
 		this.participants = participants;
 	}
 	public Localisation getLieu() {
