@@ -1,17 +1,14 @@
 package fr.iconvoit.entity;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.ManyToMany;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 
-import org.springframework.data.annotation.Id;
+import org.hibernate.annotations.ManyToAny;
 
 import lombok.Data;
-
 
 @Data
 /**
@@ -19,9 +16,7 @@ import lombok.Data;
  * @author Émilien
  *
  */
-/* NEED TO BE APPLY SOON WITHOUT ERROR*/
-//@MappedSuperclass
-/**************************************/
+@MappedSuperclass()
 public class Slot {
 
 	@Id
@@ -32,13 +27,17 @@ public class Slot {
 	private Timestamp start;
 	@Column(nullable = false)
 	private Timestamp end;
-	@ManyToMany()
-	private PeopleList<People> participants;
+	//@ManyToAny(metaColumn = @Column)
+	//@JoinColumn()
+	//@JoinTable()
+	//private List<People> participants = new ArrayList<People>();
+	
+	
 	@Column(nullable = false)
 	private String name;
-	
-	Slot(){
-		
+
+	public Slot() {
+
 	}
-	
+
 }

@@ -1,35 +1,26 @@
 package fr.iconvoit.entity;
 
-
-
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = true)
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 /**
  * 
- * @author Émilien
- * Extended class from Slot, is focus on Slot won't be an travel time. Is more focus for Unique place.
+ * @author Émilien Extended class from Slot, is focus on Slot won't be an travel
+ *         time. Is more focus for Unique place.
  */
-public class SlotOther extends Slot{
-	
-	/* WILL BE DEPRECATED SOON */
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	Long id;
-	/***************************/
-	@OneToOne
+public class SlotOther extends Slot {
+
+	@ManyToOne
 	Localisation place;
-	
-	SlotOther(){
-		
+
+	public SlotOther() {
+
 	}
 }

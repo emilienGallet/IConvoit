@@ -1,12 +1,9 @@
 package fr.iconvoit.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-
 
 /**
  * 
@@ -14,18 +11,20 @@ import lombok.EqualsAndHashCode;
  *
  */
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = true)
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public final class SlotTravel extends Slot {
-	@OneToOne
-	Localisation  startPlace;
-	@OneToOne
-	Localisation  finishPlace;
-	
-	SlotTravel(){
-		
+
+	@ManyToOne
+	Localisation startPlace;
+	@ManyToOne
+	Localisation finishPlace;
+
+	public SlotTravel() {
+
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -33,25 +32,28 @@ public final class SlotTravel extends Slot {
 	public boolean confimTravel() {
 		return false;
 	}
+
 	/**
 	 * 
 	 * @return
 	 */
 	public boolean eraseTravel() {
 		return false;
-	} 
+	}
+
 	/**
 	 * 
 	 * @return
 	 */
 	public boolean createTravel() {
 		return false;
-	} 
+	}
+
 	/**
 	 * 
 	 */
 	public void alertTravelErase() {
-		
-	}  
+
+	}
 
 }
