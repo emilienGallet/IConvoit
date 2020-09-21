@@ -84,10 +84,10 @@ public class Car {
         Matcher matcher = pattern.matcher(regi);
         boolean matchFound = matcher.find();
         if(matchFound) {
-            /*
+            
             // search if ss or ww are in the left; ss on the right
             // if yes incorrect
-            REGEX2="[^ss-]|[^SS-]|[^ww-]|[^WW-]..[-ss\b]|[-SS\b]"; //comment faire pour debut de ligne?
+            REGEX2="[/^ss-]{2}-......|[/^SS-]{2}-......|[/^ww-]{2}-......|[/^WW-]{2}-......|......-[ss]{2}|......-[SS]{2}"; 
             Pattern pattern2 = Pattern.compile(REGEX2,Pattern.CASE_INSENSITIVE);
             Matcher matcher2 = pattern2.matcher(regi);
             boolean matchFound2 = matcher2.find();
@@ -100,11 +100,8 @@ public class Car {
                 System.out.println("<verifReg> : registration works !2");
                 return true;
             }
-            */
-            // /*
-            System.out.println("<verifReg> : registration works !2");
-            return true;
-            // */
+            
+            
         } 
         else {
           System.out.println("<verifReg> : contains i, o , u");
