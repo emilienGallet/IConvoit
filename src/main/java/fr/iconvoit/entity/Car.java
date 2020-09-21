@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
          * @author Mélanie
          * 
          */
-
+// @entity
 public class Car {
     String color;
     String brand;
@@ -107,19 +107,11 @@ public class Car {
             // */
         } 
         else {
-          System.out.println("<verifReg> : contain i, o , u");
+          System.out.println("<verifReg> : contains i, o , u");
           System.out.println(regi);
           return false;
         }
     }
 
-    public static void main (String[] args){
-        /*
-        Car c = new Car("red","toyota","AA-123-BB",4);
-        System.out.println("--------#1--------");
-        c.setRegistration("Ap-005-AU");
-        System.out.println(c.getRegistration());
-        */
-        
-    }
+    
 }
