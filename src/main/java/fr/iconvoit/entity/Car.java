@@ -31,7 +31,7 @@ public class Car {
         if(verifRegistration(registration)==true){
             this.registration=registration;
         }else{
-            System.out.println("<constructor> : registration refus");
+            System.out.println("registration declined");
             
         }
         this.nbOfSeats=nbOfSeats;
@@ -62,7 +62,7 @@ public class Car {
             this.registration=regi;
         }
         else
-            System.out.println("<setRegistration> : registration error");
+            System.out.println("registration error");
             
     }
     public void setNbOfSeats(Integer nbOfSeats){
@@ -92,19 +92,18 @@ public class Car {
             Matcher matcher2 = pattern2.matcher(regi);
             boolean matchFound2 = matcher2.find();
             if (matchFound2) {
-                System.out.println("<verifReg> : error begins with ss or ww | ends with ss");
+                System.out.println("error begins with ss or ww | ends with ss");
                 System.out.println(regi);
                 return false;
             }
             else{
-                System.out.println("<verifReg> : registration works !2");
                 return true;
             }
             
             
         } 
         else {
-          System.out.println("<verifReg> : contains i, o , u");
+          System.out.println("error : contains i, o , u");
           System.out.println(regi);
           return false;
         }
