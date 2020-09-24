@@ -1,11 +1,8 @@
-package fr.iconvoit.controlleur;
-
-import javax.inject.Inject;
+package fr.iconvoit.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import fr.iconvoit.entity.PlanningRepository;
 
 @Controller
 public class PlanningController {
