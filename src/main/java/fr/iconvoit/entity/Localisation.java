@@ -2,17 +2,20 @@ package fr.iconvoit.entity;
 
 import java.util.ArrayList;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
-
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import com.sun.istack.NotNull;
 
-@EntityScan
+import lombok.Data;
+
+@Entity
+@Data
 public class Localisation {
 	@Id
-	@NotNull
 	private String nameLocation;
+	@NotNull
+	private String coordinate;
 	private ArrayList<Localisation> subLocalisation;
 	private float longitude;
 	private float latitude;
@@ -38,33 +41,9 @@ public class Localisation {
 		this.subLocalisation = subLocalisation;
 	}
 
-	public String getNameLocation() {
-		return nameLocation;
-	}
-
-	public void setNameLocation(String nameLocation) {
-		this.nameLocation = nameLocation;
-	}
-
 	
 	public String toString(){
 		return "Coordinate of"+this.getNameLocation() +
 		" is "+ "this.getLongitude() ." + "this.getLatitude()";
-	}
-
-	public float getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(float longitude) {
-		this.longitude = longitude;
-	}
-
-	public float getLatitude() {
-		return latitude;
-	}
-
-	public void setLatitude(float latitude) {
-		this.latitude = latitude;
 	}
 }

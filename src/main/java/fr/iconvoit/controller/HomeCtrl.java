@@ -1,13 +1,11 @@
 package fr.iconvoit.controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Controller
+//@Controller
 public class HomeCtrl {
 	@RequestMapping(path = {"/","/home"})
 	public String index() {
-		//TODO: process PUT request
 		
 		return "index";
 	}
