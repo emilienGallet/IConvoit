@@ -1,6 +1,0 @@
-spring:
-  datasource:
-    url: jdbc:h2:./IConvoitDB
-  jpa:
-    hibernate:
-      ddl-auto: none

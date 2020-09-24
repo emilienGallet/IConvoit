@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <title>IConvoit Inscription</title>
+</head>
+
+<body>
+
+    <form class="center" method="POST" th:action=@{/IConvoit/register} th:object="${register}" >
+
+        <input class="form-horizontal" type="text" th:field="*{username}" placeholder="Username" required>
+        <input class="form-horizontal" type="password" th:field="*{password}" placeholder="Mot de passe" required>
+        <input class="form-horizontal" type="text" th:field="*{fistName}" placeholder="Fisrtname" required>
+        <input class="form-horizontal" type="text" th:field="*{name}"  placeholder="Name" required>
+
+        <input class="form-horizontal" type="submit">
+
+    </form>
+
+</body>
+
+</html>
