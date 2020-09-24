@@ -87,7 +87,7 @@ public class Car {
             
             // search if ss or ww are in the left; ss on the right
             // if yes incorrect
-            REGEX2="[/^ss-]{2}-......|[/^SS-]{2}-......|[/^ww-]{2}-......|[/^WW-]{2}-......|......-[ss]{2}|......-[SS]{2}"; 
+            REGEX2="[/^ss]{2}-......|[/^SS]{2}-......|[/^ww]{2}-......|[/^WW]{2}-......|......-[ss]{2}|......-[SS]{2}"; 
             Pattern pattern2 = Pattern.compile(REGEX2,Pattern.CASE_INSENSITIVE);
             Matcher matcher2 = pattern2.matcher(regi);
             boolean matchFound2 = matcher2.find();
