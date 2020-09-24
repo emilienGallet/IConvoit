@@ -4,17 +4,25 @@ package fr.iconvoit.entity;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+import lombok.Data;
+
 /**
          * Class car
          * @author Mélanie
          * 
          */
-// @entity
+@Entity
+@Data
 public class Car {
-    String color;
-    String brand;
+
+    @Id
     String registration;
     Integer nbOfSeats;
+    String color;
+    String brand;
 
     /**
          * Constructor empty
@@ -37,26 +45,6 @@ public class Car {
         this.nbOfSeats=nbOfSeats;
     }
 
-    ////////////////////////////////getters setters/////////////////////////
-    public String getColor(){
-        return this.color;
-    }
-    public String getBrand(){
-        return this.brand;
-    }
-    public String getRegistration(){
-        return this.registration;
-    }
-    public Integer getNbOfSeats(){
-        return this.nbOfSeats;
-    }
-
-    public void setColor(String color){
-        this.color=color;
-    }
-    public void setBrand(String brand){
-        this.brand=brand;
-    }
     public void setRegistration(String regi){
         if(verifRegistration(regi)==true){
             this.registration=regi;
@@ -65,11 +53,10 @@ public class Car {
             System.out.println("registration error");
             
     }
+    // TODO check if number of seat is available for the registration car (i.e DA-503-BG is an Zoe car and got 5 maximum seats  
     public void setNbOfSeats(Integer nbOfSeats){
         this.nbOfSeats=nbOfSeats;
     }
-
-    /////////////////// functions /////////////////////////////
     /**
          * verification of the Registration
          * @param String regi

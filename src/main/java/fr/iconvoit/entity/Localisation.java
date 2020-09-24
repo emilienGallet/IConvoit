@@ -24,10 +24,9 @@ public class Localisation {
 
 	}
 
+	//TODO : check if float longitude,float latitude is correct in right format 
 	public Localisation(String name, float longitude,float latitude){
 		this.nameLocation = name;
-		if(longitude == 0 && latitude == 0)
-			System.err("Erreur de Syntaxe");
 		this.longitude = longitude;
 		this.latitude = latitude;
 	}
