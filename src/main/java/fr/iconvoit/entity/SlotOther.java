@@ -9,7 +9,6 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 /**
  * 
  * @author Émilien Extended class from Slot, is focus on Slot won't be an travel

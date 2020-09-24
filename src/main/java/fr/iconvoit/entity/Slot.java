@@ -6,9 +6,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
-
 import org.hibernate.annotations.ManyToAny;
-
 
 import lombok.Data;
 
@@ -18,7 +16,9 @@ import lombok.Data;
  * @author Émilien
  *
  */
-@MappedSuperclass()
+//@MappedSuperclass()
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Slot {
 
 	@Id
