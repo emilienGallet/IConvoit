@@ -1,58 +1,45 @@
 package fr.iconvoit.entity;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 
-import org.springframework.data.annotation.Id;
 
-//@EntityScan
+import org.hibernate.annotations.ManyToAny;
+
+
+import lombok.Data;
+
+@Data
+/**
+ * 
+ * @author Émilien
+ *
+ */
+@MappedSuperclass()
 public class Slot {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	protected Long id;
+	private String str;
 	@Column(nullable = false)
 	private Timestamp start;
 	@Column(nullable = false)
 	private Timestamp end;
-	@ManyToMany()
-	private ArrayList<People> participants;
+	//@ManyToAny(metaColumn = @Column)
+	//@JoinColumn()
+	//@JoinTable()
+	//private List<People> participants = new ArrayList<People>();
+	
+	
 	@Column(nullable = false)
 	private String name;
-	private Localisation position;
-	public Timestamp getDebut() {
-		return start;
+
+	public Slot() {
+
 	}
-	public void setDebut(Timestamp debut) {
-		this.start = debut;
-	}
-	public Timestamp getFin() {
-		return end;
-	}
-	public void setFin(Timestamp fin) {
-		this.end = fin;
-	}
-	public String getNom() {
-		return name;
-	}
-	public void setNom(String nom) {
-		this.name = nom;
-	}
-	public ArrayList<?> getParticipants() {
-		return participants;
-	}
-	public void setParticipants(ArrayList<People> participants) {
-		this.participants = participants;
-	}
-	public Localisation getLieu() {
-		return position;
-	}
-	public void setLieu(Localisation lieu) {
-		this.position = lieu;
-	}
+
 }
