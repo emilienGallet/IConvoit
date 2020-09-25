@@ -21,10 +21,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-            .antMatchers("/","/IConvoit","/IConvoit/register","/adduser","/css/**","/h2-console/**").permitAll()
+            .antMatchers("/","/register","/css/**","/h2-console/**").permitAll()
             .anyRequest().authenticated()
-            .and().formLogin().defaultSuccessUrl("/IConvoit/test",true)
-            .and().logout().logoutSuccessUrl("/IConvoit");
+            .and().formLogin().defaultSuccessUrl("/test",true)
+            .and().logout().logoutSuccessUrl("/");
             http.csrf().disable();
         http.headers().frameOptions().disable();
 

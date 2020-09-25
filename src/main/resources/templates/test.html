@@ -1,15 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
+<html xmlns:th="http://www.thymeleaf.org">
 
-    <title>Document</title>
+<head>
+    <title>test</title>
 </head>
+
 <body>
-    Test
-    <a class="btn logout" href="/logout">logout</a>
+    <header>
+
+        <a class="btn logout" href="/logout">logout</a>
+    </header>
+    <h2>Welcome</h2>
+
+    [[${user.name}]] [[${user.firstName}]]
+
 
 </body>
+
 </html>

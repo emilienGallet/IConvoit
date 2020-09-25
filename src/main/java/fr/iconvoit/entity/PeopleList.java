@@ -8,5 +8,6 @@ public interface PeopleList extends CrudRepository<People,Long> {
 
 
 	People findByUsername(String username);
+	
 
 }
