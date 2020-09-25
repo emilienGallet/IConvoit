@@ -1,12 +1,10 @@
 package fr.iconvoit.factory;
 
+
+import org.springframework.data.repository.CrudRepository;
+
 import fr.iconvoit.entity.SlotTravel;
 
-public class SlotTravelFactory {
-
-	public static SlotTravel createSlotTravel(String start, String end, String placeStart, String placeEnd) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+public interface SlotTravelFactory extends CrudRepository<SlotTravel, Long>{
 
 }

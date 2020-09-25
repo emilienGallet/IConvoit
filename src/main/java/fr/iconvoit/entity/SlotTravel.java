@@ -2,6 +2,8 @@ package fr.iconvoit.entity;
 
 import javax.persistence.*;
 
+import org.springframework.stereotype.Component;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,6 +15,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
+@Component
 public final class SlotTravel extends Slot {
 
 	@ManyToOne

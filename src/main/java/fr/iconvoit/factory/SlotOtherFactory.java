@@ -1,12 +1,10 @@
 package fr.iconvoit.factory;
 
+
+import org.springframework.data.repository.CrudRepository;
+
 import fr.iconvoit.entity.SlotOther;
 
-public class SlotOtherFactory {
-
-	public static SlotOther createSlotOther() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+public interface SlotOtherFactory extends CrudRepository<SlotOther, Long>{
 
 }
