@@ -6,7 +6,7 @@
 </head>
 <body>
      <ul>
-          <li data-th-each="slot : ${planning}"> [[${slot}]]</li>
+          <li data-th-each="slot : ${planning}"> [[${slot.slotName}]] [[${#temporals.format(slot.start, 'dd-MM-yyyy HH:mm')}]]</li>
      </ul>
 </body>
 </html>

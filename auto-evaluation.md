@@ -1,13 +1,13 @@
 # Auto-évaluation
 ## Time per hour for each members
-Émilien GALLET : 9 hour  
+Émilien GALLET : 15 hours  
 Jérémy GOUTELLE :  
 Mélanie EYRAUD :  
 Christian OUKOUERET :  
 
 ## Part of work for each members
 All : Specifications ,UML at https://app.lucidchart.com/documents/edit/45b3bf73-b9fe-4632-a62e-983e615e05ea/0_0?shared=true#?folder_id=home&browser=icon
-Émilien : Slot implementation
+Émilien : Slot implementation, Planning 
 
 ## For each "Good Practice" per members
 ### Émilien GALLET

@@ -6,9 +6,15 @@
 </head>
 <body>
      <h1>Adding your event</h1>
-     <form th:object="${slotOther}" th:action="@{/adding an event}" method="POST">
-          <input th:field="*{slotName}" type="text">
+     
+          <p th:text="${#temporals.formatISO(localDateTime)}"></p>
+<p>On est en [[${dateYear}]]</p> 
+     <form role="form" th:action="@{/adding an event}" method="POST">
+          <input type="text" th:field="${slotOther.slotName}" placeholder="name" >
+          <input th:field="${str}" type="text" placeholder="string">
+          <input name="dateYear" type="text" placeholder="DateYear">
+          <!-- <input th:field="*{#temporals.formatISO(localDateTime)}" type="text"> -->
           <input type="submit">
-     </form>
+     </form> 
 </body>
 </html>

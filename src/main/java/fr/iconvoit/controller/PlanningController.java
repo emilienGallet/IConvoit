@@ -1,11 +1,13 @@
 package fr.iconvoit.controller;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -20,6 +22,10 @@ public class PlanningController {
 	SlotFactory planning;
 	@RequestMapping(path = {"/planning"})
 	public String planning(Model m) {
+		SlotOther s = new SlotOther();
+		s.setSlotName("MON PROJET");
+		s.setStart(LocalDateTime.now());
+		planning.save(s);
 		m.addAttribute("planning",planning.findAll());
 		m.addAttribute("slotTravel",new SlotTravel());//TODO POST fist submit, use vue.js 
 		m.addAttribute("slotOther",new SlotOther());//TODO Same as Up
@@ -27,7 +33,10 @@ public class PlanningController {
 	}
 	
 	@RequestMapping(path = {"/adding an event"},method = RequestMethod.POST)
-	public String addSlotOther(SlotOther s) {
+	public String addSlotOther(
+			@ModelAttribute(value="slotOther") @Validated SlotOther s,
+			@ModelAttribute(value="str") @Validated String str) {
+		System.out.println(str);
 		planning.save(s);
 		return "redirect:/planning";
 	}
@@ -35,7 +44,9 @@ public class PlanningController {
 	@RequestMapping(path = {"/adding an event"},method = RequestMethod.GET)
 	public String addSlotOther(Model m) {
 		m.addAttribute("slotOther",new SlotOther());
-		//m.addAttribute("start", );
+		m.addAttribute("str", new String());
+		m.addAttribute("dateYear", LocalDateTime.now().getYear());
+		m.addAttribute("dateMonth", LocalDateTime.now().getMonth());
 		return "addEvent";
 	}
 }
