@@ -1,6 +1,7 @@
 package fr.iconvoit.entity;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,17 +26,14 @@ public abstract class Slot {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	protected Long id;
-	private String str;
 	@Column(nullable = false)
-	private Timestamp start;
-	@Column(nullable = false)
-	private Timestamp end;
+	private String slotName;
+	@Column(nullable = true)//TODO Set to false
+	private LocalDateTime start;
+	@Column(nullable = true)//TODO Set to false
+	private LocalDateTime end;
 	@ManyToMany
 	private List<People> participants = new ArrayList<People>();
-	
-	
-	@Column(nullable = false)
-	private String name;
 
 	public Slot() {
 
