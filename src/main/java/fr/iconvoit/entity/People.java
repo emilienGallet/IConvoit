@@ -38,7 +38,7 @@ public class People {
 	@Column(nullable = false)
 	private String name;
 	@Column(nullable = false)
-	private String fistName;
+	private String firstName;
 
 	private String password;
 
@@ -67,9 +67,9 @@ public class People {
 		this.org = org;
 	}
 
-	public People(String username, String name, String fistName) {
+	public People(String username, String name, String firstName) {
 		this.username = username;
 		this.name = name;
-		this.fistName = fistName;
+		this.firstName = firstName;
 	}
 }

@@ -15,7 +15,6 @@ import fr.iconvoit.entity.PeopleDetailsService;
 import fr.iconvoit.entity.PeopleValidator;
 
 @Controller
-@RequestMapping("/IConvoit")
 
 public class GeneralController extends SpringServletContainerInitializer {
 
@@ -42,7 +41,7 @@ public class GeneralController extends SpringServletContainerInitializer {
 		peopleValidator.validate(p, bindingResult);
 
 		if(bindingResult.hasErrors()){
-			return "redirect:/IConvoit/register";
+			return "redirect:/register";
 		}
 		
 		peopleDetailsService.save(p);
@@ -53,5 +52,23 @@ public class GeneralController extends SpringServletContainerInitializer {
 	@RequestMapping("/test")
 	public String test(Model m){
 		return"test";
+	}
+
+	@RequestMapping(path = "/profile")
+	public String profile() {
+		
+		return "profile";
+	}
+
+	@RequestMapping(path = "/car")
+	public String car() {
+		
+		return "car";
+	}
+
+	@RequestMapping(path = "/travel")
+	public String travel() {
+		
+		return "travel";
 	}
 }
