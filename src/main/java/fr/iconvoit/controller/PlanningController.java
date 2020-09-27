@@ -17,7 +17,6 @@ import fr.iconvoit.entity.People;
 import fr.iconvoit.entity.PeopleDetailsService;
 import fr.iconvoit.entity.SlotOther;
 import fr.iconvoit.entity.SlotTravel;
-import fr.iconvoit.factory.PeopleFactory;
 import fr.iconvoit.factory.SlotFactory;
 
 
@@ -46,10 +45,13 @@ public class PlanningController{
 		if (p==null) {
 			return "redirect:/" ;
 		}
-		m.addAttribute("planning",p.getReserved());
+		/*
+		 * Adding attributes for the thymeleaf
+		 */
+		m.addAttribute("planning",p.getReserved());//Sending the List<Slot> reserved by the "p" people
 		m.addAttribute("slotTravel",new SlotTravel());//TODO POST fist submit, use vue.js 
 		m.addAttribute("slotOther",new SlotOther());//TODO Same as Up
-		m.addAttribute("asList", true);
+		m.addAttribute("asList", true);//Boolean attribute who's permit to display list<Slot> as list or like traditional planning
 		return "planning";
 	}
 	@Inject
@@ -78,6 +80,9 @@ public class PlanningController{
 			@ModelAttribute(value="endhour") @Validated Integer endhour,
 			@ModelAttribute(value="endminute") @Validated Integer endminute,
 			@ModelAttribute(value="me") @Validated Boolean me) {
+		//TODO Check if start time is before the end time.
+		//TODO Check if not already exist an slot across start and ending time.
+		//TODO adding the Localization place for the SlotOther in template and check it here.
 		s.setStart(LocalDateTime.of(year, month, dayOfMonth, hour, minute));
 		s.setEnd(LocalDateTime.of(endyear, endmonth, enddayOfMonth, endhour, endminute));
 		UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -98,6 +103,7 @@ public class PlanningController{
 	
 	@RequestMapping(path = {"/adding an event"},method = RequestMethod.GET)
 	public String addSlotOther(Model m) {
+		//TODO adding the Localization place for the SlotOther in template
 		LocalDateTime start = LocalDateTime.now().plusMinutes(15);
 		m.addAttribute("slotOther",new SlotOther());
 		m.addAttribute("dateYear", start.getYear());

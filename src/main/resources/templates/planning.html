@@ -12,12 +12,14 @@
           <p th:if="${#lists.isEmpty(planning)}">They have no event</p>
           <ul>
                <li data-th-each="slot : ${planning}">
-                    [[${slot.slotName}]]
+               <!-- TODO doing an IF statement only if dd-MM-yyyy are same for start and end time  -->
+                    "[[${slot.slotName}]]" De
                     [[${#temporals.format(slot.start, 'dd-MM-yyyy
+                    HH:mm')}]] jusqu'à [[${#temporals.format(slot.start, 'dd-MM-yyyy
                     HH:mm')}]]</li>
           </ul>
      </div>
-     <!-- Table slots view of week or accurate time -->
+     <!-- TODO Table slots view of week or accurate time -->
      <div>
           <table>
                <tr>
