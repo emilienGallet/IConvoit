@@ -24,20 +24,19 @@ public class Localisation {
 
 	}
 
-	public Localisation(String name, float longitude,float latitude){
+	public Localisation(final String name, final float longitude, final float latitude) {
 		this.nameLocation = name;
-		if(longitude == 0 && latitude == 0)
+		if (longitude == 0 && latitude == 0)
 			System.err("Erreur de Syntaxe");
 		this.longitude = longitude;
 		this.latitude = latitude;
 	}
 
-
 	public ArrayList<Localisation> getSubLocalisation() {
 		return subLocalisation;
 	}
 
-	public void setSubLocalisation(ArrayList<Localisation> subLocalisation) {
+	public void setSubLocalisation(final ArrayList<Localisation> subLocalisation) {
 		this.subLocalisation = subLocalisation;
 	}
 
