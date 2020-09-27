@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import javax.inject.Inject;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -11,18 +13,49 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import fr.iconvoit.entity.People;
+import fr.iconvoit.entity.PeopleDetailsService;
 import fr.iconvoit.entity.SlotOther;
 import fr.iconvoit.entity.SlotTravel;
+import fr.iconvoit.factory.PeopleFactory;
 import fr.iconvoit.factory.SlotFactory;
 
 
 
 @Controller
-public class PlanningController {
+/**
+ * 
+ * @author Émilien
+ * Planning management.
+ * Ability to add an event and to display planning of the current User
+ *
+ */
+public class PlanningController{
+	
+	@Inject
+	PeopleDetailsService peopleDetailsService;
+	
+	@RequestMapping(path = {"/my planning"})
+	public String planning(Model m) {
+		
+		/*
+		 * Get info from the current user.
+		 */
+		UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		People p = peopleDetailsService.findByUsername(userD.getUsername());
+		if (p==null) {
+			return "redirect:/" ;
+		}
+		m.addAttribute("planning",p.getReserved());
+		m.addAttribute("slotTravel",new SlotTravel());//TODO POST fist submit, use vue.js 
+		m.addAttribute("slotOther",new SlotOther());//TODO Same as Up
+		m.addAttribute("asList", true);
+		return "planning";
+	}
 	@Inject
 	SlotFactory planning;
-	@RequestMapping(path = {"/planning"})
-	public String planning(Model m) {
+	@RequestMapping(path = {"/all planning"})
+	public String toutLesPlanning(Model m) {
 		
 		m.addAttribute("planning",planning.findAll());
 		m.addAttribute("slotTravel",new SlotTravel());//TODO POST fist submit, use vue.js 
@@ -43,11 +76,24 @@ public class PlanningController {
 			@ModelAttribute(value="endmonth") @Validated Integer endmonth,
 			@ModelAttribute(value="enddayOfMonth") @Validated Integer enddayOfMonth,
 			@ModelAttribute(value="endhour") @Validated Integer endhour,
-			@ModelAttribute(value="endminute") @Validated Integer endminute) {
+			@ModelAttribute(value="endminute") @Validated Integer endminute,
+			@ModelAttribute(value="me") @Validated Boolean me) {
 		s.setStart(LocalDateTime.of(year, month, dayOfMonth, hour, minute));
 		s.setEnd(LocalDateTime.of(endyear, endmonth, enddayOfMonth, endhour, endminute));
+		UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		People p = peopleDetailsService.findByUsername(userD.getUsername());
+		/*We checked if is an event for him and check if he was connect*/
+		if (me || p!=null) {
+			p.getReserved().add(s);
+			s.getParticipants().add(p);
+			System.out.println(p.getReserved());
+			System.out.println(s.getParticipants());
+		}
+		if (null == p) {
+			return "redirect:/";
+		}
 		planning.save(s);
-		return "redirect:/planning";
+		return "redirect:/my planning";
 	}
 	
 	@RequestMapping(path = {"/adding an event"},method = RequestMethod.GET)

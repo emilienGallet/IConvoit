@@ -1,6 +1,6 @@
 # Auto-evaluation
 ## Time per hour for each member
-Émilien GALLET : 16 hours 30 minutes (Use Tomato)
+Émilien GALLET : 18 hours 30 minutes (Use Pomodoro)
 Jérémy GOUTELLE :  
 Mélanie EYRAUD :  
 Christian OUKOUERET :  

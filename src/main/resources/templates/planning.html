@@ -3,9 +3,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>My planning</title>
+<link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
      <!-- List slots view -->
+     <a class="btn" href="/adding an event">Adding an event</a>
      <div th:if="${asList}">
           <p th:if="${#lists.isEmpty(planning)}">They have no event</p>
           <ul>

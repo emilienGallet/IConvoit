@@ -16,6 +16,11 @@ import lombok.Data;
 @Entity
 @Data
 @Component
+/**
+ * 
+ * @author Émilien
+ * Managed People entity 
+ */
 public class People {
 
 	@Id
@@ -40,27 +45,11 @@ public class People {
 	@ManyToMany
 	private List<People> friend = new ArrayList<People>();
 
-	@ManyToMany()
+	@ManyToMany(mappedBy = "participants")
 	private List<Slot> reserved = new ArrayList<Slot>();;
 
 	public People() {
 
-	}
-
-	public Long getIdSource() {
-		return idSource;
-	}
-
-	public void setIdSource(Long idSource) {
-		this.idSource = idSource;
-	}
-
-	public Organisation getOrg() {
-		return org;
-	}
-
-	public void setOrg(Organisation org) {
-		this.org = org;
 	}
 
 	public People(String username, String name, String firstName) {
