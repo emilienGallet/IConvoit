@@ -1,12 +1,11 @@
 package fr.iconvoit.entity;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.sql.Timestamp;
+import javax.persistence.*;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import org.springframework.stereotype.Component;
 
 import lombok.Data;
 
@@ -16,25 +15,22 @@ import lombok.Data;
  * @author Émilien
  *
  */
-@MappedSuperclass()
-public class Slot {
 
+@Component
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Slot {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	protected Long id;
-	private String str;
 	@Column(nullable = false)
-	private Timestamp start;
-	@Column(nullable = false)
-	private Timestamp end;
-	//@ManyToAny(metaColumn = @Column)
-	//@JoinColumn()
-	//@JoinTable()
-	//private List<People> participants = new ArrayList<People>();
-	
-	
-	@Column(nullable = false)
-	private String name;
+	private String slotName;
+	@Column(nullable = true)//TODO Set to false
+	private LocalDateTime start;
+	@Column(nullable = true)//TODO Set to false
+	private LocalDateTime end;
+	@ManyToMany(cascade = CascadeType.ALL)
+	private List<People> participants = new ArrayList<People>();
 
 	public Slot() {
 

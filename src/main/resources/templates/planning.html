@@ -5,8 +5,23 @@
 <title>My planning</title>
 </head>
 <body>
-     <ul>
-          <li data-th-each="slot : ${collSlot}"> </li>
-     </ul>
+     <!-- List slots view -->
+     <div th:if="${asList}">
+          <p th:if="${#lists.isEmpty(planning)}">They have no event</p>
+          <ul>
+               <li data-th-each="slot : ${planning}">
+                    [[${slot.slotName}]]
+                    [[${#temporals.format(slot.start, 'dd-MM-yyyy
+                    HH:mm')}]]</li>
+          </ul>
+     </div>
+     <!-- Table slots view of week or accurate time -->
+     <div>
+          <table>
+               <tr>
+                    <!-- <th data-th-each=""></th> -->
+               </tr>
+          </table>
+     </div>
 </body>
 </html>
