@@ -1,5 +1,4 @@
 package fr.iconvoit.entity;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +15,11 @@ import lombok.Data;
  * @author Émilien
  *
  */
-//@MappedSuperclass()
+
 @Component
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Slot {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	protected Long id;

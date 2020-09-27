@@ -16,6 +16,7 @@ import fr.iconvoit.entity.SlotTravel;
 import fr.iconvoit.factory.SlotFactory;
 
 
+
 @Controller
 public class PlanningController {
 	@Inject
@@ -66,4 +67,5 @@ public class PlanningController {
 		m.addAttribute("enddateMinute", start.getMinute());
 		return "addEvent";
 	}
+
 }

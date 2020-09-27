@@ -42,7 +42,6 @@ All : Specifications ,UML at https://app.lucidchart.com/documents/edit/45b3bf73-
 1. keep your code clean: no global/static variables, choose names correctly (packages, classes, etc), follow conventions (e.g., java convention), use constants for constant values:
 	1. notation : /20
 	1. commentary
-	
 #### You writing software so :
 
 1. test a lot and often
