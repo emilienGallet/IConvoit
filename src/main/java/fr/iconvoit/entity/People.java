@@ -66,6 +66,6 @@ public class People {
 	public People(String username, String name, String firstName) {
 		this.username = username;
 		this.name = name;
-		this.firstName = firstName;
+		this.firstname = firstName;
 	}
 }
