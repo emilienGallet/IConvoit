@@ -14,7 +14,6 @@ import com.sun.istack.NotNull;
 import lombok.Data;
 
 @Entity
-@Table(name = "Personne")
 @Data
 @Component
 public class People {

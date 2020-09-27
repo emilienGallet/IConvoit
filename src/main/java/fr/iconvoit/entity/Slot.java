@@ -1,6 +1,5 @@
 package fr.iconvoit.entity;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,7 @@ public abstract class Slot {
 	private LocalDateTime start;
 	@Column(nullable = true)//TODO Set to false
 	private LocalDateTime end;
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	private List<People> participants = new ArrayList<People>();
 
 	public Slot() {

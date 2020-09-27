@@ -18,9 +18,9 @@ import lombok.EqualsAndHashCode;
 @Component
 public final class SlotTravel extends Slot {
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	Localisation startPlace;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	Localisation finishPlace;
 
 	public SlotTravel() {

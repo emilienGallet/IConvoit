@@ -20,7 +20,7 @@ import lombok.EqualsAndHashCode;
  */
 public class SlotOther extends Slot {
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	Localisation place;
 
 	public SlotOther() {

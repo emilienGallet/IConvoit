@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -8,11 +8,26 @@
      <h1>Adding your event</h1>
      
           <p th:text="${#temporals.formatISO(localDateTime)}"></p>
-<p>On est en [[${dateYear}]]</p> 
      <form role="form" th:action="@{/adding an event}" method="POST">
-          <input type="text" th:field="${slotOther.slotName}" placeholder="name" >
-          <input th:field="${str}" type="text" placeholder="string">
-          <input name="dateYear" type="text" placeholder="DateYear">
+          <label> Name of this event : 
+          <input type="text" th:field="${slotOther.slotName}" placeholder="name" required="required">
+          </label>
+          <br>
+          <label> Start at :
+          <input name="dayOfMonth" type="number" min="1" max="31" th:value="${dateDayOfMonth}">
+          <input name="month" type="number" min="1" max="12" th:value="${dateMonth}">
+          <input name="year" type="number" th:value="${dateYear}">
+          <input name="hour" type="number" min="0" max="23" th:value="${dateHour}">
+          <input name="minute" type="number" min="0" max="59" th:value="${dateMinute}">
+          </label>
+          <br>
+          <label> End at :
+          <input name="enddayOfMonth" type="number" min="1" max="31" th:value="${enddateDayOfMonth}">
+          <input name="endmonth" type="number"  min="1" max="12" th:value="${enddateMonth}">
+          <input name="endyear" type="number" th:min="${dateYear}" th:value="${enddateYear}">
+          <input name="endhour" type="number" min="0" max="23" th:value="${enddateHour}">
+          <input name="endminute" type="number" min="0" max="59" th:value="${enddateMinute}">
+          </label>
           <!-- <input th:field="*{#temporals.formatISO(localDateTime)}" type="text"> -->
           <input type="submit">
      </form> 
