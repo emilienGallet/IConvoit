@@ -26,7 +26,7 @@ public class Localisation {
 	public Localisation(final String name, final float longitude, final float latitude) {
 		this.nameLocation = name;
 		if (longitude == 0 && latitude == 0)
-			System.err("Erreur de Syntaxe");
+			//System.err("Erreur de Syntaxe");
 		this.longitude = longitude;
 		this.latitude = latitude;
 	}

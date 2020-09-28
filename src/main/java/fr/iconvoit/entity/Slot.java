@@ -1,4 +1,5 @@
 package fr.iconvoit.entity;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +31,25 @@ public abstract class Slot {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	protected Long id;
 	@Column(nullable = false)
+	/**
+	 * Name of this slot
+	 */
 	private String slotName;
-	@Column(nullable = true)//TODO Set to false
+	@Column(nullable = false)
+	/**
+	 * Start of this slot
+	 */
 	private LocalDateTime start;
-	@Column(nullable = true)//TODO Set to false
+	@Column(nullable = false)
+	/**
+	 * end of this slot
+	 */
 	private LocalDateTime end;
+	@Column(nullable = true)
+	/**
+	 * If the slot come from an other calendar. By default is null.
+	 */
+	private URL url;
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "slot_people",
 	joinColumns = { @JoinColumn(name = "fk_slot") },

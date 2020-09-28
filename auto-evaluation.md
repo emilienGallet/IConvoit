@@ -1,13 +1,13 @@
 # Auto-evaluation
 ## Time per hour for each member
-Émilien GALLET : 18 hours 30 minutes (Use Pomodoro)
+Émilien GALLET : 19 hours 13 minutes (Use Pomodoro)
 Jérémy GOUTELLE :  
 Mélanie EYRAUD :  
 Christian OUKOUERET :  
 
 ## Part of work for each member
 All : Specifications ,UML at https://app.lucidchart.com/documents/edit/45b3bf73-b9fe-4632-a62e-983e615e05ea/0_0?shared=true#?folder_id=home&browser=icon
-Émilien : Slot implementation, Planning 
+Émilien : Slot implementation, Planning , IcsParser
 
 ## For each "Good Practice" per member
 ### Émilien GALLET
