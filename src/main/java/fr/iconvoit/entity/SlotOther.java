@@ -2,6 +2,9 @@ package fr.iconvoit.entity;
 
 import javax.persistence.Entity;
 import org.springframework.stereotype.Component;
+
+import fr.iconvoit.exceptions.SlotException;
+
 import javax.persistence.*;
 
 import lombok.Data;
@@ -24,5 +27,18 @@ public class SlotOther extends Slot {
 
 	public SlotOther() {
 
+	}
+	/**
+	 * 
+	 * @param name
+	 * @param start
+	 * @param end
+	 * @param location
+	 * @param uid
+	 * @throws SlotException
+	 */
+	public SlotOther(String name, String start, String end, String location, String uid) throws SlotException {
+		super(name, start, end);
+		this.place = Localisation.AdeParsing(location);
 	}
 }

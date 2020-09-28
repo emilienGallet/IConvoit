@@ -6,7 +6,15 @@
 </head>
 <body>
      <h1>Adding your event</h1>
-     <p th:text="${#temporals.formatISO(localDateTime)}"></p>
+     <h2>From an Ics File</h2>
+     <form role="form" th:action="@{/adding from url}" method="POST">
+          <label>Url link : </label>
+          <input type="text" name="url"
+               placeholder="name" required="required"
+          >
+          <input type="submit">
+     </form>
+     <h2>Personal insertion</h2>
      <form role="form" th:action="@{/adding an event}" method="POST">
           <label>
                Name of this event :
@@ -50,8 +58,9 @@
                     th:value="${enddateMinute}"
                >
           </label>
-          <label>Is for me ? 
-          <input name="me" type="checkbox" checked="checked">
+          <label>
+               Is for me ?
+               <input name="me" type="checkbox" checked="checked">
           </label>
           <!-- TODO Adding localization site -->
           <input type="submit">

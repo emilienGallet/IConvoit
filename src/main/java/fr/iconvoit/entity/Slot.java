@@ -1,6 +1,8 @@
 package fr.iconvoit.entity;
+
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import javax.persistence.*;
 
 import org.springframework.stereotype.Component;
 
+import fr.iconvoit.exceptions.SlotException;
 import lombok.Data;
 
 @Data
@@ -22,9 +25,8 @@ import lombok.Data;
 @Inheritance(strategy = InheritanceType.JOINED)
 /**
  * 
- * @author emilien
- * An generic abstract class who's contain the start time and end time.
- * Use to display planning as an List<Slot>
+ * @author emilien An generic abstract class who's contain the start time and
+ *         end time. Use to display planning as an List<Slot>
  */
 public abstract class Slot {
 	@Id
@@ -50,13 +52,38 @@ public abstract class Slot {
 	 * If the slot come from an other calendar. By default is null.
 	 */
 	private URL url;
+	@Column(nullable = true)
+	/**
+	 * If URL column is set. uid permit to know his id on ADE DB or Other.
+	 */
+	private String uid;
+	@Column(nullable = true)
+	/**
+	 * If URL column is set. lastModified permit to know if is update or not.
+	 */
+	private LocalDateTime lastModified;
+
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "slot_people",
-	joinColumns = { @JoinColumn(name = "fk_slot") },
-	inverseJoinColumns = { @JoinColumn(name = "fk_people") })
+	@JoinTable(name = "slot_people", joinColumns = { @JoinColumn(name = "fk_slot") }, inverseJoinColumns = {
+			@JoinColumn(name = "fk_people") })
 	private List<People> participants = new ArrayList<People>();
 
 	public Slot() {
+
+	}
+
+	public Slot(String name, String start2, String end2) throws SlotException {
+		this.slotName = name;
+		try {
+			this.start = LocalDateTime.parse(start2);
+		} catch (DateTimeParseException e) {
+			new SlotException();
+		}
+		try {
+			this.end = LocalDateTime.parse(end2);
+		} catch (DateTimeParseException e) {
+			new SlotException();
+		}
 
 	}
 

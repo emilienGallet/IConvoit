@@ -1,6 +1,9 @@
 package fr.iconvoit.controller;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -13,10 +16,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import fr.iconvoit.IcsParser;
 import fr.iconvoit.entity.People;
 import fr.iconvoit.entity.PeopleDetailsService;
+import fr.iconvoit.entity.Slot;
 import fr.iconvoit.entity.SlotOther;
 import fr.iconvoit.entity.SlotTravel;
+import fr.iconvoit.exceptions.SlotException;
 import fr.iconvoit.factory.SlotFactory;
 
 
@@ -64,6 +70,29 @@ public class PlanningController{
 		m.addAttribute("slotOther",new SlotOther());//TODO Same as Up
 		m.addAttribute("asList", true);
 		return "planning";
+	}
+	
+	@RequestMapping(path = {"/adding from url"},method = RequestMethod.POST)
+	public String addSlotFromUrl(@ModelAttribute(value="slotOther") @Validated String url) {
+		ArrayList<Slot> sl = null;
+		try {
+			sl = IcsParser.parsing(url);
+		} catch (MalformedURLException e) {
+			// TODO URL unreachable
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Reading error
+			e.printStackTrace();
+		} catch (SlotException e) {
+			// TODO Slot reading error
+			e.printStackTrace();
+		}
+		if (sl == null) {
+			//TODO send error display
+		}
+		planning.saveAll(sl);
+		//TODO Send success display
+		return "redirect:/";
 	}
 	
 	@RequestMapping(path = {"/adding an event"},method = RequestMethod.POST)

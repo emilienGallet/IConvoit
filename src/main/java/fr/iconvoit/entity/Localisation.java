@@ -44,4 +44,10 @@ public class Localisation {
 		return "Coordinate of"+this.getNameLocation() +
 		" is "+ "this.getLongitude() ." + "this.getLatitude()";
 	}
+
+	public static Localisation AdeParsing(String location) {
+		Localisation l = new Localisation();
+		
+		return l;
+	}
 }
