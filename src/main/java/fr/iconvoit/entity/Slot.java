@@ -2,6 +2,7 @@ package fr.iconvoit.entity;
 
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 
 import org.springframework.stereotype.Component;
 
+import fr.iconvoit.IcsParser;
 import fr.iconvoit.exceptions.SlotException;
 import lombok.Data;
 
@@ -68,6 +70,7 @@ public abstract class Slot {
 			@JoinColumn(name = "fk_people") })
 	private List<People> participants = new ArrayList<People>();
 
+	
 	public Slot() {
 
 	}
@@ -75,12 +78,12 @@ public abstract class Slot {
 	public Slot(String name, String start2, String end2) throws SlotException {
 		this.slotName = name;
 		try {
-			this.start = LocalDateTime.parse(start2);
+			this.start = IcsParser.dtTimeToLocalDateTime(start2);
 		} catch (DateTimeParseException e) {
 			new SlotException();
 		}
 		try {
-			this.end = LocalDateTime.parse(end2);
+			this.end = IcsParser.dtTimeToLocalDateTime(end2);
 		} catch (DateTimeParseException e) {
 			new SlotException();
 		}

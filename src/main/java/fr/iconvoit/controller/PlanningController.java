@@ -73,7 +73,12 @@ public class PlanningController{
 	}
 	
 	@RequestMapping(path = {"/adding from url"},method = RequestMethod.POST)
-	public String addSlotFromUrl(@ModelAttribute(value="slotOther") @Validated String url) {
+	public String addSlotFromUrl(@ModelAttribute(value="url") @Validated String url) {
+		if (url.isEmpty() || url == null) {
+			
+			//TODO redirect to an non valid link
+			return "redirect:/adding from url";
+		}
 		ArrayList<Slot> sl = null;
 		try {
 			sl = IcsParser.parsing(url);
@@ -83,12 +88,10 @@ public class PlanningController{
 		} catch (IOException e) {
 			// TODO Reading error
 			e.printStackTrace();
-		} catch (SlotException e) {
-			// TODO Slot reading error
-			e.printStackTrace();
 		}
 		if (sl == null) {
 			//TODO send error display
+			return "redirect:/";
 		}
 		planning.saveAll(sl);
 		//TODO Send success display

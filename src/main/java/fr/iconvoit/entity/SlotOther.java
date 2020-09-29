@@ -3,6 +3,7 @@ package fr.iconvoit.entity;
 import javax.persistence.Entity;
 import org.springframework.stereotype.Component;
 
+import fr.iconvoit.IcsParser;
 import fr.iconvoit.exceptions.SlotException;
 
 import javax.persistence.*;
@@ -28,6 +29,7 @@ public class SlotOther extends Slot {
 	public SlotOther() {
 
 	}
+
 	/**
 	 * 
 	 * @param name
@@ -39,6 +41,9 @@ public class SlotOther extends Slot {
 	 */
 	public SlotOther(String name, String start, String end, String location, String uid) throws SlotException {
 		super(name, start, end);
-		this.place = Localisation.AdeParsing(location);
+		this.place = IcsParser.AdeParsing(location);
+		if (this.place == null) {
+			new SlotException();
+		}
 	}
 }
