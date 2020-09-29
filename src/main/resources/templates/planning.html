@@ -3,10 +3,29 @@
 <head>
 
 <title>My planning</title>
+<link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-     <ul>
-          <li data-th-each="slot : ${collSlot}"> </li>
-     </ul>
+     <!-- List slots view -->
+     <a class="btn" href="/adding an event">Adding an event</a>
+     <div th:if="${asList}">
+          <p th:if="${#lists.isEmpty(planning)}">They have no event</p>
+          <ul>
+               <li data-th-each="slot : ${planning}">
+               <!-- TODO doing an IF statement only if dd-MM-yyyy are same for start and end time  -->
+                    "[[${slot.slotName}]]" De
+                    [[${#temporals.format(slot.start, 'dd-MM-yyyy
+                    HH:mm')}]] jusqu'à [[${#temporals.format(slot.start, 'dd-MM-yyyy
+                    HH:mm')}]]</li>
+          </ul>
+     </div>
+     <!-- TODO Table slots view of week or accurate time -->
+     <div>
+          <table>
+               <tr>
+                    <!-- <th data-th-each=""></th> -->
+               </tr>
+          </table>
+     </div>
 </body>
 </html>

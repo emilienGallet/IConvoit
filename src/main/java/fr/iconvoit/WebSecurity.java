@@ -23,7 +23,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
             .antMatchers("/","/register","/css/**","/h2-console/**").permitAll()
             .anyRequest().authenticated()
-            .and().formLogin().defaultSuccessUrl("/test",true)
+            .and().formLogin().defaultSuccessUrl("/my planning",true)
             .and().logout().logoutSuccessUrl("/");
             http.csrf().disable();
         http.headers().frameOptions().disable();

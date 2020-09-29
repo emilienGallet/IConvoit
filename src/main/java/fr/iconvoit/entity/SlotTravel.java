@@ -2,6 +2,8 @@ package fr.iconvoit.entity;
 
 import javax.persistence.*;
 
+
+import org.springframework.stereotype.Component;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,12 +15,18 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Component
+/**
+ * 
+ * @author Émilien Extended class from Slot, is focus on Slot are an travel
+ *         time. The got the place who your start an travel (startPlace), and the destination place as finishPlace.
+ */
 public final class SlotTravel extends Slot {
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	Localisation startPlace;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
+
 	Localisation finishPlace;
 
 	public SlotTravel() {
