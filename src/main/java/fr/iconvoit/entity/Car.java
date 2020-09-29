@@ -18,8 +18,10 @@ import lombok.Data;
 @Data
 public class Car {
 
+    
     @Id
     String registration;
+    String Format;
     Integer nbOfSeats;
     String color;
     String brand;
@@ -33,9 +35,10 @@ public class Car {
          * Constructor
          * @param String color,String brand,String registration,Integer nbOfSeats
          */
-    public Car(String color,String brand,String registration,Integer nbOfSeats){
+    public Car(String color,String brand,String registration,String Format,Integer nbOfSeats){
         this.color=color;
         this.brand=brand;
+        this.Format=Format;
         if(verifRegistration(registration)==true){
             this.registration=registration;
         }else{
@@ -53,9 +56,19 @@ public class Car {
             System.out.println("registration error");
             
     }
-    // TODO check if number of seat is available for the registration car (i.e DA-503-BG is an Zoe car and got 5 maximum seats  
-    public void setNbOfSeats(Integer nbOfSeats){
-        this.nbOfSeats=nbOfSeats;
+    // TODO check if number of seat is available for the registration car 
+    // (i.e DA-503-BG is an Zoe car and got 5 maximum seats  
+    /**
+         * set the nb of seats verifying if it's not enormous
+         * @param Integer nbOfSeat
+         * @return void
+         */
+    public void setNbOfSeats(Integer nbOfSeat){
+        if(verifNbOfSeats(nbOfSeat)==true){
+            this.nbOfSeats=nbOfSeat;
+        }
+        else
+            System.out.println("number of seats impossible");
     }
     /**
          * verification of the Registration
@@ -86,8 +99,6 @@ public class Car {
             else{
                 return true;
             }
-            
-            
         } 
         else {
           System.out.println("error : contains i, o , u");
@@ -96,5 +107,18 @@ public class Car {
         }
     }
 
-    
+/**
+         * verification of the nb of seats
+         * @param int nbOfSeats
+         * @return boolean
+         */
+    public boolean verifNbOfSeats(int NbOfSeats){
+        if(this.Format == "citadine") {
+            if(NbOfSeats <= 5){
+                return true;
+            }
+        }
+        
+        return false;
+    } 
 }
