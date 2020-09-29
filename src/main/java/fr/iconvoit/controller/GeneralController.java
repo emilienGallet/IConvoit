@@ -51,12 +51,56 @@ public class GeneralController extends SpringServletContainerInitializer {
 		return "redirect:/";
 	}
 
-	@RequestMapping("/test") 
+	@RequestMapping("/test")
 	public String test(Model m) {
 		UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		People p = peopleDetailsService.findByUsername(userD.getUsername());
 		m.addAttribute("user", p);
 
 		return "test";
+	}
+
+	@GetMapping("/profile")
+	public String profile(Model m) {
+		UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		People p = peopleDetailsService.findByUsername(userD.getUsername());
+		m.addAttribute("user", p);
+		m.addAttribute("password", new String());
+		m.addAttribute("newPassword", new String());
+
+		return "profile";
+	}
+
+	@PostMapping("/profile")
+	public String changePassword(Model m ,@ModelAttribute("password") String p,@ModelAttribute("newPassword") String newP) {
+		
+		UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		People user = peopleDetailsService.findByUsername(userD.getUsername());
+		m.addAttribute("user", user);
+
+
+		if (peopleDetailsService.bCryptPasswordEncoder.matches(p, user.getPassword()) ==false) {
+		m.addAttribute("fail","boolean");
+
+			return "profile";
+		}
+
+		user.setPassword(newP);
+		peopleDetailsService.save(user);
+		m.addAttribute("success","boolean");
+
+		return "redirect:/profile?success=true";
+	}
+		
+	@RequestMapping(path = "/car")
+	public String car() {
+
+		return "car";
+	}
+
+	@RequestMapping(path = "/travel")
+	public String travel() {
+
+		return "travel";
 	}
 }

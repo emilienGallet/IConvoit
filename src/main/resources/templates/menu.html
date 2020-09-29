@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" data-th-fragment="baseLayout(moreHeader, moreContent)">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+
+
+    <data-th-block data-th-replace="${moreHeader}"></data-th-block>
+
+</head>
+
+<body>
+    <header>
+
+        <a class="btn menu" href="/profile">Profile</a>
+        <a class="btn menu" href="/planning">Planning</a>
+        <a class="btn menu" href="/travel">Travel</a>
+        <a class="btn menu" href="/car">Car</a>
+
+        <a class="btn logout" href="/logout">Logout</a>
+
+    </header>
+
+    <div class="moreContent" data-th-replace="${moreContent}"> </div>
+
+
+</body>
+
+</html>
