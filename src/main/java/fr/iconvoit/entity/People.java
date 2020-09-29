@@ -12,7 +12,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 import com.sun.istack.NotNull;
 
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Component;
 import lombok.Data;
 
 @Entity
-@Table(name = "Personne")
 @Data
 @Component
 public class People {

@@ -55,3 +55,7 @@ header{
   background-color:silver;
   padding-left: 10px;
 }
+
+.success{
+  color: green;
+}
