@@ -20,7 +20,7 @@
         <span class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}" th:errorclass="fieldError"></span>
 
         <input class="form-horizontal" type="password" th:field="*{password}" placeholder="Password" required>
-        <input class="form-horizontal" type="text" th:field="*{firstName}" placeholder="Fisrtname" required>
+        <input class="form-horizontal" type="text" th:field="*{firstname}" placeholder="Fisrtname" required>
         <input class="form-horizontal" type="text" th:field="*{name}"  placeholder="Name" required>
 
         <input class="form-horizontal" type="submit">
