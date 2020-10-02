@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import fr.iconvoit.entity.Localisation;
+import fr.iconvoit.entity.Localization;
 import fr.iconvoit.entity.Slot;
 import fr.iconvoit.entity.SlotOther;
 import fr.iconvoit.exceptions.SlotException;
@@ -75,7 +75,7 @@ public class IcsParser {
 		return LocalDateTime.of(ld, lt);
 	}
 	
-	public static Localisation AdeParsing(String location) {
+	public static Localization AdeParsing(String location) {
 		if (location.isBlank()) {
 			return null;
 		}

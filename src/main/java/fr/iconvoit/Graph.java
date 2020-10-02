@@ -3,7 +3,7 @@ package fr.iconvoit;
 import java.io.IOException;
 import java.util.List;
 
-import fr.iconvoit.entity.Localisation;
+import fr.iconvoit.entity.Localization;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -16,9 +16,9 @@ import okhttp3.Response;
  */
 public class Graph {
 
-	public static void planTraject(Localisation start, Localisation end, List<Localisation> step) {
+	public static void planTraject(Localization start, Localization end, List<Localization> step) {
 		/*
-		for (Localisation anStep : step) {
+		for (Localization anStep : step) {
 			url += "point=" + anStep.getLatitude() + "," + anStep.getLongitude();
 		}*/
 		
@@ -28,7 +28,7 @@ public class Graph {
 		 * https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
 		 */
 		OkHttpClient client = new OkHttpClient();
-		Request request = new Request.Builder().url(url(start,end)).get().build();
+		Request request = new Request.Builder().url(urlTravel(start,end)).get().build();
 
 		try {
 			Response response = client.newCall(request).execute();
@@ -45,12 +45,12 @@ public class Graph {
 	 * @param end
 	 * @return the specific url for the travel
 	 */
-	private static String url(Localisation start, Localisation end) {
+	private static String urlTravel(Localization start, Localization end) {
 		String apiKey = "2f30588d-1eeb-409b-a822-b256accb329f";
-		String url = "https://graphhopper.com/api/1/matrix?";
+		String url = "https://graphhopper.com/api/1/route?";
 		url += "point=" + start.getLatitude() + "," + start.getLongitude();
 		url += "&point=" + end.getLatitude() + "," + end.getLongitude();
-		url += "&type=json&" + "vehicle=car&" + "debug=true&" + "out_array=times&" + "out_array=distances";
+		url += "&vehicle=car"+"&locale=en"+"&calc_points=false";
 		url += "&key=" + apiKey;
 		return url;
 	}
@@ -59,9 +59,9 @@ public class Graph {
 		/*
 		 * Test of trajectPlan
 		 */
-		Localisation carnot = new Localisation("UJM Carnot", 45.45218, 4.38656);
-		Localisation metare = new Localisation("UJM Metare", 45.42331, 4.42541);
-		System.out.println(url(carnot, metare));
+		Localization carnot = new Localization("UJM Carnot", 45.45218, 4.38656);
+		Localization metare = new Localization("UJM Metare", 45.42331, 4.42541);
+		System.out.println(urlTravel(carnot, metare));
 	}
 
 }

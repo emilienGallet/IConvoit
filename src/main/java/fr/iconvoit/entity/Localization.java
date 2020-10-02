@@ -17,27 +17,33 @@ import lombok.Data;
  * @author Chrithian, reviewed by emilien
  * @version 0.2
  */
-public class Localisation {
+public class Localization {
 	@Id
 	private String nameLocation;
 	@Column(nullable = false)
-	private ArrayList<Localisation> subLocalisation;
+	private ArrayList<Localization> subLocalization;
 	private Double longitude;
 	private Double latitude;
 
-	public Localisation(String nameLocation, double longitude, double latitude) {
+	/**
+	 * Build an localization
+	 * @param nameLocation
+	 * @param latitude
+	 * @param longitude
+	 */
+	public Localization(String nameLocation, double latitude,double longitude) {
 		super();
 		this.nameLocation = nameLocation;
 		this.longitude = longitude;
 		this.latitude = latitude;
 	}
 
-	public ArrayList<Localisation> getSubLocalisation() {
-		return subLocalisation;
+	public ArrayList<Localization> getSubLocalization() {
+		return subLocalization;
 	}
 
-	public void setSubLocalisation(final ArrayList<Localisation> subLocalisation) {
-		this.subLocalisation = subLocalisation;
+	public void setSubLocalization(final ArrayList<Localization> subLocalization) {
+		this.subLocalization = subLocalization;
 	}
 
 	public String getGeolocalization() {

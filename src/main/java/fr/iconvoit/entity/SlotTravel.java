@@ -24,10 +24,10 @@ import lombok.EqualsAndHashCode;
 public final class SlotTravel extends Slot {
 
 	@ManyToOne(cascade = CascadeType.ALL)
-	Localisation startPlace;
+	Localization startPlace;
 	@ManyToOne(cascade = CascadeType.ALL)
 
-	Localisation finishPlace;
+	Localization finishPlace;
 
 	public SlotTravel() {
 
