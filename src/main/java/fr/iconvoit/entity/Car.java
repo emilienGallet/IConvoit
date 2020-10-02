@@ -1,6 +1,5 @@
 package fr.iconvoit.entity;
 
-// import lombok.Data;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,7 +32,10 @@ public class Car {
 
     /**
          * Constructor
-         * @param String color,String brand,String registration,Integer nbOfSeats
+         * @param String color,
+         * @param String brand,
+         * @param String registration,
+         * @param Integer nbOfSeats
          */
     public Car(String color,String brand,String registration,String Format,Integer nbOfSeats){
         this.color=color;
@@ -63,12 +65,14 @@ public class Car {
          * @param Integer nbOfSeat
          * @return void
          */
-    public void setNbOfSeats(Integer nbOfSeat){
+    public boolean setNbOfSeats(Integer nbOfSeat){
         if(verifNbOfSeats(nbOfSeat)==true){
             this.nbOfSeats=nbOfSeat;
+            return true;
         }
         else
             System.out.println("number of seats impossible");
+            return false;
     }
     /**
          * verification of the Registration

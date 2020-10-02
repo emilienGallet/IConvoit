@@ -1,6 +1,8 @@
 package fr.iconvoit.entity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -41,6 +43,7 @@ public class People {
 	private String fistName;
 
 	private String password;
+	public ArrayList<Car> cars = new ArrayList<Car>();
 
 	@ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
@@ -67,9 +70,36 @@ public class People {
 		this.org = org;
 	}
 
+	public ArrayList<Car> getCar() {
+		/*for(int i=0;i < cars.size();i++){
+			System.out.println(cars.get(i));
+		}*/
+		return cars;
+	}
+
+
 	public People(String username, String name, String fistName) {
 		this.username = username;
 		this.name = name;
 		this.fistName = fistName;
+	}
+	
+/**
+		 * @author melanie
+         * add a car to the person repository
+         * @param String color,
+		 * @param String brand,
+		 * @param String registration,
+		 * @param String Format,
+		 * @param Integer nbOfSeats
+         * @return boolean
+         */
+	public void addCar(String color,String brand,String registration,String Format,Integer nbOfSeats){
+		Car c = new Car(color,brand,registration,Format,nbOfSeats);
+		cars.add(c);
+	}
+
+	public void removeCar(int index){
+		cars.remove(index);
 	}
 }
