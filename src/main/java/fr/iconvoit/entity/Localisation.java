@@ -21,20 +21,14 @@ public class Localisation {
 	@Id
 	private String nameLocation;
 	@Column(nullable = false)
-	private String coordinate;
 	private ArrayList<Localisation> subLocalisation;
-	private float longitude;//TODO may be removed
-	private float latitude;//TODO may be removed
+	private Double longitude;
+	private Double latitude;
 
-	public Localisation() {
-
-	}
-
-	public Localisation(final String name, final float longitude, final float latitude) {
-		this.nameLocation = name;
-		if (longitude == 0 && latitude == 0)
-			// System.err("Erreur de Syntaxe");
-			this.longitude = longitude;
+	public Localisation(String nameLocation, double longitude, double latitude) {
+		super();
+		this.nameLocation = nameLocation;
+		this.longitude = longitude;
 		this.latitude = latitude;
 	}
 
@@ -46,8 +40,7 @@ public class Localisation {
 		this.subLocalisation = subLocalisation;
 	}
 
-	public String toString() {
-		return "Coordinate of" + this.getNameLocation() + " is " + "this.getLongitude() ." + "this.getLatitude()";
+	public String getGeolocalization() {
+		return this.getLatitude().toString()+this.getLongitude().toString();
 	}
-
 }
