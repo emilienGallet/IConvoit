@@ -2,14 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
      <link rel="stylesheet" href="/css/style.css">
-     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-     <title>Car</title>
+     <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>List of the cars</title>
 </head>
 <body>
+     <H1>list of my car(s)</H1>
+     <!--  
      <ul>
-          <li data-th-each="my car(s) : ${carL}"> </li>
+          <li data-th-each="my car(s) : ${carL}"> [[v.color]]</li>
 
      </ul>
+     -->
      <form th:action=@{/addcar} method="post" th:object="${addCar}">
           <input type="text" placeholder="color" th:field="*{color}"/>
           <input type="text" placeholder="brand" th:field="*{brand}"/>

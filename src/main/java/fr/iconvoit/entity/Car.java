@@ -8,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import lombok.Data;
-
+// import org.springframework.data.repository.CrudRepository;
 /**
          * Class car
          * @author Mélanie
@@ -16,7 +16,7 @@ import lombok.Data;
          */
 @Entity
 @Data
-public class Car {
+public class Car /*extends CrudRepository<People,Long>*/{
 
     
     @Id
@@ -62,8 +62,7 @@ public class Car {
             System.out.println("registration error");
             
     }
-    // TODO check if number of seat is available for the registration car 
-    // (i.e DA-503-BG is an Zoe car and got 5 maximum seats  
+    // check if number of seat is available for the registration car 
     /**
          * set the nb of seats verifying if it's not enormous
          * @param Integer nbOfSeat
