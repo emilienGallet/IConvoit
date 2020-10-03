@@ -1,5 +1,6 @@
 package fr.iconvoit.entity;
 
+import org.springframework.data.repository.CrudRepository;
 
 /**
  * 
@@ -7,6 +8,6 @@ package fr.iconvoit.entity;
  * 
  */
 
-public interface CarRepository /*extends CrudRepository<Car, Long>*/{
+public interface CarRepository extends CrudRepository<Car, Long>{
 	
 }

@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import lombok.Data;
@@ -19,6 +20,9 @@ public class Car {
 
     
     @Id
+    @GeneratedValue
+    public long id;
+    
     String registration;
     String Format;
     Integer nbOfSeats;
@@ -122,7 +126,6 @@ public class Car {
                 return true;
             }
         }
-        
         return false;
     } 
 }

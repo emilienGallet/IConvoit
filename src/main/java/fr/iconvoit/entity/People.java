@@ -2,7 +2,6 @@ package fr.iconvoit.entity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -43,7 +42,7 @@ public class People {
 	private String fistName;
 
 	private String password;
-	public ArrayList<Car> cars = new ArrayList<Car>();
+	public ArrayList<Car> cars;
 
 	@ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
@@ -82,8 +81,9 @@ public class People {
 		this.username = username;
 		this.name = name;
 		this.fistName = fistName;
+		this.cars = new ArrayList<Car>();
 	}
-	
+
 /**
 		 * @author melanie
          * add a car to the person repository
