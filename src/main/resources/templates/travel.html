@@ -2,15 +2,27 @@
 <html lang="en"
      th:replace="~{menu :: baseLayout(~{::/html/head/content()}, ~{::/html/body/content()})}"
 >
+<html lang="en" th:replace="~{menu :: baseLayout(~{::/html/head/content()}, ~{::/html/body/content()})}">
+
 <head>
 </head>
+
 <body>
      <div id="demoMap" style="height: 250px"></div>
+     <div id="demoMap" style="height: 500px;width: 1000px"></div>
+     <input type="text" id="lon">
+     <input type="text" id="lat">
+     <input type="button" onclick="test()">
      <script src="/OpenLayers-2.13.1/OpenLayers.js"></script>
      <script>
 						map = new OpenLayers.Map("demoMap");
 						map.addLayer(new OpenLayers.Layer.OSM());
 						map.zoomToMaxExtent();
 					</script>
+     <script src="/js/travelManagement.js"></script>  
+
+
+
 </body>
+
 </html>
