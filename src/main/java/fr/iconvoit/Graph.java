@@ -50,11 +50,14 @@ public class Graph {
 
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Parse points in json to arrayList
 	 * @param jsArry
 	 * @return
 	 */
+=======
+>>>>>>> branch 'graphHooperImplts' of https://github.com/emilienGallet/IConvoit.git
 	private static ArrayList<Localization> JsonArrayToList(JSONArray jsArry) {
 		ArrayList<Localization> list = new ArrayList<Localization>();
 		JSONArray tmp;
@@ -87,11 +90,14 @@ public class Graph {
 		return url;
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Get the JSONArray of coordinates
 	 * @param o
 	 * @return
 	 */
+=======
+>>>>>>> branch 'graphHooperImplts' of https://github.com/emilienGallet/IConvoit.git
 	private static JSONArray pointsListCoordinates(JSONObject o) {
 		return o.getJSONArray("paths").getJSONObject(0).getJSONObject("points").getJSONArray("coordinates");
 	}
