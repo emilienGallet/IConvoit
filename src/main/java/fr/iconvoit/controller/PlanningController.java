@@ -26,18 +26,15 @@ import fr.iconvoit.entity.SlotTravel;
 import fr.iconvoit.factory.PeopleFactory;
 import fr.iconvoit.factory.SlotFactory;
 
-
-
 @Controller
 /**
  * 
- * @author Émilien
- * Planning management.
- * Ability to add an event and to display planning of the current User
+ * @author Émilien Planning management. Ability to add an event and to display
+ *         planning of the current User
  *
  */
-public class PlanningController{
-	
+public class PlanningController {
+
 	@Inject
 	PeopleDetailsService peopleDetailsService;
 	
@@ -48,28 +45,31 @@ public class PlanningController{
 		/*
 		 * Get info from the current user.
 		 */
-		UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		People p = peopleDetailsService.findByUsername(userD.getUsername());
-		if (p==null) {
-			return "redirect:/" ;
+		final UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		final People p = peopleDetailsService.findByUsername(userD.getUsername());
+		if (p == null) {
+			return "redirect:/";
 		}
 		/*
 		 * Adding attributes for the thymeleaf
 		 */
-		m.addAttribute("planning",p.getReserved());//Sending the List<Slot> reserved by the "p" people
-		m.addAttribute("slotTravel",new SlotTravel());//TODO POST fist submit, use vue.js 
-		m.addAttribute("slotOther",new SlotOther());//TODO Same as Up
-		m.addAttribute("asList", true);//Boolean attribute who's permit to display list<Slot> as list or like traditional planning
+		m.addAttribute("planning", p.getReserved());// Sending the List<Slot> reserved by the "p" people
+		m.addAttribute("slotTravel", new SlotTravel());// TODO POST fist submit, use vue.js
+		m.addAttribute("slotOther", new SlotOther());// TODO Same as Up
+		m.addAttribute("asList", true);// Boolean attribute who's permit to display list<Slot> as list or like
+										// traditional planning
 		return "planning";
 	}
+
 	@Inject
 	SlotFactory planning;
-	@RequestMapping(path = {"/all planning"})
-	public String toutLesPlanning(Model m) {
-		
-		m.addAttribute("planning",planning.findAll());
-		m.addAttribute("slotTravel",new SlotTravel());//TODO POST fist submit, use vue.js 
-		m.addAttribute("slotOther",new SlotOther());//TODO Same as Up
+
+	@RequestMapping(path = { "/all planning" })
+	public String toutLesPlanning(final Model m) {
+
+		m.addAttribute("planning", planning.findAll());
+		m.addAttribute("slotTravel", new SlotTravel());// TODO POST fist submit, use vue.js
+		m.addAttribute("slotOther", new SlotOther());// TODO Same as Up
 		m.addAttribute("asList", true);
 		return "planning";
 	}
@@ -132,34 +132,44 @@ public class PlanningController{
 		//TODO adding the Localization place for the SlotOther in template and check it here.
 		s.setStart(LocalDateTime.of(year, month, dayOfMonth, hour, minute));
 		s.setEnd(LocalDateTime.of(endyear, endmonth, enddayOfMonth, endhour, endminute));
-		UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		People p = peopleDetailsService.findByUsername(userD.getUsername());
-		/*We checked if is an event for him and check if he was connect*/
-		if (me || p!=null) {
+		final UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		final People p = peopleDetailsService.findByUsername(userD.getUsername());
+		/* We checked if is an event for him and check if he was connect */
+		if (me || p != null) {
 			p.getReserved().add(s);
 			s.getParticipants().add(p);
-			planning.save(s);
 			System.out.println(p.getReserved());
 			System.out.println(s.getParticipants());
 		}
-		if (null == p) {
+		System.err.println(hour);
+		System.err.println(endhour);
+		
+
+		/* Check if Start time is before the end time */
+		if (hour >= endhour) {
+			return "redirect:/error";
+		}
+
+		/* check slot other */
+		/*if(!s.checkSlot()){
 			return "redirect:/";
 		}
-		//planning.save(s);
+*/
+		planning.save(s);
 		return "redirect:/my planning";
 	}
-	
-	@RequestMapping(path = {"/adding an event"},method = RequestMethod.GET)
-	public String addSlotOther(Model m) {
-		//TODO adding the Localization place for the SlotOther in template
+
+	@RequestMapping(path = { "/adding an event" }, method = RequestMethod.GET)
+	public String addSlotOther( Model m) {
+		// TODO adding the Localization place for the SlotOther in template
 		LocalDateTime start = LocalDateTime.now().plusMinutes(15);
-		m.addAttribute("slotOther",new SlotOther());
+		m.addAttribute("slotOther", new SlotOther());
 		m.addAttribute("dateYear", start.getYear());
 		m.addAttribute("dateMonth", start.getMonth().getValue());
 		m.addAttribute("dateDayOfMonth", start.getDayOfMonth());
 		m.addAttribute("dateHour", start.getHour());
 		m.addAttribute("dateMinute", start.getMinute());
-		start =start.plusHours(1);
+		start = start.plusHours(1);
 		m.addAttribute("enddateYear", start.getYear());
 		m.addAttribute("enddateMonth", start.getMonth().getValue());
 		m.addAttribute("enddateDayOfMonth", start.getDayOfMonth());
@@ -173,4 +183,5 @@ public class PlanningController{
 		return peopleDetailsService.findByUsername(userD.getUsername());	
 	}
 
+	
 }

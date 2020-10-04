@@ -18,19 +18,20 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import fr.iconvoit.IcsParser;
 import fr.iconvoit.exceptions.SlotException;
 import lombok.Data;
 
-@Data
 /**
  * 
  * @author Émilien
  *
  */
 
+@Data
 @Component
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -96,7 +97,24 @@ public abstract class Slot {
 		} catch (DateTimeParseException e) {
 			new SlotException();
 		}
-
 	}
+/*
+	public boolean checkSlot(){
+		LocalDateTime st ;
+		LocalDateTime en;
+		boolean rep=false;
 
+		String req , res;
+		req = "Select * FROM Slot" +" Where id == s.getid()"+"start == s.getstart() and ";
+		res = "Select * FROM Slot" +" Where id == s.getid()"+"end == s.getend() and ";
+
+		JdbcTemplate vJdbcTemplate = new JdbcTemplate(getDataSource());
+		st=vJdbcTemplate.queryForObject(req, LocalDateTime.class,this.getId(),this.getStart());
+		en = vJdbcTemplate.queryForObject(req, LocalDateTime.class,this.getId(), this.getEnd());
+
+		if(this.start == st && this.end ==en)
+			rep = true; 
+		return rep;
+	}
+*/
 }
