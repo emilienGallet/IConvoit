@@ -1,10 +1,16 @@
+
+          var list = document.getElementsByClassName("point")
+          var pointList = [];
+
+         
+
           map = new OpenLayers.Map("demoMap");
           var mapnik = new OpenLayers.Layer.OSM();
           var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
           var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
           var position = new OpenLayers.LonLat(4.4, 45.4333).transform(fromProjection, toProjection);
 
-          var zoom = 13;
+          var zoom = 16;
           var vectorLayer = new OpenLayers.Layer.Vector("Vectors");
 
 
@@ -29,60 +35,52 @@
           var point = new OpenLayers.Geometry.Point(p.lon,p.lat);
           var pointFeature = new OpenLayers.Feature.Vector(point, null, style_green);
 
-          var pointList = [];
-          pointList = [
-             {lon:4.40300407409665,  lat: 45.431819810071644 },
-             {lon:4.404205703735317, lat: 45.43142829856505  },
-             {lon:4.405128383636406, lat: 45.431059371775355 },
-             {lon:4.404785060882565, lat: 45.43058503378825  },
-             {lon:4.4043237209320205,lat: 45.429990223376905 },
-             {lon:4.405139112472495, lat: 45.42974175641238  },
-             {lon:4.407016658782935, lat: 45.42967399250492  },
-             {lon:4.407553100585829,lat:45.42984716677313},
-            {lon:4.409430646896269,lat:45.429832108162394},
-            {lon:4.4093609094619195,lat:45.430152102781264}
-          ]
-
-          function transformList(list){
-               for(let i = 0; i < list.length; i++){
-                    list[i] = new OpenLayers.LonLat( list[i].lon,list[i].lat).transform(fromProjection, toProjection)
-                    list[i]=  new OpenLayers.Geometry.Point(list[i].lon,list[i].lat)
+          function transformList(list1){
+              list2 = []
+               for(let i = 0; i < list1.length; i++){
+                    list2.push( {lon : parseFloat(list1[i].children[0].innerText), lat:parseFloat(list1[i].children[1].innerText)} )
                }
+               for(let i = 0; i < list2.length; i++){
+                    list2[i] = new OpenLayers.LonLat( list2[i].lon, list2[i].lat).transform(fromProjection, toProjection)
+                    list2[i]=  new OpenLayers.Geometry.Point(list2[i].lon,list2[i].lat)
+               }
+               return list2
           }
 
-        transformList(pointList)
+       pointList =  transformList(list)
         
         var lineFeature = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(pointList), null, style_green);
 
 
-          vectorLayer.addFeatures(lineFeature);
+          vectorLayer.addFeatures(lineFeature)
           var markers = new OpenLayers.Layer.Markers("Markers");
           map.addLayer(markers);
-          markers.addMarker(new OpenLayers.Marker(position));
-          markers.addMarker(new OpenLayers.Marker(position));
 
           map.setCenter(position, zoom);
           var opx
-          var lon = document.getElementById("lon")
-          var lat = document.getElementById("lat")
+          var startLon = document.getElementById("startLon")
+          var startLat = document.getElementById("startLat")
 
-          var index = 0;
+          var endLon = document.getElementById("endLon")
+          var endLat = document.getElementById("endLat")
+
+
           map.events.register("click", map, function (e) {
-              console.log(e)
-              console.log(index)
-               opx = map.getLonLatFromViewPortPx(e.xy);
-              console.log(opx)
+               if(markers.markers.length < 2){
+                    opx = map.getLonLatFromViewPortPx(e.xy);
+                    console.log(opx)
+                    markers.addMarker(new OpenLayers.Marker(opx));
+                    opx = opx.transform(toProjection, fromProjection)
+                  if(markers.markers.length == 1){
+                       startLon.value = opx.lon
+                       startLat.value = opx.lat
 
-               markers.markers[index].moveTo(map.getLayerPxFromViewPortPx(e.xy));
-               opx = opx.transform(toProjection, fromProjection)
-              console.log(opx.toString())
-               console.log(markers.markers[0])
-            index = (index +1)%2
-            console.log(index)
+                    }
+                    else{
+                         endLon.value = opx.lon
+                         endLat.value = opx.lat
+                    }
 
+                    console.log(opx)
+               }
           });
-
-          function test() {
-               lon.value = "test"
-               lat.value = "test"
-          }

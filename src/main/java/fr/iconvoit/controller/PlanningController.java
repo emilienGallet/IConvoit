@@ -22,7 +22,6 @@ import fr.iconvoit.entity.PeopleDetailsService;
 import fr.iconvoit.entity.Slot;
 import fr.iconvoit.entity.SlotOther;
 import fr.iconvoit.entity.SlotTravel;
-import fr.iconvoit.exceptions.SlotException;
 import fr.iconvoit.factory.SlotFactory;
 
 

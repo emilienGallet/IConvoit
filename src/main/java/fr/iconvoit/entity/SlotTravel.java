@@ -32,7 +32,9 @@ public final class SlotTravel extends Slot {
 	public SlotTravel() {
 
 	}
+	public SlotTravel(Localization startPlace,Localization finishPlace) {
 
+	}
 	/**
 	 * 
 	 * @return

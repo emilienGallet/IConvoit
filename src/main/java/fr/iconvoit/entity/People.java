@@ -46,7 +46,10 @@ public class People {
 	private List<People> friend = new ArrayList<People>();
 
 	@ManyToMany(mappedBy = "participants")
-	private List<Slot> reserved = new ArrayList<Slot>();;
+	private List<Slot> reserved = new ArrayList<Slot>();
+
+	@ManyToMany
+	private List<SlotTravel> myTrajectList;
 
 	public People() {
 
