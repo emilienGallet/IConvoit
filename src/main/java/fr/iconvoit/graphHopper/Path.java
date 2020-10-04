@@ -1,6 +1,17 @@
 package fr.iconvoit.graphHopper;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import org.springframework.stereotype.Component;
 
 import fr.iconvoit.entity.Localization;
 import lombok.Data;
@@ -8,20 +19,28 @@ import lombok.Data;
 @Data
 /**
  * 
- * @author Émilien
- * Corresponding to a way from 1 localisation to an other.
- * Each points are coordinate.
+ * @author Émilien Corresponding to a way from 1 localisation to an other. Each
+ *         points are coordinate.
  */
+@Entity
+@Component
 public class Path {
 
-	Localization start;
-	Localization end;
-	ArrayList<Localization> points;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	@Column(nullable = true)
+	private String name;
 
-	public Path(ArrayList<Localization> list, Localization start, Localization end) {
-		this.points = list;
-		this.start = start;
-		this.end = end;
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<Localization> points;
+
+	public Path() {
+		
 	}
 	
+	public Path(ArrayList<Localization> jsonArrayToList) {
+		this.points = jsonArrayToList;
+	}
+
 }

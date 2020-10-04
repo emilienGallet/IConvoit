@@ -45,5 +45,6 @@ public class SlotOther extends Slot {
 		if (this.place == null) {
 			new SlotException();
 		}
+		this.setUid(uid);
 	}
 }

@@ -43,7 +43,7 @@ public class Graph {
 			JSONObject json = new JSONObject(s);
 			JSONArray jsArry = pointsListCoordinates(json);
 			//TODO convert JSONArray to ArrayList<Localization>
-			return new Path(JsonArrayToList(jsArry),start,end);
+			return new Path(JsonArrayToList(jsArry));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -1,4 +1,9 @@
 
+          //By Emilien
+          
+          
+          
+          //By Jeremy
           var list = document.getElementsByClassName("point")
           var pointList = [];
 
