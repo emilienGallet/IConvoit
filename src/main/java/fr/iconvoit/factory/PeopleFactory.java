@@ -12,4 +12,5 @@ public interface PeopleFactory extends CrudRepository<People, Long>{
 
 	//@Query("SELECT ")
 	//List<Slot> findAllSlotReserved();
+	People findByUsername(String username);
 }
