@@ -10,6 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import fr.iconvoit.factory.PeopleFactory;
+
 /**
  * @author Jérémy Goutelle
  */
@@ -18,7 +20,7 @@ import org.springframework.stereotype.Component;
 public class PeopleDetailsService implements UserDetailsService {
 
     @Inject
-    PeopleList peopleList;
+    PeopleFactory peopleList;
 
     public final PasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
