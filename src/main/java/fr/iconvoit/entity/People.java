@@ -46,7 +46,7 @@ public class People {
 	private List<People> friend = new ArrayList<People>();
 
 	@ManyToMany(mappedBy = "participants")
-	private List<Slot> reserved = new ArrayList<Slot>();;
+	private List<Slot> reserved = new ArrayList<Slot>();
 
 	public People() {
 
@@ -56,5 +56,12 @@ public class People {
 		this.username = username;
 		this.name = name;
 		this.firstname = firstName;
+	}
+
+	public void addListSlot(ArrayList<Slot> sl) {
+		this.reserved.addAll(sl);
+		for (Slot slot : sl) {
+			slot.getParticipants().add(this);
+		}
 	}
 }

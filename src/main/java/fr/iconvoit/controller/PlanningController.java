@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -15,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fr.iconvoit.IcsParser;
 import fr.iconvoit.entity.People;
@@ -23,6 +26,7 @@ import fr.iconvoit.entity.Slot;
 import fr.iconvoit.entity.SlotOther;
 import fr.iconvoit.entity.SlotTravel;
 import fr.iconvoit.exceptions.SlotException;
+import fr.iconvoit.factory.PeopleFactory;
 import fr.iconvoit.factory.SlotFactory;
 
 
@@ -41,6 +45,7 @@ public class PlanningController{
 	PeopleDetailsService peopleDetailsService;
 	
 	@RequestMapping(path = {"/my planning"})
+	//@ModelAttribute(value="url");
 	public String planning(Model m) {
 		
 		/*
@@ -71,14 +76,18 @@ public class PlanningController{
 		m.addAttribute("asList", true);
 		return "planning";
 	}
-	
+	@Inject
+	PeopleFactory peopleL;
 	@RequestMapping(path = {"/adding from url"},method = RequestMethod.POST)
-	public String addSlotFromUrl(@ModelAttribute(value="url") @Validated String url) {
+	public String addSlotFromUrl(@ModelAttribute(value="url") @Validated String url,RedirectAttributes redirect) {
 		if (url.isEmpty() || url == null) {
 			
 			//TODO redirect to an non valid link
 			return "redirect:/adding from url";
 		}
+		People user = getUserInfo();
+		
+		peopleL.findById(user.getId());
 		ArrayList<Slot> sl = null;
 		try {
 			sl = IcsParser.parsing(url);
@@ -91,11 +100,20 @@ public class PlanningController{
 		}
 		if (sl == null) {
 			//TODO send error display
-			return "redirect:/";
+			return "redirect:/url error";
 		}
-		planning.saveAll(sl);
+		//TODO Link with the People
+		//
+		for (Slot s : sl) {
+			user.getReserved().add(s);
+			s.getParticipants().add(user);
+			planning.save(s);
+		}
+		//user.setReserved(sl);
+		//peopleL.save(user);
+		
 		//TODO Send success display
-		return "redirect:/";
+		return "redirect:/my planning";
 	}
 	
 	@RequestMapping(path = {"/adding an event"},method = RequestMethod.POST)
@@ -123,13 +141,14 @@ public class PlanningController{
 		if (me || p!=null) {
 			p.getReserved().add(s);
 			s.getParticipants().add(p);
+			planning.save(s);
 			System.out.println(p.getReserved());
 			System.out.println(s.getParticipants());
 		}
 		if (null == p) {
 			return "redirect:/";
 		}
-		planning.save(s);
+		//planning.save(s);
 		return "redirect:/my planning";
 	}
 	
@@ -150,6 +169,11 @@ public class PlanningController{
 		m.addAttribute("enddateHour", start.getHour());
 		m.addAttribute("enddateMinute", start.getMinute());
 		return "addEvent";
+	}
+	
+	private People getUserInfo() {
+		UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return peopleDetailsService.findByUsername(userD.getUsername());	
 	}
 
 }
