@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import lombok.Data;
@@ -42,6 +43,26 @@ public abstract class Slot {
 	private List<People> participants = new ArrayList<People>();
 
 	public Slot() {
+
+	}
+
+	public boolean checkSlot(Slot s){
+
+		LocalDateTime st ;
+		LocalDateTime en;
+		boolean rep=false;
+
+		String req , res;
+		req = "Select * FROM Slot" +" Where id == s.getid()"+"start == s.getstart() and ";
+		res = "Select * FROM Slot" +" Where id == s.getid()"+"end == s.getend() and ";
+
+		JdbcTemplate vJdbcTemplate = new JdbcTemplate(getDataSource());
+		st=vJdbcTemplate.queryForObject(req, LocalDateTime.class,this.getId(),this.getStart());
+		en = vJdbcTemplate.queryForObject(req, LocalDateTime.class,this.getId(), this.getEnd());
+
+		if(this.start == st && this.end ==en)
+			rep = true; 
+		return rep;
 
 	}
 
