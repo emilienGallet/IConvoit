@@ -46,7 +46,7 @@ public abstract class Slot {
 
 	}
 
-	public boolean checkSlot(Slot s){
+	public boolean checkSlot(){
 
 		LocalDateTime st ;
 		LocalDateTime en;

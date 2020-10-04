@@ -101,6 +101,12 @@ public class PlanningController {
 		if (hour <= endhour) {
 			return "redirect:/";
 		}
+
+		/* check slot other */
+		if(!s.checkSlot()){
+			return "redirect:/";
+		}
+
 		planning.save(s);
 		return "redirect:/my planning";
 	}
@@ -123,7 +129,7 @@ public class PlanningController {
 		m.addAttribute("enddateMinute", start.getMinute());
 		return "addEvent";
 	}
-
+	/*
 	@RequestMapping("Slot")
 	public Boolean checkSlot( Model m) {
 		 Boolean answer = false;
@@ -131,5 +137,5 @@ public class PlanningController {
 
 		return answer;
 	}
-
+	*/
 }
