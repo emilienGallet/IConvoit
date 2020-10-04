@@ -7,7 +7,7 @@
      <H3>list of my car(s)</H3>
       
      <ul>
-          <li data-th-each="my car(s) : ${nbCar}"> [[v.nbOfSeats]]</li>
+          <li data-th-each="mycar : ${cars}"> [[${mycar.registration}]]</li>
      </ul>
      
      <H3>add a car</H3>
@@ -29,5 +29,8 @@
           </p>
           <input type="submit" value="Send">
       </form>
+
+
+
 </body>
 </html>

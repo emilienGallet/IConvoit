@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -25,7 +23,6 @@ import fr.iconvoit.entity.PeopleDetailsService;
 import fr.iconvoit.entity.Slot;
 import fr.iconvoit.entity.SlotOther;
 import fr.iconvoit.entity.SlotTravel;
-import fr.iconvoit.exceptions.SlotException;
 import fr.iconvoit.factory.PeopleFactory;
 import fr.iconvoit.factory.SlotFactory;
 

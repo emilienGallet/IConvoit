@@ -14,7 +14,6 @@ import fr.iconvoit.Graph;
 import fr.iconvoit.entity.Localization;
 import fr.iconvoit.entity.People;
 import fr.iconvoit.entity.PeopleDetailsService;
-import fr.iconvoit.entity.SlotTravel;
 
 @Controller
 public class TravelController {
@@ -39,9 +38,7 @@ public class TravelController {
 				Localization start = new  Localization("", startLat, startLon);
 				Localization end = new  Localization("", endLat, endLon);
 
-				user.getMyTrajectList().add(new SlotTravel(start,end));
 
-			//	peopleDetailsService.save(user);
 				m.addAttribute("list", Graph.planTraject(start,end,null).getPoints());
 
 

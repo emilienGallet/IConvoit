@@ -5,11 +5,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.*;
-
-import org.springframework.stereotype.Component;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.sun.istack.NotNull;
+
+import org.springframework.stereotype.Component;
 
 import lombok.Data;
 
@@ -37,7 +48,9 @@ public class People {
 	private String name;
 
 	private String password;
-	public ArrayList<Car> cars;
+
+	@OneToMany
+	private List<Car> cars;
 
 	@ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
@@ -61,36 +74,6 @@ public class People {
 
 	}
 
-	public void addListSlot(ArrayList<Slot> sl) {
-		this.reserved.addAll(sl);
-		for (Slot slot : sl) {
-			slot.getParticipants().add(this);
-		}
-	public Long getIdSource() {
-		return idSource;
-	}
-
-	public void setIdSource(Long idSource) {
-		this.idSource = idSource;
-	}
-
-	public Organisation getOrg() {
-		return org;
-	}
-
-	public void setOrg(Organisation org) {
-		this.org = org;
-	}
-
-	public ArrayList<Car> getCar() {
-		/*for(int i=0;i < cars.size();i++){
-			System.out.println(cars.get(i));
-		}*/
-		return cars;
-	}
-
-
-
 
 /**
 		 * @author melanie
@@ -104,10 +87,10 @@ public class People {
          */
 	public void addCar(String color,String brand,String registration,String Format,Integer nbOfSeats){
 		Car c = new Car(color,brand,registration,Format,nbOfSeats);
-		cars.add(c);
+		this.cars.add(c);
 	}
 
 	public void removeCar(int index){
-		cars.remove(index);
+		this.cars.remove(index);
 	}
 }

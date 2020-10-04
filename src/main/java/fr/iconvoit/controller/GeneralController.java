@@ -51,14 +51,7 @@ public class GeneralController extends SpringServletContainerInitializer {
 		return "redirect:/";
 	}
 
-	@RequestMapping("/test")
-	public String test(Model m) {
-		UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		People p = peopleDetailsService.findByUsername(userD.getUsername());
-		m.addAttribute("user", p);
-
-		return "test";
-	}
+	
 
 	@GetMapping("/profile")
 	public String profile(Model m) {
@@ -91,16 +84,7 @@ public class GeneralController extends SpringServletContainerInitializer {
 
 		return "redirect:/profile?success=true";
 	}
-		
-	@RequestMapping(path = "/car")
-	public String car() {
 
-		return "car";
-	}
 
-	@RequestMapping(path = "/travel")
-	public String travel() {
-
-		return "travel";
-	}
+	
 }
