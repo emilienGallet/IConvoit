@@ -2,15 +2,30 @@
 <html lang="en"
      th:replace="~{menu :: baseLayout(~{::/html/head/content()}, ~{::/html/body/content()})}"
 >
+
 <head>
 </head>
+
 <body>
-     <div id="demoMap" style="height: 250px"></div>
+     <div id="demoMap" style="height: 500px;width: 1000px"></div>
+     <form method="POST" action="/adding an travel">
+          <input type="text" id="startLon" name="startLon">
+          <input type="text" id="startLat" name="startLat">
+
+          <input type="text" id="endLon" name="endLon">
+          <input type="text" id="endLat" name="endLat" >
+
+          <input type="submit">
+     </form>
      <script src="/OpenLayers-2.13.1/OpenLayers.js"></script>
-     <script>
-						map = new OpenLayers.Map("demoMap");
-						map.addLayer(new OpenLayers.Layer.OSM());
-						map.zoomToMaxExtent();
-					</script>
+  
+     
+     <ul>
+          <li data-th-each="point : ${list}" class="point" hidden> <a class="lon"> [[${point.longitude}]]</a>  <a class="lat">[[${point.latitude}]]</a> </li>
+     </ul>
+     <script src="/js/travelManagement.js"></script>  
+
+    
+
 </body>
 </html>

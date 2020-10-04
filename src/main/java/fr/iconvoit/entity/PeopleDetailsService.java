@@ -24,6 +24,7 @@ public class PeopleDetailsService implements UserDetailsService {
 
     public final PasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
+   
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         People people = peopleList.findByUsername(username);
