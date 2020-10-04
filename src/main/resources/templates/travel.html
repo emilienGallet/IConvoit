@@ -1,31 +1,46 @@
 <!DOCTYPE html>
-<html lang="en"
+<html xmlns:th="http://www.thymeleaf.org"
      th:replace="~{menu :: baseLayout(~{::/html/head/content()}, ~{::/html/body/content()})}"
 >
-
 <head>
 </head>
-
 <body>
-     <div id="demoMap" style="height: 500px;width: 1000px"></div>
+     <div id="demoMap" style="height: 500px; width: 1000px"></div>
      <form method="POST" action="/adding an travel">
-          <input type="text" id="startLon" name="startLon">
-          <input type="text" id="startLat" name="startLat">
-
-          <input type="text" id="endLon" name="endLon">
-          <input type="text" id="endLat" name="endLat" >
-
+          <input type="text" id="startLon" name="startLon" hidden>
+          <input type="text" id="startLat" name="startLat" hidden>
+          <input type="text" id="endLon" name="endLon" hidden>
+          <input type="text" id="endLat" name="endLat" hidden>
+          <input type="text" id="trajectName" name="trajectName" placeholder="Traject Name">
           <input type="submit">
      </form>
      <script src="/OpenLayers-2.13.1/OpenLayers.js"></script>
-  
-     
      <ul>
-          <li data-th-each="point : ${list}" class="point" hidden> <a class="lon"> [[${point.longitude}]]</a>  <a class="lat">[[${point.latitude}]]</a> </li>
+          <li data-th-each="point : ${list}" class="point" hidden>
+               <a class="lon"> [[${point.longitude}]]</a>
+               <a class="lat">[[${point.latitude}]]</a>
+          </li>
      </ul>
-     <script src="/js/travelManagement.js"></script>  
-
-    
-
+     <label for="waysList">Choose a way:</label>
+     <select id="waysList">
+          <option th:each="way : ${ways}" th:value="${way.id}" th:text="${way.name}" >
+	    </option>
+     </select>
+     <div>
+          <ul>
+               <li data-th-each="way : ${ways}">
+                    [[${way.name}]]
+                    <ul>
+                         <li data-th-each="point : ${way.points}"
+                              th:id="${way.id}" class="wayPoints" hidden
+                         >
+                              <a class="lon"> [[${point.longitude}]]</a>
+                              <a class="lat">[[${point.latitude}]]</a>
+                         </li>
+                    </ul>
+               </li>
+          </ul>
+     </div>
+     <script src="/js/travelManagement.js"></script>
 </body>
 </html>

@@ -19,6 +19,8 @@ import javax.persistence.OneToMany;
 
 import com.sun.istack.NotNull;
 
+import fr.iconvoit.graphHopper.Path;
+
 import org.springframework.stereotype.Component;
 
 import lombok.Data;
@@ -47,10 +49,10 @@ public class People {
 	private String name;
 
 	private String password;
-/*
+	
 	@OneToMany
-	private List<Car> cars;
-*/
+	private List<Path> ways;
+
 	@ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
 	private Set<PeopleRole> roles = new HashSet<>();
@@ -74,6 +76,25 @@ public class People {
 		this.firstname = firstName;
 	//	this.cars = new ArrayList<Car>();
 
+	}
+	
+	public List<Slot> getSlotTravel(){
+		List<Slot> allSlotTravel = new ArrayList<Slot>();
+		for (Slot slot : reserved) {
+			if (slot.getClass() == SlotTravel.class) {
+				allSlotTravel.add(slot);
+			}
+		}
+		return allSlotTravel;
+	}
+	public List<Slot> getSlotOthers(){
+		List<Slot> allSlotOthers= new ArrayList<Slot>();
+		for (Slot slot : reserved) {
+			if (slot.getClass() == SlotTravel.class) {
+				allSlotOthers.add(slot);
+			}
+		}
+		return allSlotOthers;
 	}
 
 
