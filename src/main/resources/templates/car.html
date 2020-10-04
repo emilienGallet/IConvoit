@@ -1,10 +1,23 @@
 <!DOCTYPE html>
 <html lang="en" th:replace="~{menu :: baseLayout(~{::/html/head/content()}, ~{::/html/body/content()})}">
 <head>
-  
-   
+    <title>List of the cars</title>
 </head>
 <body>
-    
+     <H1>list of my car(s)</H1>
+     <!--  
+     <ul>
+          <li data-th-each="my car(s) : ${carL}"> [[v.color]]</li>
+
+     </ul>
+     -->
+     <form th:action=@{/addcar} method="post" th:object="${addCar}">
+          <input type="text" placeholder="color" th:field="*{color}"/>
+          <input type="text" placeholder="brand" th:field="*{brand}"/>
+          <input type="text" placeholder="registration" th:field="*{registration}"/>
+          <input type="text" placeholder="format" th:field="*{Format}"/>
+          <input type="text" placeholder="nb of seats" th:field="*{nbOfSeats}"/>
+          <input type="submit" value="Valider">
+      </form>
 </body>
 </html>

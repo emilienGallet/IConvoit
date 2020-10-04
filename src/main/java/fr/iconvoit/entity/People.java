@@ -37,6 +37,7 @@ public class People {
 	private String name;
 
 	private String password;
+	public ArrayList<Car> cars;
 
 	@ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
@@ -56,6 +57,8 @@ public class People {
 		this.username = username;
 		this.name = name;
 		this.firstname = firstName;
+		this.cars = new ArrayList<Car>();
+
 	}
 
 	public void addListSlot(ArrayList<Slot> sl) {
@@ -63,5 +66,48 @@ public class People {
 		for (Slot slot : sl) {
 			slot.getParticipants().add(this);
 		}
+	public Long getIdSource() {
+		return idSource;
+	}
+
+	public void setIdSource(Long idSource) {
+		this.idSource = idSource;
+	}
+
+	public Organisation getOrg() {
+		return org;
+	}
+
+	public void setOrg(Organisation org) {
+		this.org = org;
+	}
+
+	public ArrayList<Car> getCar() {
+		/*for(int i=0;i < cars.size();i++){
+			System.out.println(cars.get(i));
+		}*/
+		return cars;
+	}
+
+
+
+
+/**
+		 * @author melanie
+         * add a car to the person repository
+         * @param String color,
+		 * @param String brand,
+		 * @param String registration,
+		 * @param String Format,
+		 * @param Integer nbOfSeats
+         * @return boolean
+         */
+	public void addCar(String color,String brand,String registration,String Format,Integer nbOfSeats){
+		Car c = new Car(color,brand,registration,Format,nbOfSeats);
+		cars.add(c);
+	}
+
+	public void removeCar(int index){
+		cars.remove(index);
 	}
 }
