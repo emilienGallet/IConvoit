@@ -4,20 +4,30 @@
     <title>List of the cars</title>
 </head>
 <body>
-     <H1>list of my car(s)</H1>
-     <!--  
+     <H3>list of my car(s)</H3>
+      
      <ul>
-          <li data-th-each="my car(s) : ${carL}"> [[v.color]]</li>
-
+          <li data-th-each="my car(s) : ${nbCar}"> [[v.nbOfSeats]]</li>
      </ul>
-     -->
+     
+     <H3>add a car</H3>
      <form th:action=@{/addcar} method="post" th:object="${addCar}">
-          <input type="text" placeholder="color" th:field="*{color}"/>
-          <input type="text" placeholder="brand" th:field="*{brand}"/>
-          <input type="text" placeholder="registration" th:field="*{registration}"/>
-          <input type="text" placeholder="format" th:field="*{Format}"/>
-          <input type="text" placeholder="nb of seats" th:field="*{nbOfSeats}"/>
-          <input type="submit" value="Valider">
+          <p><input type="text" placeholder="color" th:field="*{color}"/></p>
+          <p><input type="text" placeholder="brand" th:field="*{brand}"/></p>
+          <p><input type="text" placeholder="registration" th:field="*{registration}"/></p>
+          <p>type of car (citadine = 5 seats maximum)
+          <select th:field="*{Format}">
+               <option th:value="citadine" th:text="citadine"></option>
+               <option th:value="other" th:text="other"></option>
+           </select>
+          </p>
+          <p>nb of seats
+          <select placeholder="nb of seats" th:field="*{nbOfSeats}">
+               <option th:each="i : ${#numbers.sequence(1, 10)}" th:value="${i}" th:text="${i}">
+               </option>
+           </select>
+          </p>
+          <input type="submit" value="Send">
       </form>
 </body>
 </html>
