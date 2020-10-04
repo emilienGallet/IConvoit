@@ -7,6 +7,10 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+/**
+ * @author Jérémy Goutelle
+ */
+
 @Component
 public class PeopleValidator implements Validator {
 
@@ -25,7 +29,7 @@ public class PeopleValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "notEmpty");
 
         if (peopleDetailsService.findByUsername(people.getUsername()) != null) {
-            errors.rejectValue("username", "Duplicate.username");
+            errors.rejectValue("username", "user.exist","Username already use");
         }
 
         

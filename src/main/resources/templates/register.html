@@ -11,11 +11,16 @@
 
 <body>
 
-    <form class="center" method="POST" th:action=@{/IConvoit/register} th:object="${register}" >
-
+    
+    <form class="center" method="POST" th:action=@{/register} th:object="${register}" >
+        <h2 >Create an account</h2>
+        
         <input class="form-horizontal" type="text" th:field="*{username}" placeholder="Username" required>
-        <input class="form-horizontal" type="password" th:field="*{password}" placeholder="Mot de passe" required>
-        <input class="form-horizontal" type="text" th:field="*{fistName}" placeholder="Fisrtname" required>
+
+        <span class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}" th:errorclass="fieldError"></span>
+
+        <input class="form-horizontal" type="password" th:field="*{password}" placeholder="Password" required>
+        <input class="form-horizontal" type="text" th:field="*{firstname}" placeholder="Fisrtname" required>
         <input class="form-horizontal" type="text" th:field="*{name}"  placeholder="Name" required>
 
         <input class="form-horizontal" type="submit">

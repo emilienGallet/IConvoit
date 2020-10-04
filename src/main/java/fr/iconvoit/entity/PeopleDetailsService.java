@@ -10,17 +10,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import fr.iconvoit.factory.PeopleFactory;
+
+/**
+ * @author Jérémy Goutelle
+ */
+
 @Component
 public class PeopleDetailsService implements UserDetailsService {
 
     @Inject
-    PeopleList peopleList;
-
+    PeopleFactory peopleList;
 
     public final PasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-
-    
-
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -28,8 +30,7 @@ public class PeopleDetailsService implements UserDetailsService {
         if (people == null)
             throw new UsernameNotFoundException(username);
 
-        return new User(people.getUsername(), people.getPassword(),
-                people.getRoles());
+        return new User(people.getUsername(), people.getPassword(), people.getRoles());
     }
 
     public void save(People people) {
@@ -42,5 +43,4 @@ public class PeopleDetailsService implements UserDetailsService {
         return peopleList.findByUsername(username);
     }
 
-    
 }

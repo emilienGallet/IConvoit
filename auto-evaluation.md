@@ -1,15 +1,15 @@
-# Auto-évaluation
-## Time per hour for each members
-Émilien GALLET : 3 hour 
-Jérémy GOUTELLE :
-Mélanie EYRAUD :
-Christian OUKOUERET :
+# Auto-evaluation
+## Time per hour for each member
+Émilien GALLET : 25 hours 26 minutes (Use Pomodoro)
+Jérémy GOUTELLE :  
+Mélanie EYRAUD :  
+Christian OUKOUERET :  
 
-## Part of work for each members
+## Part of work for each member
 All : Specifications ,UML at https://app.lucidchart.com/documents/edit/45b3bf73-b9fe-4632-a62e-983e615e05ea/0_0?shared=true#?folder_id=home&browser=icon
-Émilien : Slot implementation
+Émilien : Slot implementation, Planning , IcsParser
 
-## For each "Good Practice" per members
+## For each "Good Practice" per member
 ### Émilien GALLET
 #### About git 
 1. commit/push often, to not be alteration scared :
@@ -20,8 +20,8 @@ All : Specifications ,UML at https://app.lucidchart.com/documents/edit/45b3bf73-
 	1. commentary
 1. use English messages
 	1. notation : /20
-	1. commentary : Except when i don't saw this rules. I apply it all the time. 
-1. Don't commit generated files (use .gitigniore so that git status are clean:
+	1. commentary : Except when i don't see this rule. I apply it all the time. 
+1. Don't commit generated files (use .gitignore so that git status are clean:
 	1. notation : /20
 	1. commentary
 1. write needed doc in markdown (.md) for an good display in github.
