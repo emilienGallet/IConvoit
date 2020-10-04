@@ -15,7 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.sun.istack.NotNull;
@@ -48,10 +47,10 @@ public class People {
 	private String name;
 
 	private String password;
-
+/*
 	@OneToMany
 	private List<Car> cars;
-
+*/
 	@ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
 	private Set<PeopleRole> roles = new HashSet<>();
@@ -62,6 +61,9 @@ public class People {
 	@ManyToMany(mappedBy = "participants")
 	private List<Slot> reserved = new ArrayList<Slot>();
 
+	@OneToMany(mappedBy = "owner")
+	private List<Car> myCars = new ArrayList<Car>();
+
 	public People() {
 
 	}
@@ -70,7 +72,7 @@ public class People {
 		this.username = username;
 		this.name = name;
 		this.firstname = firstName;
-		this.cars = new ArrayList<Car>();
+	//	this.cars = new ArrayList<Car>();
 
 	}
 
@@ -87,10 +89,12 @@ public class People {
          */
 	public void addCar(String color,String brand,String registration,String Format,Integer nbOfSeats){
 		Car c = new Car(color,brand,registration,Format,nbOfSeats);
-		this.cars.add(c);
+		this.myCars.add(c);
 	}
-
+	public void addCar(Car c){
+		this.myCars.add(c);
+	}
 	public void removeCar(int index){
-		this.cars.remove(index);
+	//	this.cars.remove(index);
 	}
 }

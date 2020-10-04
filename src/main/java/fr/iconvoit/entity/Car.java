@@ -5,7 +5,10 @@ import java.util.regex.Pattern;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 import org.springframework.stereotype.Component;
 
@@ -24,10 +27,12 @@ import lombok.Data;
 public class Car /* extends CrudRepository<People,Long> */ {
 
     @Id
-    @GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-  //  private People owner;
+    @OneToOne
+    @JoinColumn(name="people__id", nullable=false)
+    private People owner;
 
     private String registration;
     private String Format;

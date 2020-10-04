@@ -1,29 +1,38 @@
 <!DOCTYPE html>
 <html lang="en" th:replace="~{menu :: baseLayout(~{::/html/head/content()}, ~{::/html/body/content()})}">
+
 <head>
     <title>List of the cars</title>
 </head>
+
 <body>
-     <H3>list of my car(s)</H3>
-      
-     <ul>
-          <li data-th-each="mycar : ${cars}"> [[${mycar.registration}]]</li>
-     </ul>
-     
-     <H3>add a car</H3>
-     <form th:action=@{/addcar} method="post" th:object="${addCar}">
-          <p><input type="text" placeholder="color" th:field="*{color}"/></p>
-          <p><input type="text" placeholder="brand" th:field="*{brand}"/></p>
-          <p><input type="text" placeholder="registration" th:field="*{registration}"/></p>
-          <p>type of car (citadine = 5 seats maximum)
-          <select th:field="*{Format}">
-               <option th:value="citadine" th:text="citadine"></option>
-               <option th:value="other" th:text="other"></option>
-           </select>
-          </p>
-          <p>nb of seats
-          <select placeholder="nb of seats" th:field="*{nbOfSeats}">
-               <option th:each="i : ${#numbers.sequence(1, 10)}" th:value="${i}" th:text="${i}">
+    <H3>list of my car(s)</H3>
+
+    <ul>
+        <li data-th-each="mycar : ${cars}"> 
+            <form method="POST" th:action=@{/suppCar}>
+                [[${mycar.registration}]] [[${mycar.nbOfSeats}]] [[${mycar.brand}]]
+                <input type="text" th:value="${mycar.id}" name="idCar" hidden>
+                <input class="supp" type="submit" value="X">
+            </form>
+
+        </li>
+    </ul>
+
+    <H3>add a car</H3>
+    <form th:action=@{/addcar} method="POST" th:object="${addCar}">
+        <p><input type="text" placeholder="color" th:field="*{color}" /></p>
+        <p><input type="text" placeholder="brand" th:field="*{brand}" /></p>
+        <p><input type="text" placeholder="registration" th:field="*{registration}" /></p>
+        <p>type of car (citadine = 5 seats maximum)
+            <select th:field="*{Format}">
+                <option th:value="citadine" th:text="citadine"></option>
+                <option th:value="other" th:text="other"></option>
+            </select>
+        </p>
+        <p>nb of seats
+            <select placeholder="nb of seats" th:field="*{nbOfSeats}">
+                <option th:each="i : ${#numbers.sequence(1, 10)}" th:value="${i}" th:text="${i}">
                </option>
            </select>
           </p>
