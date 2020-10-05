@@ -9,9 +9,9 @@
     <H3>list of my car(s)</H3>
 
     <ul>
-        <li data-th-each="mycar : ${cars}"> 
+        <li data-th-each="mycar : ${cars}">
             <form method="POST" th:action=@{/suppCar}>
-                [[${mycar.registration}]] [[${mycar.nbOfSeats}]] [[${mycar.brand}]]
+                [[${mycar.registration}]] [[${mycar.nbOfSeats}]] [[${mycar.brand}]] [[${mycar.Format}]]
                 <input type="text" th:value="${mycar.id}" name="idCar" hidden>
                 <input class="supp" type="submit" value="X">
             </form>
@@ -31,15 +31,16 @@
             </select>
         </p>
         <p>nb of seats
-            <select placeholder="nb of seats" th:field="*{nbOfSeats}">
-                <option th:each="i : ${#numbers.sequence(1, 10)}" th:value="${i}" th:text="${i}">
-               </option>
-           </select>
-          </p>
-          <input type="submit" value="Send">
-      </form>
+            <select th:name="nbSeats">
+                <option th:value="1" th:text="1"></option>
+                <option th:value="2" th:text="2"></option>
+            </select>
+        </p>
+        <input type="submit" value="Send">
+    </form>
 
 
 
 </body>
+
 </html>

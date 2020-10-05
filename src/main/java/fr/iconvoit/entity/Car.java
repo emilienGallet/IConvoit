@@ -36,7 +36,7 @@ public class Car /* extends CrudRepository<People,Long> */ {
 
     private String registration;
     private String Format;
-    private Integer nbOfSeats;
+    private int nbOfSeats;
     private String color;
     private String brand;
 
@@ -82,8 +82,9 @@ public class Car /* extends CrudRepository<People,Long> */ {
      * @param Integer nbOfSeat
      * @return void
      */
-    public boolean setNbOfSeats(Integer nbOfSeat) {
+    public boolean setNbOfSeats(int nbOfSeat) {
         if (verifNbOfSeats(nbOfSeat) == true) {
+            System.err.println("----------------");
             this.nbOfSeats = nbOfSeat;
             return true;
         } else
@@ -134,7 +135,7 @@ public class Car /* extends CrudRepository<People,Long> */ {
      * @return boolean
      */
     public boolean verifNbOfSeats(int NbOfSeats) {
-        if (this.Format == "citadine") {
+        if (this.Format.equals("citadine")) {
             if (NbOfSeats <= 5) {
                 return true;
             }

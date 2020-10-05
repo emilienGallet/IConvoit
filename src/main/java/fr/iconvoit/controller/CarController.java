@@ -40,12 +40,21 @@ public class CarController {
     }
 
     @RequestMapping(path = "/addcar", method = RequestMethod.POST)
-    public String AddCar(Car c) {
+    public String AddCar(Car c , @ModelAttribute("nbSeats") int nbSeats) {
         UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         People p = peopleDetailsService.findByUsername(userD.getUsername());
+
+        if(c.verifRegistration(c.getRegistration()) == false){
+            return "/car";
+        }
+        System.err.println(c.getFormat());
+        c.setNbOfSeats(nbSeats);
+
         c.setOwner(p);
         p.addCar(c);
-
+        
+        System.err.println(nbSeats);
+System.err.println(c.getNbOfSeats());
         carRep.save(c);
         return "redirect:/car";
     }
