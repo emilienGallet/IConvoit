@@ -27,11 +27,11 @@ import lombok.Data;
 public class Car /* extends CrudRepository<People,Long> */ {
 
     @Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @OneToOne
-    @JoinColumn(name="people__id", nullable=false)
+    @JoinColumn(name = "people__id", nullable = false)
     private People owner;
 
     private String registration;
@@ -84,7 +84,6 @@ public class Car /* extends CrudRepository<People,Long> */ {
      */
     public boolean setNbOfSeats(int nbOfSeat) {
         if (verifNbOfSeats(nbOfSeat) == true) {
-            System.err.println("----------------");
             this.nbOfSeats = nbOfSeat;
             return true;
         } else
@@ -139,6 +138,8 @@ public class Car /* extends CrudRepository<People,Long> */ {
             if (NbOfSeats <= 5) {
                 return true;
             }
+        } else {
+            return true;
         }
         return false;
     }
