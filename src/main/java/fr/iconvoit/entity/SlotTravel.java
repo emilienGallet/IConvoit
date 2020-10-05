@@ -1,8 +1,15 @@
 package fr.iconvoit.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.springframework.stereotype.Component;
 
@@ -11,11 +18,7 @@ import fr.iconvoit.graphHopper.Path;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/**
- * 
- * @author Émilien
- *
- */
+
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -38,7 +41,7 @@ public final class SlotTravel extends Slot {
 	Localization finishPlace;
 
 	@OneToMany(cascade = CascadeType.ALL)
-	List<Path> paths;
+	List<Path> paths = new ArrayList<Path>();
 
 	public SlotTravel() {
 

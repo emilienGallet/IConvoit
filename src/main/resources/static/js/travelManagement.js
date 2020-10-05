@@ -1,14 +1,9 @@
-
-          //By Emilien
-          
-          
-          
           //By Jeremy
           var list = document.getElementsByClassName("point")
           var pointList = [];
 
          
-
+          //Init map
           map = new OpenLayers.Map("demoMap");
           var mapnik = new OpenLayers.Layer.OSM();
           var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
@@ -40,6 +35,7 @@
           var point = new OpenLayers.Geometry.Point(p.lon,p.lat);
           var pointFeature = new OpenLayers.Feature.Vector(point, null, style_green);
 
+          //transform point list in OpenLayers.Geometry.Point
           function transformList(list1){
               list2 = []
                for(let i = 0; i < list1.length; i++){
@@ -60,16 +56,16 @@
           vectorLayer.addFeatures(lineFeature)
           var markers = new OpenLayers.Layer.Markers("Markers");
           map.addLayer(markers);
-
           map.setCenter(position, zoom);
+
           var opx
+          //var use by form
           var startLon = document.getElementById("startLon")
           var startLat = document.getElementById("startLat")
-
           var endLon = document.getElementById("endLon")
           var endLat = document.getElementById("endLat")
 
-
+          //permit to add 2 markers
           map.events.register("click", map, function (e) {
                if(markers.markers.length < 2){
                     opx = map.getLonLatFromViewPortPx(e.xy);

@@ -24,11 +24,7 @@ import fr.iconvoit.IcsParser;
 import fr.iconvoit.exceptions.SlotException;
 import lombok.Data;
 
-/**
- * 
- * @author Émilien
- *
- */
+
 
 @Data
 @Component

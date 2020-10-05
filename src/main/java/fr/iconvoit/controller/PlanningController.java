@@ -54,7 +54,7 @@ public class PlanningController {
 		 * Adding attributes for the thymeleaf
 		 */
 		m.addAttribute("planning", p.getReserved());// Sending the List<Slot> reserved by the "p" people
-		m.addAttribute("slotTravel", new SlotTravel());// TODO POST fist submit, use vue.js
+		m.addAttribute("slotTravel", new SlotTravel());// TODO POST first submit, use vue.js
 		m.addAttribute("slotOther", new SlotOther());// TODO Same as Up
 		m.addAttribute("asList", true);// Boolean attribute who's permit to display list<Slot> as list or like
 										// traditional planning
@@ -68,7 +68,7 @@ public class PlanningController {
 	public String toutLesPlanning(final Model m) {
 
 		m.addAttribute("planning", planning.findAll());
-		m.addAttribute("slotTravel", new SlotTravel());// TODO POST fist submit, use vue.js
+		m.addAttribute("slotTravel", new SlotTravel());// TODO POST first submit, use vue.js
 		m.addAttribute("slotOther", new SlotOther());// TODO Same as Up
 		m.addAttribute("asList", true);
 		return "planning";

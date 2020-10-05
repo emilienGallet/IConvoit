@@ -15,6 +15,10 @@ import fr.iconvoit.entity.CarRepository;
 import fr.iconvoit.entity.People;
 import fr.iconvoit.entity.PeopleDetailsService;
 
+/**
+ * @author Mélanie , Jérémy
+ */
+
 @Controller
 public class CarController {
     @Inject
@@ -23,22 +27,23 @@ public class CarController {
     @Inject
     PeopleDetailsService peopleDetailsService;
 
-    // ArrayList<Car> carsBis=people.cars;
 
+    /**
+     * @author Mélanie
+     */
     @RequestMapping("/car")
     public String Car(Model m) {
         UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         People p = peopleDetailsService.findByUsername(userD.getUsername());
         m.addAttribute("user", p);
-
-        // m.addAttribute("carL", people.cars.get(0));
-        // m.addAttribute("nbCar", p.getCars().size());
-
         m.addAttribute("cars", p.getMyCars());
         m.addAttribute("addCar", new Car());
         return "/car";
     }
 
+     /**
+     * @author jérémy
+     */
     @RequestMapping(path = "/addcar", method = RequestMethod.POST)
     public String AddCar(Car c , @ModelAttribute("nbSeats") int nbSeats) {
         UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -47,18 +52,17 @@ public class CarController {
         if(c.verifRegistration(c.getRegistration()) == false){
             return "/car";
         }
-        System.err.println(c.getFormat());
         c.setNbOfSeats(nbSeats);
-
         c.setOwner(p);
         p.addCar(c);
         
-        System.err.println(nbSeats);
-System.err.println(c.getNbOfSeats());
         carRep.save(c);
         return "redirect:/car";
     }
 
+     /**
+     * @author Jérémy
+     */
     @RequestMapping(path = "/suppCar", method = RequestMethod.POST)
     public String SuppCar(@ModelAttribute("idCar") String idCar) {
     

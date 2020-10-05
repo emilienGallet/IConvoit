@@ -15,8 +15,7 @@ import okhttp3.Response;
 
 /**
  * 
- * @author Émilien and Jéremy work together in remote. Émilien back-End, Jéremy
- *         front end (get data from the map)
+ * @author Émilien 
  *
  */
 public class Graph {
@@ -26,7 +25,6 @@ public class Graph {
 		 * for (Localization anStep : step) { url += "point=" + anStep.getLatitude() +
 		 * "," + anStep.getLongitude(); }
 		 */
-		ArrayList<Localization> list;
 		/**
 		 * Code from : https://docs.graphhopper.com/#tag/Routing-API little bit edited
 		 * for our API Need to add

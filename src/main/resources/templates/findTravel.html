@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{menu :: baseLayout(~{::/html/head/content()}, ~{::/html/body/content()})}">
+
+<head>
+
+    <title>Find travel</title>
+</head>
+
+<body>
+    <ul>
+
+        
+        <li data-th-each="slot : ${travel}">
+            <form method="POST" action="/findTravel" >
+                <!-- TODO doing an IF statement only if dd-MM-yyyy are same for start and end time  -->
+                "[[${slot.slotName}]]" De
+                [[${#temporals.format(slot.start, 'dd-MM-yyyy
+                HH:mm')}]] jusqu'à [[${#temporals.format(slot.end, 'dd-MM-yyyy
+                HH:mm')}]] 
+                <ul>
+                    
+                    <li data-th-each="people : ${slot.participants}">
+                        
+                        Name :  [[${people.name}]]  Firstname : [[${people.firstname}]]
+                        
+                    </li>
+                </ul>
+                <input type="text" th:value="${slot.id}" name="idSlot" hidden>
+
+                <input type="submit" value="Join" >
+                
+            </form>
+            </li>
+
+   </ul>
+</body>
+</html>

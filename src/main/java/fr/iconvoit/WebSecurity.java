@@ -10,6 +10,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 import fr.iconvoit.entity.PeopleDetailsService;
 
+/**
+ * Jérémy Goutelle
+ */
 
 @Configuration
 @EnableWebSecurity

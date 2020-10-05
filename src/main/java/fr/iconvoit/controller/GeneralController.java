@@ -17,6 +17,9 @@ import fr.iconvoit.entity.People;
 import fr.iconvoit.entity.PeopleDetailsService;
 import fr.iconvoit.entity.PeopleValidator;
 
+/**
+ * @author Jérémy
+ */
 @Controller
 
 public class GeneralController extends SpringServletContainerInitializer {
@@ -46,12 +49,9 @@ public class GeneralController extends SpringServletContainerInitializer {
 		if (bindingResult.hasErrors()) {
 			return "/register";
 		}
-
 		peopleDetailsService.save(p);
 		return "redirect:/";
 	}
-
-	
 
 	@GetMapping("/profile")
 	public String profile(Model m) {
@@ -65,26 +65,24 @@ public class GeneralController extends SpringServletContainerInitializer {
 	}
 
 	@PostMapping("/profile")
-	public String changePassword(Model m ,@ModelAttribute("password") String p,@ModelAttribute("newPassword") String newP) {
-		
+	public String changePassword(Model m, @ModelAttribute("password") String p,
+			@ModelAttribute("newPassword") String newP) {
+
 		UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		People user = peopleDetailsService.findByUsername(userD.getUsername());
 		m.addAttribute("user", user);
 
-
-		if (peopleDetailsService.bCryptPasswordEncoder.matches(p, user.getPassword()) ==false) {
-		m.addAttribute("fail","boolean");
+		if (peopleDetailsService.bCryptPasswordEncoder.matches(p, user.getPassword()) == false) {
+			m.addAttribute("fail", "boolean");
 
 			return "profile";
 		}
 
 		user.setPassword(newP);
 		peopleDetailsService.save(user);
-		m.addAttribute("success","boolean");
+		m.addAttribute("success", "boolean");
 
 		return "redirect:/profile?success=true";
 	}
 
-
-	
 }

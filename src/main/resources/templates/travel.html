@@ -12,6 +12,22 @@
           <input type="text" id="endLon" name="endLon" hidden>
           <input type="text" id="endLat" name="endLat" hidden>
           <input type="text" id="trajectName" name="trajectName" placeholder="Traject Name">
+          <label>
+               Start at :
+               <input name="dayOfMonth" type="number" min="1" max="31"
+                    th:value="${dateDayOfMonth}"
+               >
+               <input name="month" type="number" min="1" max="12"
+                    th:value="${dateMonth}"
+               >
+               <input name="year" type="number" th:value="${dateYear}">
+               <input name="hour" type="number" min="0" max="23"
+                    th:value="${dateHour}"
+               >
+               <input name="minute" type="number" min="0" max="59"
+                    th:value="${dateMinute}"
+               >
+          </label>       
           <input type="submit">
      </form>
      <script src="/OpenLayers-2.13.1/OpenLayers.js"></script>
