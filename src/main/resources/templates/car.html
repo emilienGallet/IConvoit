@@ -23,7 +23,7 @@
     <form th:action=@{/addcar} method="POST" th:object="${addCar}">
         <p><input type="text" placeholder="color" th:field="*{color}" /></p>
         <p><input type="text" placeholder="brand" th:field="*{brand}" /></p>
-        <p><input type="text" placeholder="registration" th:field="*{registration}" /></p>
+        <p> model : LL-NNN-LL <input type="text" placeholder="registration" th:field="*{registration}" /></p>
         <p>type of car (citadine = 5 seats maximum)
             <select th:field="*{Format}">
                 <option th:value="citadine" th:text="citadine"></option>
