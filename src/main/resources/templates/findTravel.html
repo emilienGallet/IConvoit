@@ -10,7 +10,7 @@
 <body>
     <ul>
 
-        
+        <p th:if="${#lists.isEmpty(travel)}">They have no travel available</p>
         <li data-th-each="slot : ${travel}">
             <form method="POST" action="/findTravel" >
                 <!-- TODO doing an IF statement only if dd-MM-yyyy are same for start and end time  -->
