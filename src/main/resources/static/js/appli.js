@@ -67,9 +67,23 @@ let app = Vue.createApp({
         template:`car`,
     })
 
-    app.component('findTravel',{
-        template:`findTravel`,
+   
+	/**
+ 	 * @author Emilien Gallet
+ 	 */
+
+	app.component('findTravel',{
+	        template:`<p>No travel are avaiable</p><listTravel/>`,
+			methods:{
+				loadData: async function() {
+				let res = await fetch('/api/vegetables'); // hard coded :(, not HATEOAS 
+				let body = await res.json();
+				this.veges = body._embedded.vegetables;
+			},
+		},
     })
+
+	/* End */
     
 
 
