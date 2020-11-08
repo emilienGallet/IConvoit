@@ -22,9 +22,11 @@ import lombok.EqualsAndHashCode;
  *         time. Is more focus for Unique place.
  */
 public class SlotOther extends Slot {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	//Emmit an error for REST
+	//@Id
+	//@GeneratedValue(strategy = GenerationType.AUTO)
+	//private Long id;
+	//--------------
 	@ManyToOne(cascade = CascadeType.ALL)
 	Localization place;
 

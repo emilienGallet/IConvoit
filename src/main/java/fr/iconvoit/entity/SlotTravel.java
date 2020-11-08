@@ -31,9 +31,11 @@ import lombok.EqualsAndHashCode;
  */
 public final class SlotTravel extends Slot {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	//Emmit an error for REST
+	//@Id
+	//@GeneratedValue(strategy = GenerationType.AUTO)
+	//private Long id;
+	//--------
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	Localization startPlace;

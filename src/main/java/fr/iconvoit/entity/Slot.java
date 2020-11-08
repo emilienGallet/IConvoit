@@ -35,7 +35,7 @@ import lombok.Data;
  * @author emilien An generic abstract class who's contain the start time and
  *         end time. Use to display planning as an List<Slot>
  */
-public abstract class Slot {
+public abstract class Slot{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	protected Long id;
