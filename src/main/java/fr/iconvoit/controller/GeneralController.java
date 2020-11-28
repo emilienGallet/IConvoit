@@ -35,6 +35,11 @@ public class GeneralController extends SpringServletContainerInitializer {
 		return "index";
 	}
 
+	@RequestMapping("/vue")
+	public String menuVue() {
+		return "menuVue";
+	}
+
 	@GetMapping("/register")
 	public String register(Model m) {
 

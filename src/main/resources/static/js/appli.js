@@ -1,11 +1,75 @@
 let app = Vue.createApp({
   
-    template: `<Menu/>`,
+        data:()=>({
+            user:Object,
+            cars:Array,
+            plannings:Array,
+        }),
+        mounted: function(){
+            this.loadUser()
+        },
+        template: `
+        <Menu :user="user" :cars="cars" :plannings="plannings"/>`,
+        methods:{
+            init: async function(){
+              await  this.loadUser();
+             //  await this.loadData();
+            },
+
+            loadUser:async function(){
+                username = await this.request('/user')
+                 
+                users = await this.request('/api/peoples')
+                users = users._embedded.peoples
+                console.log(users)
+                for(i=0; i< users.length; i++){
+                    user = users[i].username
+                    console.log("user",user, username)
+                    if(user == username.username){
+
+                        this.user = users[i]
+                console.log("UTILISATEUR",this.user)
+
+                        car = await this.request(users[i]._links.myCars.href)
+                        car = car._embedded.cars
+                        console.log(car)
+                        this.cars = car
+
+                        this.plannings = this.user.slotOthers
+                        for(j =0; j < this.user.slotTravel.length; j++){
+
+                            this.plannings.push(this.user.slotTravel[i])
+                        }
+                        
+
+                        
+
+                        return
+                    }
+                }
+
+                console.log("USER",this.user)
+            },
+
+            request: async function(path){
+                let res = await fetch(path) 
+                let body = await res.json()
+                return body
+            },
+
+         
+        }
 
     })
 
 
     app.component('Menu', {
+        props:{
+            user:Object,
+            cars:Array,
+            plannings:Array,
+
+        },
         data: () => ({
             page: 'RIEN',
         }),
@@ -22,11 +86,11 @@ let app = Vue.createApp({
         
 
         <div v-if="page == 'profile'">
-        <profile/>
+        <profile :user="user" />
         </div>
 
         <div v-if="page == 'planning'">
-        <planning/>
+        <planning  :plannings="plannings"/>
         </div>
 
         <div v-if="page == 'travel'">
@@ -34,21 +98,71 @@ let app = Vue.createApp({
         </div>
 
         <div v-if="page == 'Car'">
-        <car/>
+        <car  :cars="cars" />
         </div>
 
         <div v-if="page == 'findTravel'">
-        <findTravel/>
+        <findTravel :user="user"/>
         </div>
         `
     })
 
     app.component('profile',{
-        template:`profile`,
+        props:{
+            user:Object,
+        },
+        data: () => ({
+           
+            }),
+        template:`
+           
+        
+        
+            <p>Name : {{user.name}}</p>
+            <p>Firstname : {{user.firstname}}</p>
+            
+            `
+            ,
+
+            mounted: function (){
+              //  this.loadData()
+            },
+            methods: {
+                loadData: async function(){
+                    console.log("load data")
+                    let res = await fetch('/api/peoples') // hard coded :(, not HATEOAS
+                    console.log(res)
+
+                    let body = await res.json()
+                    console.log(body)
+
+                    this.peoples = body._embedded.peoples
+                },
+                request: async function(path){
+                    let res = await fetch(path) 
+                    let body = await res.json()
+                    return body
+                },
+                
+            },
+
     })
 
     app.component('planning',{
-        template:`planning`,
+        props:{
+            plannings:Array,
+
+        },
+        template:`planning
+            {{plannings}}
+        `,
+        methods:{
+            request: async function(path){
+                let res = await fetch(path) 
+                let body = await res.json()
+                return body
+            },
+        }
     })
 
     app.component('travel',{
@@ -61,10 +175,30 @@ let app = Vue.createApp({
             travelManagement.setAttribute('src', '/js/travelManagement.js')
             document.head.appendChild(travelManagement)
           },
+          methods:{
+            request: async function(path){
+                let res = await fetch(path) 
+                let body = await res.json()
+                return body
+            },
+        }
     })
 
     app.component('Car',{
-        template:`car`,
+        props:{
+            cars:Array,
+        },
+        template:`car
+        {{cars}}
+        `,
+
+        methods:{
+            request: async function(path){
+                let res = await fetch(path) 
+                let body = await res.json()
+                return body
+            },
+        }
     })
 
    
@@ -73,13 +207,23 @@ let app = Vue.createApp({
  	 */
 
 	app.component('findTravel',{
-	        template:`<p>No travel are avaiable</p><listTravel/>`,
+        props:{
+            user:Object,
+
+        },
+	        template:`{{user}}<p>No travel are avaiable</p><listTravel/>`,
 			methods:{
 				loadData: async function() {
 				let res = await fetch('/api/vegetables'); // hard coded :(, not HATEOAS 
 				let body = await res.json();
 				this.veges = body._embedded.vegetables;
-			},
+
+                },
+                request: async function(path){
+                    let res = await fetch(path) 
+                    let body = await res.json()
+                    return body
+                },
 		},
     })
 
