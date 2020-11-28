@@ -9,7 +9,7 @@ public interface PeopleFactory extends CrudRepository<People, Long>{
 
 	//List<Slot> findAllSlotReserved();
 
-
-
 	People findByUsername(String username);
+
+	
 }

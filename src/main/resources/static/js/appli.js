@@ -1,79 +1,80 @@
 let app = Vue.createApp({
-  
-        data:()=>({
-            user:Object,
-            cars:Array,
-            plannings:Array,
-        }),
-        mounted: function(){
-            this.loadUser()
-        },
-        template: `
+
+	data: () => ({
+		user: {},
+		cars: [],
+		plannings: [],
+		travels: [],
+	}),
+	mounted: function() {
+		this.loadUser()
+	},
+	template: `
         <Menu :user="user" :cars="cars" :plannings="plannings"/>`,
-        methods:{
-            init: async function(){
-              await  this.loadUser();
-             //  await this.loadData();
-            },
+	methods: {
+		init: async function() {
+			await this.loadUser();
+			//  await this.loadData();
+		},
 
-            loadUser:async function(){
-                username = await this.request('/user')
-                 
-                users = await this.request('/api/peoples')
-                users = users._embedded.peoples
-                console.log(users)
-                for(i=0; i< users.length; i++){
-                    user = users[i].username
-                    console.log("user",user, username)
-                    if(user == username.username){
+		loadUser: async function() {
+			username = await this.request('/user')
 
-                        this.user = users[i]
-                console.log("UTILISATEUR",this.user)
+			users = await this.request('/api/peoples')
+			users = users._embedded.peoples
+			console.log(users)
+			for (i = 0; i < users.length; i++) {
+				user = users[i].username
+				console.log("user", user, username)
+				if (user == username.username) {
 
-                        car = await this.request(users[i]._links.myCars.href)
-                        car = car._embedded.cars
-                        console.log(car)
-                        this.cars = car
+					this.user = users[i]
+					console.log("UTILISATEUR", this.user)
 
-                        this.plannings = this.user.slotOthers
-                        for(j =0; j < this.user.slotTravel.length; j++){
+					car = await this.request(users[i]._links.myCars.href)
+					car = car._embedded.cars
+					console.log(car)
+					this.cars = car
 
-                            this.plannings.push(this.user.slotTravel[i])
-                        }
-                        
+					this.plannings = this.user.slotOthers
+					for (j = 0; j < this.user.slotTravel.length; j++) {
 
-                        
-
-                        return
-                    }
-                }
-
-                console.log("USER",this.user)
-            },
-
-            request: async function(path){
-                let res = await fetch(path) 
-                let body = await res.json()
-                return body
-            },
-
-         
-        }
-
-    })
+						this.plannings.push(this.user.slotTravel[i])
+					}
 
 
-    app.component('Menu', {
-        props:{
-            user:Object,
-            cars:Array,
-            plannings:Array,
 
-        },
-        data: () => ({
-            page: 'RIEN',
-        }),
-        template: `
+
+					return
+				}
+			}
+
+			console.log("USER", this.user)
+		},
+
+		request: async function(path) {
+			let res = await fetch(path)
+			let body = await res.json()
+			return body
+		},
+
+
+	}
+
+})
+
+
+app.component('Menu', {
+	props: {
+		user: Object,
+		cars: Array,
+		plannings: Array,
+
+	},
+	data: () => ({
+		page: 'RIEN',
+	}),
+	template: `
         <header>
         <a @click="page = 'profile'"    class="btn menu" >Profile</a>
         <a @click="page = 'planning'"   class="btn menu" >Planning</a>
@@ -105,16 +106,16 @@ let app = Vue.createApp({
         <findTravel :user="user"/>
         </div>
         `
-    })
+})
 
-    app.component('profile',{
-        props:{
-            user:Object,
-        },
-        data: () => ({
-           
-            }),
-        template:`
+app.component('profile', {
+	props: {
+		user: Object,
+	},
+	data: () => ({
+
+	}),
+	template: `
            
         
         
@@ -122,113 +123,206 @@ let app = Vue.createApp({
             <p>Firstname : {{user.firstname}}</p>
             
             `
-            ,
+	,
 
-            mounted: function (){
-              //  this.loadData()
-            },
-            methods: {
-                loadData: async function(){
-                    console.log("load data")
-                    let res = await fetch('/api/peoples') // hard coded :(, not HATEOAS
-                    console.log(res)
+	mounted: function() {
+		//  this.loadData()
+	},
+	methods: {
+		loadData: async function() {
+			console.log("load data")
+			let res = await fetch('/api/peoples') // hard coded :(, not HATEOAS
+			console.log(res)
 
-                    let body = await res.json()
-                    console.log(body)
+			let body = await res.json()
+			console.log(body)
 
-                    this.peoples = body._embedded.peoples
-                },
-                request: async function(path){
-                    let res = await fetch(path) 
-                    let body = await res.json()
-                    return body
-                },
-                
-            },
+			this.peoples = body._embedded.peoples
+		},
+		request: async function(path) {
+			let res = await fetch(path)
+			let body = await res.json()
+			return body
+		},
 
-    })
+	},
 
-    app.component('planning',{
-        props:{
-            plannings:Array,
+})
 
-        },
-        template:`planning
+app.component('planning', {
+	props: {
+		plannings: Array,
+
+	},
+	template: `planning
             {{plannings}}
         `,
-        methods:{
-            request: async function(path){
-                let res = await fetch(path) 
-                let body = await res.json()
-                return body
-            },
-        }
-    })
+	methods: {
+		request: async function(path) {
+			let res = await fetch(path)
+			let body = await res.json()
+			return body
+		},
+	}
+})
 
-    app.component('travel',{
-        template:`
+app.component('travel', {
+	template: `
             <div id="demoMap" style="height: 500px; width: 1000px"></div>
 
         `,
-        mounted() {
-            let travelManagement = document.createElement('script')
-            travelManagement.setAttribute('src', '/js/travelManagement.js')
-            document.head.appendChild(travelManagement)
-          },
-          methods:{
-            request: async function(path){
-                let res = await fetch(path) 
-                let body = await res.json()
-                return body
-            },
-        }
-    })
+	mounted() {
+		let travelManagement = document.createElement('script')
+		travelManagement.setAttribute('src', '/js/travelManagement.js')
+		document.head.appendChild(travelManagement)
+	},
+	methods: {
+		request: async function(path) {
+			let res = await fetch(path)
+			let body = await res.json()
+			return body
+		},
+	}
+})
 
-    app.component('Car',{
-        props:{
-            cars:Array,
-        },
-        template:`car
+app.component('Car', {
+	props: {
+		cars: Array,
+	},
+	template: `car
         {{cars}}
         `,
 
-        methods:{
-            request: async function(path){
-                let res = await fetch(path) 
-                let body = await res.json()
-                return body
-            },
-        }
-    })
-
-   
-	/**
- 	 * @author Emilien Gallet
- 	 */
-
-	app.component('findTravel',{
-        props:{
-            user:Object,
-
-        },
-	        template:`{{user}}<p>No travel are avaiable</p><listTravel/>`,
-			methods:{
-				loadData: async function() {
-				let res = await fetch('/api/vegetables'); // hard coded :(, not HATEOAS 
-				let body = await res.json();
-				this.veges = body._embedded.vegetables;
-
-                },
-                request: async function(path){
-                    let res = await fetch(path) 
-                    let body = await res.json()
-                    return body
-                },
+	methods: {
+		request: async function(path) {
+			let res = await fetch(path)
+			let body = await res.json()
+			return body
 		},
-    })
-
-	/* End */
-    
+	}
+})
 
 
-    app.mount('#container')
+/**
+   * @author Emilien Gallet
+   */
+
+
+
+app.component('displayParticipant', {
+	props: ["aTravel", "indexTravel"],
+	template: `
+	<p>OH</p>
+	<li>
+		Name :  eude  Firstname : e
+	</li>
+		`,
+	methods: {
+		request: async function(path) {
+			let res = await fetch(path)
+			let body = await res.json()
+			return body
+		},
+		loadTravels: async function() {
+			/*let res = await fetch('/loadFindTravels', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(this.user)
+			})
+			let body = await res.json()*/
+
+			body = await this.request('/findTravelsOwner');
+			this.travels = body;
+
+		}
+
+	},
+
+})
+
+app.component('findTravelDisplay', {
+	props: ["aTravel", "indexTravel"],
+	template: `
+	<p>WESH</p>
+	
+		<li>
+			{{indexTravel}}
+			<form method="POST" action="/findTravel" >
+			"{{aTravel.slotName}}" De
+		                {{aTravel.start}}
+		                jusqu'à {{aTravel.end}} 
+		                <ul>
+		                    <!--<displayParticipant v-for="(travel,index) in travels" :aTravel="travel" :indexTravel="index"></displayParticipant>-->
+		                </ul>
+		                <input type="text" value="20" name="idSlot" hidden>
+		
+		                <input type="submit" value="Join" >
+		            </form>
+			</li>
+		`,
+	methods: {
+		request: async function(path) {
+			let res = await fetch(path)
+			let body = await res.json()
+			return body
+		},
+		loadTravels: async function() {
+			/*let res = await fetch('/loadFindTravels', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(this.user)
+			})
+			let body = await res.json()*/
+
+			body = await this.request('/loadFindTravels');
+			this.travels = body;
+
+		}
+
+	},
+
+})
+app.component('findTravel', {
+	data: () => ({
+		travels: [{ "id": 1, "slotName": "y", "start": "2020-11-28T21:52:42.989982", "end": "2020-11-28T22:07:42.990018", "url": null, "uid": null, "lastModified": null, "participants": [], "startPlace": null, "finishPlace": null, "paths": [] },
+		{ "id": 2, "slotName": "s", "start": "2020-11-28T21:52:42.990234", "end": "2020-11-28T22:07:42.990241", "url": null, "uid": null, "lastModified": null, "participants": [], "startPlace": null, "finishPlace": null, "paths": [] }],
+	}),
+	props: {
+		user: Object,
+	},
+	mounted: function() {
+		this.loadTravels()
+	},
+	template: `
+	{{travels}}
+	<ul v-if="travels.length!=0">
+		<findTravelDisplay v-for="(travel,index) in travels" :aTravel="travel" :indexTravel="index"></findTravelDisplay>
+	</ul>
+	<div v-else><p>No travel are avaiable</p></div><listTravel/>`,
+	methods: {
+		request: async function(path) {
+			let res = await fetch(path)
+			let body = await res.json()
+			return body
+		},
+		loadTravels: async function() {
+			/*let res = await fetch('/loadFindTravels', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(this.user)
+			})
+			let body = await res.json()*/
+
+			body = await this.request('/loadFindTravels');
+			this.travels = body;
+
+		}
+
+	},
+})
+
+/* End */
+
+
+
+app.mount('#container')
