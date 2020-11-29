@@ -207,81 +207,6 @@ app.component('Car', {
    * @author Emilien Gallet
    */
 
-
-
-app.component('displayParticipant', {
-	props: ["aTravel", "indexTravel"],
-	template: `
-	<p>OH</p>
-	<li>
-		Name :  eude  Firstname : e
-	</li>
-		`,
-	methods: {
-		request: async function(path) {
-			let res = await fetch(path)
-			let body = await res.json()
-			return body
-		},
-		loadTravels: async function() {
-			/*let res = await fetch('/loadFindTravels', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(this.user)
-			})
-			let body = await res.json()*/
-
-			body = await this.request('/findTravelsOwner');
-			this.travels = body;
-
-		}
-
-	},
-
-})
-
-app.component('findTravelDisplay', {
-	props: ["aTravel", "indexTravel"],
-	template: `
-	<p>WESH</p>
-	
-		<li>
-			{{indexTravel}}
-			<form method="POST" action="/findTravel" >
-			"{{aTravel.slotName}}" De
-		                {{aTravel.start}}
-		                jusqu'à {{aTravel.end}} 
-		                <ul>
-		                    <!--<displayParticipant v-for="(travel,index) in travels" :aTravel="travel" :indexTravel="index"></displayParticipant>-->
-		                </ul>
-		                <input type="text" value="20" name="idSlot" hidden>
-		
-		                <input type="submit" value="Join" >
-		            </form>
-			</li>
-		`,
-	methods: {
-		request: async function(path) {
-			let res = await fetch(path)
-			let body = await res.json()
-			return body
-		},
-		loadTravels: async function() {
-			/*let res = await fetch('/loadFindTravels', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(this.user)
-			})
-			let body = await res.json()*/
-
-			body = await this.request('/loadFindTravels');
-			this.travels = body;
-
-		}
-
-	},
-
-})
 app.component('findTravel', {
 	data: () => ({
 		travels: [{ "id": 1, "slotName": "y", "start": "2020-11-28T21:52:42.989982", "end": "2020-11-28T22:07:42.990018", "url": null, "uid": null, "lastModified": null, "participants": [], "startPlace": null, "finishPlace": null, "paths": [] },
@@ -291,10 +216,10 @@ app.component('findTravel', {
 		user: Object,
 	},
 	mounted: function() {
+		console.log("mounted")
 		this.loadTravels()
 	},
 	template: `
-	{{travels}}
 	<ul v-if="travels.length!=0">
 		<findTravelDisplay v-for="(travel,index) in travels" :aTravel="travel" :indexTravel="index"></findTravelDisplay>
 	</ul>
@@ -319,6 +244,75 @@ app.component('findTravel', {
 		}
 
 	},
+})
+app.component('findTravelDisplay', {
+	data: () => ({
+		participant: [],
+	}),
+	props: ["aTravel", "indexTravel"],
+	beforeMount: function() {
+		console.log("beforeMount")
+		this.loadParticipant()
+	},
+	updated: function() {
+		console.log("mounted")
+		this.loadParticipant()
+	},
+	template: `
+		<li>
+			<form method="POST" action="/findTravel" >
+			"{{aTravel.slotName}}" De
+		                {{aTravel.start}}
+		                jusqu'à {{aTravel.end}} 
+		                <ul>
+		                    <displayParticipant v-for="people in participant" :aPeople="people"></displayParticipant>
+		                </ul>
+		                <input type="text" :value="aTravel.id" name="idSlot" >
+		
+		                <input type="submit" value="Join" >
+		            </form>
+			</li>
+		`,
+	methods: {
+		request: async function(path) {
+			let res = await fetch(path)
+			let body = await res.json()
+			return body
+		},
+		loadParticipant: async function() {
+			console.log("JE SUIS LE NUMERO "+this.aTravel.id)
+			let res = await fetch('/findOwner', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(this.aTravel.id)
+			})
+			let body = await res.json()
+			this.participants = body;
+			//body = await this.request('/findOwner');
+			//this.travels = body;
+
+		}
+
+	},
+
+})
+
+app.component('displayParticipant', {
+	props: ["aPeople"],
+	template: `
+	<p>OH</p>
+	<li>
+		Name :  eude  Firstname : e
+	</li>
+		`,
+	methods: {
+		request: async function(path) {
+			let res = await fetch(path)
+			let body = await res.json()
+			return body
+		},
+	},
+
 })
 
 /* End */
