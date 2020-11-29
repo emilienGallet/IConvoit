@@ -1,9 +1,9 @@
 let app = Vue.createApp({
   
         data:()=>({
-            user:Object,
-            cars:Array,
-            plannings:Array,
+            user:{},
+            cars:[],
+            plannings:[],
         }),
         mounted: function(){
             this.loadUser()
@@ -21,18 +21,18 @@ let app = Vue.createApp({
                  
                 users = await this.request('/api/peoples')
                 users = users._embedded.peoples
-                console.log(users)
+                // console.log(users)
                 for(i=0; i< users.length; i++){
                     user = users[i].username
-                    console.log("user",user, username)
+                    // console.log("user",user, username)
                     if(user == username.username){
 
                         this.user = users[i]
-                console.log("UTILISATEUR",this.user)
+                // console.log("UTILISATEUR",this.user)
 
                         car = await this.request(users[i]._links.myCars.href)
                         car = car._embedded.cars
-                        console.log(car)
+                        // console.log(car)
                         this.cars = car
 
                         this.plannings = this.user.slotOthers
@@ -48,7 +48,7 @@ let app = Vue.createApp({
                     }
                 }
 
-                console.log("USER",this.user)
+                // console.log("USER",this.user)
             },
 
             request: async function(path){
@@ -129,12 +129,12 @@ let app = Vue.createApp({
             },
             methods: {
                 loadData: async function(){
-                    console.log("load data")
+                    // console.log("load data")
                     let res = await fetch('/api/peoples') // hard coded :(, not HATEOAS
-                    console.log(res)
+                    // console.log(res)
 
                     let body = await res.json()
-                    console.log(body)
+                    // console.log(body)
 
                     this.peoples = body._embedded.peoples
                 },
@@ -184,12 +184,92 @@ let app = Vue.createApp({
         }
     })
 
+    /**
+ 	 * @author Mélanie EYRAUD
+ 	 */
     app.component('Car',{
         props:{
             cars:Array,
         },
+        data: () => ({
+           registration:null,
+           nbSeats:null,
+           brand:null,
+           Format:null,
+           color:null,
+           id:null
+        }),
         template:`car
         {{cars}}
+        
+         
+        <h3>list of my car(s)</h3>
+        <ul id="displayListCars">
+            
+            <p v-if="cars.size=0">
+                <li>0 car</li>
+            </p>
+
+            <p v-if="cars.size>0">
+            <li v-for="car in cars">
+                1 car
+            </li>
+            </p>
+            
+        </ul>
+    <!--
+    <ul>
+        <li data-th-each="mycar : {{cars}}">
+            <form method="POST" @submit="suppCar">
+                {{mycar.registration}} {{mycar.nbOfSeats}} {{mycar.brand}} {{mycar.Format}}
+                <input type="text" th:value="{{mycar.id}}" name="idCar" hidden>
+                <input class="supp" type="submit" value="X">
+            </form>
+
+        </li>
+    </ul>
+   -->
+    <h3>add a car</h3>
+    <form id="addcarVue" @submit="addcarVue" action="/addcarVue" method="post">
+    <!-- <form action=/addcarVue method="POST"> -->
+        <p><input type="text" placeholder="color" id="color" name="color" value="" /></p>
+        <p><input type="text" placeholder="brand" id="brand" name="brand" value="" /></p>
+        <p> model : LL-NNN-LL <input type="text" placeholder="registration" id="registration" name="registration" value="" /></p>
+        <p>type of car (citadine = 5 seats maximum)
+            <select id="Format" name="Format">
+                <option value="citadine">citadine</option>
+                <option value="other">other</option>
+            </select>
+        </p>
+        <p>nb of seats
+            <select name="nbSeats">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+
+
+            </select>
+        </p>
+        <input type="submit" value="Send">
+    </form>
+    <!-- 
+        
+        <H3>list of my car(s)</H3>
+    <ul>
+        <li data-th-each="mycar : {{cars}}">
+            <form method="POST" @submit="suppCar">
+                {{mycar.registration}} {{mycar.nbOfSeats}} {{mycar.brand}} {{mycar.Format}}
+                <input type="text" th:value="{{mycar.id}}" name="idCar" hidden>
+                <input class="supp" type="submit" value="X">
+            </form>
+        </li>
+    </ul>
+
+   -->
         `,
 
         methods:{
@@ -198,6 +278,56 @@ let app = Vue.createApp({
                 let body = await res.json()
                 return body
             },
+            addcarVue: async function(){
+                return "redirect:/api/car";
+            },
+            deleteCarIndexVue: async function(v){
+                console.log("deleteVegetableIndex " + v)
+			    console.clear()
+            }/*
+            AddCar:async function(c,color,brand,registration,nbOfSeats){
+                let newCar={color,brand,registration,nbOfSeats}
+                let res = await fetch('/api/car',{
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newCar)
+                })
+                let body = await res.json()
+                this.car
+                
+                let userD = new UserDetails
+                // let sc = new SecurityContextHolder
+                // userD =(UserDetails) sc.getContext().getAuthentication().getPrincipal();
+                // People p = peopleDetailsService.findByUsername(userD.getUsername());
+                if(c.verifRegistration(c.getRegistration()) == false){
+                    return "/car";
+                }
+                c.setNbOfSeats(nbSeats);
+                c.setOwner(p);
+                p.addCar(c);
+                carRep.save(c);
+                return "redirect:/car";
+            },
+            deleteCarIndex: async function(v){
+                console.log("deleteVegetableIndex " + v)
+			    console.clear()
+            }*/
+            /*
+            AddCar:function(Car c,@ModelAttribute("nbSeats") int nbSeats){
+                    UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                    People p = peopleDetailsService.findByUsername(userD.getUsername());
+            
+                    if(c.verifRegistration(c.getRegistration()) == false){
+                        return "/car";
+                    }
+                    c.setNbOfSeats(nbSeats);
+                    c.setOwner(p);
+                    p.addCar(c);
+                    
+                    carRep.save(c);
+                    return "redirect:/car";
+                }
+            },*/
         }
     })
 
