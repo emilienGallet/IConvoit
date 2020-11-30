@@ -1,9 +1,9 @@
 let app = Vue.createApp({
   
         data:()=>({
-            user:Object,
-            cars:Array,
-            plannings:Array,
+            user:{},
+            cars:[],
+            plannings:[],
         }),
         mounted: function(){
             this.loadUser()
@@ -112,39 +112,43 @@ let app = Vue.createApp({
             user:Object,
         },
         data: () => ({
-           
-            }),
+           oldPass: "",
+           newPass:"",
+           fail:false,
+           succes:false,
+        }),
         template:`
-           
-        
-        
             <p>Name : {{user.name}}</p>
             <p>Firstname : {{user.firstname}}</p>
-            
-            `
-            ,
 
-            mounted: function (){
-              //  this.loadData()
+            <form @submit.prevent="changePass" class="center"  >
+                <h2 >Change password</h2>
+                <h3 class="success" v-if="succes == true" >Password has been changed</h3> 
+                <span class="error" v-if="fail == true" >Wrong Password</span> 
+                <input class="form-horizontal" type="password" v-model="oldPass" placeholder="Password" required>
+                <input class="form-horizontal" type="password" v-model="newPass" placeholder="New Password" required>
+                <input class="form-horizontal" type="submit" value="Submit" >
+            </form>
+
+            `,
+        methods: {
+            changePass: async function(){
+                if(this.oldPass == "" || this.newPass == ""){
+                    return
+                }
+                let res = await fetch('/changePass', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({oldPass:this.oldPass,newPass:this.newPass})
+                })
+                body = await res.json()
+
+                this.oldPass= ""
+                this.newPass=""
+                this.succes = body.succes
+                this.fail = !body.succes
             },
-            methods: {
-                loadData: async function(){
-                    console.log("load data")
-                    let res = await fetch('/api/peoples') // hard coded :(, not HATEOAS
-                    console.log(res)
-
-                    let body = await res.json()
-                    console.log(body)
-
-                    this.peoples = body._embedded.peoples
-                },
-                request: async function(path){
-                    let res = await fetch(path) 
-                    let body = await res.json()
-                    return body
-                },
-                
-            },
+        },
 
     })
 
@@ -168,14 +172,14 @@ let app = Vue.createApp({
     app.component('travel',{
         template:`
             <div id="demoMap" style="height: 500px; width: 1000px"></div>
-
         `,
         mounted() {
             let travelManagement = document.createElement('script')
             travelManagement.setAttribute('src', '/js/travelManagement.js')
             document.head.appendChild(travelManagement)
           },
-          methods:{
+        methods:{
+         
             request: async function(path){
                 let res = await fetch(path) 
                 let body = await res.json()
@@ -209,16 +213,9 @@ let app = Vue.createApp({
 	app.component('findTravel',{
         props:{
             user:Object,
-
         },
-	        template:`{{user}}<p>No travel are avaiable</p><listTravel/>`,
+	    template:`{{user}}<p>No travel are avaiable</p><listTravel/>`,
 			methods:{
-				loadData: async function() {
-				let res = await fetch('/api/vegetables'); // hard coded :(, not HATEOAS 
-				let body = await res.json();
-				this.veges = body._embedded.vegetables;
-
-                },
                 request: async function(path){
                     let res = await fetch(path) 
                     let body = await res.json()
