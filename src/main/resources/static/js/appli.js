@@ -262,7 +262,6 @@ app.component('findTravelDisplay', {
 	},
 	template: `
 		<li>
-		{{aTravel}}
 			<form method="POST" action="/findTravel" >
 			"{{aTravel.slotName}}" De
 		                {{aTravel.start}}
@@ -305,7 +304,7 @@ app.component('displayParticipant', {
 	props: ["aPeople"],
 	template: `
 	<li>
-		Name :  {{aPeople[2]}} Firstname : {{aPeople[2]}}
+		Name :  {{aPeople.name}} Firstname : {{aPeople.firstname}}
 	</li>
 		`,
 	methods: {

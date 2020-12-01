@@ -89,13 +89,14 @@ public class People {
 		// this.cars = new ArrayList<Car>();
 
 	}
-/*
-	public People(Field ID, Field USERNAME, Field FIRSTNAME, Field NAME) {
-		this.id = ID//ID.longValueExact();
-		this.firstname = FIRSTNAME;
-		this.username = USERNAME;
-		this.name = NAME;
-	}*/
+	// Necéssaire pour l'application rest
+	public People(Long id2, String username2, String firstName2, String name2) {
+		this.id = id2;
+		this.firstname = firstName2;
+		this.username = username2;
+		this.name = name2;
+	}
+
 	public List<Slot> getSlotTravel() {
 		List<Slot> allSlotTravel = new ArrayList<Slot>();
 		for (Slot slot : reserved) {
