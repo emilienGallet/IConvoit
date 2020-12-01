@@ -1,8 +1,13 @@
 package fr.iconvoit.controller;
 
+import java.lang.reflect.Field;
+import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.inject.Inject;
 
@@ -60,46 +65,46 @@ public class ControllerRest {
     
     @RequestMapping("/loadFindTravels")
     @ResponseBody
-    public ArrayList<SlotTravel> findTravels() throws SlotException{
+    public ArrayList<SlotTravel> findTravels() throws SlotException, IllegalArgumentException, IllegalAccessException{
     	UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	People p = listP.findByUsername(userD.getUsername());
     	System.err.println("ID : "+ p.getId());
-    	ArrayList<SlotTravel> l =listTravels.findTravelsOfOthers(p.getId());
-    	//A supprimer
-    	l = new ArrayList<>();
-    	SlotTravel st = new SlotTravel("TTTT", "jhgfc", "kjhvg",null,null);
-    	st.setId(1L);
-    	st.setStart(LocalDateTime.now());
-    	st.setEnd(LocalDateTime.now().plusMinutes(15));
-    	l.add(st);
-    	
-    	SlotTravel sa = new SlotTravel("UUUUUUU", "jhgfc", "kjhvg",null,null);
-    	sa.setId(2L);
-    	sa.setStart(LocalDateTime.now());
-    	sa.setEnd(LocalDateTime.now().plusMinutes(15));
-    	l.add(sa);
-    	////
-    	System.err.println(p.getId());
-    	l =listTravels.findTravelsOfOthers(p.getId());
-    	//l.get(0).setPaths(null);
-    	//l.get(1).setPaths(null);
-    	if (!l.isEmpty()) {			
-    		l.get(0).setParticipants(null);
-    		l.get(1).setParticipants(null);
+    	ArrayList<Object> l =listTravels.findTravelsOfOthers(p.getId());
+    	ArrayList<SlotTravel> stl = new ArrayList<>();
+    	for (Object object : l) {
+			Object[] tab = (Object[]) object;
+			//SLOT.ID,SLOT_NAME,START,END, FINISH_PLACE_ID, START_PLACE_ID 
+			BigInteger b = (BigInteger) tab[0];
+			Long id = b.longValueExact();//object.getClass();// lf[0].get(object);
+			String slotName = (String) tab[1];//lf[1].get(object);
+			Timestamp TtoLdt = (Timestamp) tab[2];//lf[2].get(object);
+			LocalDateTime start = TtoLdt.toLocalDateTime();
+			TtoLdt = (Timestamp) tab[3];//lf[3].get(object);
+			LocalDateTime end =  TtoLdt.toLocalDateTime();
+			/*b = (BigInteger) tab[4];
+			Long finishPlaceId = b.longValueExact();//lf[4].get(object);
+			b = (BigInteger) tab[5];
+			Long startPlaceId = b.longValueExact();//lf[5].get(object);
+			*/
+			stl.add(new SlotTravel(id,slotName, start, end));
 		}
-    	return l;
+    	return stl;
     }
     @RequestMapping("/findOwner")
     @ResponseBody
-    public ArrayList<People> findParticipants(@RequestBody Long s) throws SlotException{
-    	ArrayList<Long> ll = listSlots.findParticipant(s);
+    public ArrayList<Object> findParticipants(@RequestBody Long s){
+    	//ArrayList<Long> ll = listSlots.findParticipant(s);
+    	ArrayList<Object> ll ;
+    	try{
+    		ll= listSlots.findParticipant(s);
+    	}catch (Exception e) {
+			// TODO: handle exception
+    		ll = new ArrayList<Object>();
+    		System.err.println("Exception");
+		}
     	System.err.println(s);
     	//ArrayList<People> lp = (ArrayList<People>) listP.findAllById(p);
-    	ArrayList<People> lp = new ArrayList<>();
-    	for (Long l : ll) {
-			//TODO Faire en sorte de retrouver les personnes par leurs ID
-		}
-    	return lp;
+    	return ll;
     }
     
     

@@ -93,6 +93,10 @@ public abstract class Slot{
 			new SlotException();
 		}
 	}
+
+	public Slot(Long id2) {
+		this.setId(id2);
+	}
 /*
 	public boolean checkSlot(){
 		LocalDateTime st ;

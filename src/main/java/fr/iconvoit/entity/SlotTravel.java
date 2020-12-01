@@ -1,5 +1,6 @@
 package fr.iconvoit.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +53,13 @@ public final class SlotTravel extends Slot {
 		super(name, start, end);
 		this.startPlace = startPlace;
 		this.finishPlace = finishPlace;
+	}
+
+	public SlotTravel(Long id,String slotName, LocalDateTime start, LocalDateTime end) {
+		super(id);
+		this.setSlotName(slotName);
+		this.setStart(start);
+		this.setEnd(end);
 	}
 
 	/**

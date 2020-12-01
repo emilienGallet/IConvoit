@@ -1,5 +1,7 @@
 package fr.iconvoit.entity;
 
+import java.lang.reflect.Field;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -30,8 +32,7 @@ import lombok.Data;
 @Component
 /**
  * 
- * @author Émilien
- * Managed People entity 
+ * @author Émilien Managed People entity
  */
 public class People {
 
@@ -49,14 +50,14 @@ public class People {
 	private String name;
 
 	private String password;
-	
+
 	@OneToMany
 	private List<Path> ways;
 
 	@ElementCollection(fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
+	@Enumerated(EnumType.STRING)
 	private Set<PeopleRole> roles = new HashSet<>();
-	
+
 	@ManyToMany
 	private List<People> friend = new ArrayList<People>();
 
@@ -66,19 +67,36 @@ public class People {
 	@OneToMany(mappedBy = "owner")
 	private List<Car> myCars = new ArrayList<Car>();
 
+
+	
 	public People() {
 
+	}
+	// Necéssaire pour l'application rest
+	public People(BigInteger ID, String USERNAME, String FIRSTNAME, String NAME, Long ID_SOURCE, Organisation ORG) {
+		this.id = ID.longValueExact();
+		this.firstname = FIRSTNAME;
+		this.username = USERNAME;
+		this.name = NAME;
+		this.idSource = ID_SOURCE;
+		this.org = ORG;
 	}
 
 	public People(String username, String name, String firstName) {
 		this.username = username;
 		this.name = name;
 		this.firstname = firstName;
-	//	this.cars = new ArrayList<Car>();
+		// this.cars = new ArrayList<Car>();
 
 	}
-	
-	public List<Slot> getSlotTravel(){
+/*
+	public People(Field ID, Field USERNAME, Field FIRSTNAME, Field NAME) {
+		this.id = ID//ID.longValueExact();
+		this.firstname = FIRSTNAME;
+		this.username = USERNAME;
+		this.name = NAME;
+	}*/
+	public List<Slot> getSlotTravel() {
 		List<Slot> allSlotTravel = new ArrayList<Slot>();
 		for (Slot slot : reserved) {
 			if (slot.getClass() == SlotTravel.class) {
@@ -87,8 +105,9 @@ public class People {
 		}
 		return allSlotTravel;
 	}
-	public List<Slot> getSlotOthers(){
-		List<Slot> allSlotOthers= new ArrayList<Slot>();
+
+	public List<Slot> getSlotOthers() {
+		List<Slot> allSlotOthers = new ArrayList<Slot>();
 		for (Slot slot : reserved) {
 			if (slot.getClass() == SlotTravel.class) {
 				allSlotOthers.add(slot);
@@ -97,25 +116,25 @@ public class People {
 		return allSlotOthers;
 	}
 
+	/**
+	 * @author melanie add a car to the person repository
+	 * @param String  color,
+	 * @param String  brand,
+	 * @param String  registration,
+	 * @param String  Format,
+	 * @param Integer nbOfSeats
+	 * @return boolean
+	 */
+	public void addCar(String color, String brand, String registration, String Format, Integer nbOfSeats) {
+		Car c = new Car(color, brand, registration, Format, nbOfSeats);
+		this.myCars.add(c);
+	}
 
-/**
-		 * @author melanie
-         * add a car to the person repository
-         * @param String color,
-		 * @param String brand,
-		 * @param String registration,
-		 * @param String Format,
-		 * @param Integer nbOfSeats
-         * @return boolean
-         */
-	public void addCar(String color,String brand,String registration,String Format,Integer nbOfSeats){
-		Car c = new Car(color,brand,registration,Format,nbOfSeats);
+	public void addCar(Car c) {
 		this.myCars.add(c);
 	}
-	public void addCar(Car c){
-		this.myCars.add(c);
-	}
-	public void removeCar(int index){
-	//	this.cars.remove(index);
+
+	public void removeCar(int index) {
+		// this.cars.remove(index);
 	}
 }

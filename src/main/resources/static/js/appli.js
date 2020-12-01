@@ -1,3 +1,4 @@
+var timer = 0;
 let app = Vue.createApp({
 
 	data: () => ({
@@ -247,7 +248,7 @@ app.component('findTravel', {
 })
 app.component('findTravelDisplay', {
 	data: () => ({
-		participant: [],
+		participants: [],
 	}),
 	props: ["aTravel", "indexTravel"],
 	beforeMount: function() {
@@ -255,19 +256,21 @@ app.component('findTravelDisplay', {
 		this.loadParticipant()
 	},
 	updated: function() {
-		console.log("mounted")
-		this.loadParticipant()
+		console.log("MISE A JOUR")
+		this.loadParticipant();
+
 	},
 	template: `
 		<li>
+		{{aTravel}}
 			<form method="POST" action="/findTravel" >
 			"{{aTravel.slotName}}" De
 		                {{aTravel.start}}
 		                jusqu'à {{aTravel.end}} 
 		                <ul>
-		                    <displayParticipant v-for="people in participant" :aPeople="people"></displayParticipant>
+		                    <displayParticipant v-for="people in participants" :aPeople="people"></displayParticipant>
 		                </ul>
-		                <input type="text" :value="aTravel.id" name="idSlot" >
+		                <input type="text" :value="aTravel.id" name="idSlot" hidden>
 		
 		                <input type="submit" value="Join" >
 		            </form>
@@ -280,7 +283,7 @@ app.component('findTravelDisplay', {
 			return body
 		},
 		loadParticipant: async function() {
-			console.log("JE SUIS LE NUMERO "+this.aTravel.id)
+			console.log("JE SUIS LE NUMERO " + this.aTravel.id)
 			let res = await fetch('/findOwner', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
@@ -288,6 +291,7 @@ app.component('findTravelDisplay', {
 			})
 			let body = await res.json()
 			this.participants = body;
+			console.log(this.participants)
 			//body = await this.request('/findOwner');
 			//this.travels = body;
 
@@ -300,9 +304,8 @@ app.component('findTravelDisplay', {
 app.component('displayParticipant', {
 	props: ["aPeople"],
 	template: `
-	<p>OH</p>
 	<li>
-		Name :  eude  Firstname : e
+		Name :  {{aPeople[2]}} Firstname : {{aPeople[2]}}
 	</li>
 		`,
 	methods: {
