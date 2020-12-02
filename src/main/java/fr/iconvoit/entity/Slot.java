@@ -77,6 +77,8 @@ public abstract class Slot{
 			@JoinColumn(name = "fk_people") })
 	private List<People> participants = new ArrayList<People>();
 	
+	private Integer limitParticipate;
+	
 	public Slot() {
 
 	}

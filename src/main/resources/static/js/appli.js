@@ -262,7 +262,7 @@ app.component('findTravelDisplay', {
 	},
 	template: `
 		<li>
-			<form method="POST" action="/findTravel" >
+			<form method="POST" action="/findTravel" @sumbit.preevent="join">
 			"{{aTravel.slotName}}" De
 		                {{aTravel.start}}
 		                jusqu'à {{aTravel.end}} 
@@ -271,7 +271,7 @@ app.component('findTravelDisplay', {
 		                </ul>
 		                <input type="text" :value="aTravel.id" name="idSlot" hidden>
 		
-		                <input type="submit" value="Join" @click="rejoindre">
+		                <input type="submit" value="Join">
 		            </form>
 			</li>
 		`,

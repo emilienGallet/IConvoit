@@ -51,6 +51,10 @@ public class People {
 
 	private String password;
 
+	
+	/**
+	 * It's suposed to bed the way saved. (way who the user want to store it. 
+	 */
 	@OneToMany
 	private List<Path> ways;
 

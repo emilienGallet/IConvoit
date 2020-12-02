@@ -17,7 +17,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -30,11 +29,11 @@ import lombok.ToString;
  */
 public final class SlotTravel extends Slot {
 
-	//Emmit an error for REST
-	//@Id
-	//@GeneratedValue(strategy = GenerationType.AUTO)
-	//private Long id;
-	//--------
+	// Emmit an error for REST
+	// @Id
+	// @GeneratedValue(strategy = GenerationType.AUTO)
+	// private Long id;
+	// --------
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	Localization startPlace;
@@ -43,6 +42,9 @@ public final class SlotTravel extends Slot {
 
 	@OneToMany(cascade = CascadeType.ALL)
 	List<Path> paths = new ArrayList<Path>();
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	Car car;
 
 	public SlotTravel() {
 
@@ -55,7 +57,7 @@ public final class SlotTravel extends Slot {
 		this.finishPlace = finishPlace;
 	}
 
-	public SlotTravel(Long id,String slotName, LocalDateTime start, LocalDateTime end) {
+	public SlotTravel(Long id, String slotName, LocalDateTime start, LocalDateTime end) {
 		super(id);
 		this.setSlotName(slotName);
 		this.setStart(start);

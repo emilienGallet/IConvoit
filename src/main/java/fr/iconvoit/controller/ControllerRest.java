@@ -11,8 +11,11 @@ import java.util.TimeZone;
 
 import javax.inject.Inject;
 
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties.IsolationLevel;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -132,10 +135,16 @@ public class ControllerRest {
 		// ArrayList<People> lp = (ArrayList<People>) listP.findAllById(p);
 		return lp;
 	}
-	
+	/**
+	 * 
+	 * @param s an slotTravel ID
+	 * @return
+	 */
 	@RequestMapping("/joinTravel")
 	@ResponseBody
-	public ArrayList<Object> joinTravel() {
+	@Transactional(rollbackFor = Exception.class)
+	public ArrayList<Object> joinTravel(@RequestBody Long s) {
+		listSlots.joinSlot(s,userConected().getId());
 		return null;
 	}
 }
