@@ -1,8 +1,9 @@
           //By Jeremy
           var list = document.getElementsByClassName("point")
           var pointList = [];
+          var list1 = [];
 
-         
+         var testTM = "travel Management"
           //Init map
           map = new OpenLayers.Map("demoMap");
           var mapnik = new OpenLayers.Layer.OSM();
@@ -52,6 +53,20 @@
         
         var lineFeature = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(pointList), null, style_green);
 
+        function showPath(){
+             list2 = []
+             console.log("showPath",list1)
+          for(let i = 0; i < list1.length; i++){
+               list2.push( {lon : list1[i].longitude, lat: list1[i].latitude} )
+          }
+          for(let i = 0; i < list2.length; i++){
+               list2[i] = new OpenLayers.LonLat( list2[i].lon, list2[i].lat).transform(fromProjection, toProjection)
+               list2[i]=  new OpenLayers.Geometry.Point(list2[i].lon,list2[i].lat)
+          }
+          lineFeature = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(list2), null, style_green);
+          
+          vectorLayer.addFeatures(lineFeature)
+        }
 
           vectorLayer.addFeatures(lineFeature)
           var markers = new OpenLayers.Layer.Markers("Markers");
@@ -64,9 +79,10 @@
           var startLat = document.getElementById("startLat")
           var endLon = document.getElementById("endLon")
           var endLat = document.getElementById("endLat")
+          var test = document.getElementById("test")
 
           //permit to add 2 markers
-          map.events.register("click", map, function (e) {
+          map.events.register("click", map, async function (e) {
                if(markers.markers.length < 2){
                     opx = map.getLonLatFromViewPortPx(e.xy);
                     console.log(opx)
@@ -75,11 +91,35 @@
                   if(markers.markers.length == 1){
                        startLon.value = opx.lon
                        startLat.value = opx.lat
-
+                       
                     }
                     else{
                          endLon.value = opx.lon
                          endLat.value = opx.lat
+
+                         let res = await fetch('/createPath', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({startLon:startLon.value, startLat:startLat.value,endLon :endLon.value,endLat:endLat.value })
+                          })
+                          body = await res.json()
+
+                         console.log("RESPONSE",body.points)
+                         
+                         list1 = body.points
+                      /*   list2 = []
+                         for(let i = 0; i < list1.length; i++){
+                              list2.push( {lon : list1[i].longitude, lat: list1[i].latitude} )
+                         }
+                         for(let i = 0; i < list2.length; i++){
+                              list2[i] = new OpenLayers.LonLat( list2[i].lon, list2[i].lat).transform(fromProjection, toProjection)
+                              list2[i]=  new OpenLayers.Geometry.Point(list2[i].lon,list2[i].lat)
+                         }
+                         lineFeature = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(list2), null, style_green);
+                         vectorLayer.addFeatures(lineFeature)
+        */
+                       //  list = body.points
+                         showPath()
                     }
 
                     console.log(opx)

@@ -1,15 +1,16 @@
 let app = Vue.createApp({
   
         data:()=>({
-            user:Object,
-            cars:Array,
-            plannings:Array,
+            user:{},
+            cars:[],
+            plannings:[],
+            ways:[],
         }),
         mounted: function(){
             this.loadUser()
         },
         template: `
-        <Menu :user="user" :cars="cars" :plannings="plannings"/>`,
+        <Menu :user="user" :cars="cars" :plannings="plannings" :ways="ways" />`,
         methods:{
             init: async function(){
               await  this.loadUser();
@@ -28,7 +29,7 @@ let app = Vue.createApp({
                     if(user == username.username){
 
                         this.user = users[i]
-                console.log("UTILISATEUR",this.user)
+                        console.log("UTILISATEUR",this.user)
 
                         car = await this.request(users[i]._links.myCars.href)
                         car = car._embedded.cars
@@ -40,9 +41,11 @@ let app = Vue.createApp({
 
                             this.plannings.push(this.user.slotTravel[i])
                         }
-                        
+                        ways = await this.request(users[i]._links.ways.href)
+                       // console.log(ways)
+                        ways = ways._embedded.paths
+                        this.ways = ways
 
-                        
 
                         return
                     }
@@ -68,6 +71,7 @@ let app = Vue.createApp({
             user:Object,
             cars:Array,
             plannings:Array,
+            ways:Array,
 
         },
         data: () => ({
@@ -94,7 +98,7 @@ let app = Vue.createApp({
         </div>
 
         <div v-if="page == 'travel'">
-        <travel/>
+        <travel  :user="user" :cars="cars" :plannings="plannings" :ways="ways"  />
         </div>
 
         <div v-if="page == 'Car'">
@@ -166,8 +170,56 @@ let app = Vue.createApp({
     })
 
     app.component('travel',{
+        props:{
+            user:Object,
+            cars:Array,
+            plannings:Array,
+            ways:Array,
+        },
+        data: () => ({
+          test:"",
+          startLon:"",
+          startLat:"",
+          endLon  :"",
+          endLat  :"",
+          year:new Date().getFullYear(),
+          month:new Date().getMonth()+1,
+          day:new Date().getDate(),
+          hour:new Date().getHours(),
+          minute:new Date().getMinutes(),
+          selected:0
+
+
+        }),
+
         template:`
+        
             <div id="demoMap" style="height: 500px; width: 1000px"></div>
+            
+            <form @submit.prevent="addTravel">
+                <input type="text" id="startLon" name="startLon" v-model="startLon" hidden>
+                <input type="text" id="startLat" name="startLat" v-model="startLat" hidden>
+                <input type="text" id="endLon"   name="endLon"   v-model="endLon"   hidden>
+                <input type="text" id="endLat"   name="endLat"   v-model="endLat"   hidden>
+                <input type="text" id="test"     name="test"     v-model="test" placeholder="Je suis visible ">
+
+                <input type="text" id="trajectName" name="trajectName" placeholder="Traject Name">
+                <select v-model="selected">
+                    <option v-for="(car, index) in cars" :value ="index" >{{cars[index].registration}}</option>
+                </select>
+                <input type="submit">
+            </form >
+            <label>
+                Start at :
+                <input name="dayOfMonth" type="number" min="1" max="31" v-model="year" >
+                <input name="month" type="number" min="1" max="12" v-model="month" >
+                <input name="year" type="number" v-model="day">
+                <input name="hour" type="number" min="0" max="23" v-model="hour">
+                <input name="minute" type="number" min="0" max="59" v-model="minute">
+            </label>   
+            <ul>
+                <li v-for="(way,index) in ways"><button @Click="choosePath(index)">{{way.name}}</button></li>
+            </ul>
 
         `,
         mounted() {
@@ -175,7 +227,32 @@ let app = Vue.createApp({
             travelManagement.setAttribute('src', '/js/travelManagement.js')
             document.head.appendChild(travelManagement)
           },
-          methods:{
+        methods:{
+            createPath: async function(){
+                let res = await fetch('/createPath', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({oldPass:oldPass,newPass:newPass})
+                })
+            },
+
+            choosePath: async function (index){
+                points = await this.request(this.ways[index]._links.points.href)
+                list1 = []
+                list1 = points._embedded.localizations
+                    console.log(list1)
+                    showPath()
+            },
+            addTravel:function(){
+                console.log("addTravel",new Date(
+               this.year,
+               this.month-1,
+               this.day,
+               this.hour,
+               this.minute))
+               console.log("selected",this.selected)
+            },
+
             request: async function(path){
                 let res = await fetch(path) 
                 let body = await res.json()
