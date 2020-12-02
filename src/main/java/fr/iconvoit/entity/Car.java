@@ -52,9 +52,9 @@ public class Car /* extends CrudRepository<People,Long> */ {
      * @param String  color,
      * @param String  brand,
      * @param String  registration,
-     * @param Integer nbOfSeats
+     * @param int nbOfSeats
      */
-    public Car(String color, String brand, String registration, String Format, Integer nbOfSeats) {
+    public Car(String color, String brand, String registration, String Format, int nbOfSeats) {
         this.color = color;
         this.brand = brand;
         this.Format = Format;

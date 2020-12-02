@@ -194,14 +194,13 @@ let app = Vue.createApp({
         },
         data: () => ({
            registration:null,
-           nbSeats:0,
-           brand:null,
-           Format:null,
-           color:null,
+           nbOfSeats:null,
+           brand:"",
+           Format:"citadine",
+           color:"",
            id:null
         }),
         template:`car
-        {{cars}}
         
          
         <h3>list of my car(s)</h3>
@@ -211,46 +210,40 @@ let app = Vue.createApp({
                 <li>0 car</li>
             </p>
 
-            <p v-else">
+            <p v-else>
             <li v-for="car in cars">
-                <form method="POST" @submit="deleteCarIndexVue">
-                {{car.registration}} {{car.nbOfSeats}} {{car.brand}} {{car.Format}}
+                {{car}}
+                <form method="POST" @submit="deleteCarIndexVue(id)">
+                {{car.registration}} {{car.nbOfSeats}} {{car.brand}} {{car.color}} 
+                <input v-model="id" type="text" hidden>
+                <input  class="supp" type="submit" value="X">
                 </form>
-                <!-- 
-                <form method="POST" @submit="suppCar">
-                {{mycar.registration}} {{mycar.nbOfSeats}} {{mycar.brand}} {{mycar.Format}}
-                <input type="text" th:value="{{mycar.id}}" name="idCar" hidden>
-                <input class="supp" type="submit" value="X">
-            </form>
-                -->
+                
             </li>
             </p>
             
         </ul>
     
     <h3>add a car</h3>
+
     <form id="addcarVue" @submit.prevent="addcarVue" method="post">
     <!-- <form action=/addcarVue method="POST"> -->
-        <p><input v-model="color" type="text" placeholder="color" id="color" name="color" value="" /></p>
-        <p><input v-model="brand" type="text" placeholder="brand" id="brand" name="brand" value="" /></p>
-        <p> model : LL-NNN-LL <input type="text" v-model="registration" placeholder="registration" id="registration" name="registration" value="" /></p>
+        <p><input v-model="color" type="text" placeholder="color" id="color" required/></p>
+        <p><input v-model="brand" type="text" placeholder="brand" id="brand" required/></p>
+        <p> model : LL-NNN-LL <input type="text" v-model="registration" placeholder="registration" id="registration" required/></p>
         <p>type of car (citadine = 5 seats maximum)
-            <select v-model="Format" id="Format" name="Format">
-                <option value="citadine">citadine</option>
-                <option value="other">other</option>
+            <select v-model="Format" id="Format" required>
+                <option>citadine</option>
+                <option>other</option>
             </select>
         </p>
         <p>nb of seats
-            <select v-model="nbSeats" type="number" name="nbSeats">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-
-
+            <select v-model.number="nbOfSeats" value="nbOfSeats" required>
+                <option v-bind:value="{ number: 1 }">1</option>
+                <option v-bind:value="{ number: 2 }">2</option>
+                <option v-bind:value="{ number: 3 }">3</option>
+                <option v-bind:value="{ number: 4 }">4</option>
+                <option v-bind:value="{ number: 5 }">5</option>
             </select>
         </p>
         <input type="submit" value="Send">
@@ -265,10 +258,9 @@ let app = Vue.createApp({
                 return body
             },
             addcarVue: async function(){
-                let newCar={color : this.color,brand : this.brand,registration : this.registration,Format : this.Format, nbOfSeats : 4, owner : this.user}
+                let newCar={color : this.color,brand : this.brand,registration : this.registration,Format : this.Format, nbOfSeats : parseInt(this.nbOfSeats), owner : this.user}
 				console.log(newCar)                
-//let res = await this.request('/api/cars')
-			let res = await fetch('/api/cars', {
+			    let res = await fetch('/api/cars', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(newCar)
@@ -278,19 +270,21 @@ let app = Vue.createApp({
                 return body;
             },
             deleteCarIndexVue: async function(v){
-                console.log("deleteCarIndex " + v)
-			    console.clear()
-            }/*
-            AddCar:async function(c,color,brand,registration,nbOfSeats){
-                let newCar={color,brand,registration,nbOfSeats}
-                let res = await fetch('/api/car',{
-                    method: 'POST',
+                console.log("deleteCarIndexVue" + v)
+                console.clear()
+                console.log(this.cars[v]._links.self.href)
+                let href = this.cars[v]._links.self.href;
+                this.cars.splice(v,1)
+                
+                let res = await fetch(href, {
+                    method: 'DELETE',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(newCar)
                 })
                 let body = await res.json()
-                this.car
+                this.cars.push(body)
                 
+            }/*
+            AddCar:async function(c,color,brand,registration,nbOfSeats){
                 let userD = new UserDetails
                 // let sc = new SecurityContextHolder
                 // userD =(UserDetails) sc.getContext().getAuthentication().getPrincipal();
@@ -317,10 +311,10 @@ let app = Vue.createApp({
                     p.addCar(c);
                     
                     carRep.save(c);
-                    return "redirect:/car";
                 }
             },*/
-        }
+        },
+        
     })
 
    
