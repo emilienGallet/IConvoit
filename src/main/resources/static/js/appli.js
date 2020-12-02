@@ -271,7 +271,7 @@ app.component('findTravelDisplay', {
 		                </ul>
 		                <input type="text" :value="aTravel.id" name="idSlot" hidden>
 		
-		                <input type="submit" value="Join" >
+		                <input type="submit" value="Join" @click="rejoindre">
 		            </form>
 			</li>
 		`,
@@ -283,7 +283,7 @@ app.component('findTravelDisplay', {
 		},
 		loadParticipant: async function() {
 			console.log("JE SUIS LE NUMERO " + this.aTravel.id)
-			let res = await fetch('/findOwner', {
+			let res = await fetch('/findParticipant', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(this.aTravel.id)
@@ -294,7 +294,32 @@ app.component('findTravelDisplay', {
 			//body = await this.request('/findOwner');
 			//this.travels = body;
 
-		}
+		},
+		join: async function() {
+			/* We can do that but it's unsafe! 
+			should i use knowlege of my couses or security++ ? ><""
+			console.log("Rejoint le voyage n°" + this.aTravel.id)
+			let res = await fetch('/api/slotTravels/'+this.aTravel.id+'/participants', {
+				method: 'PUT',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(this.participants)
+			})
+			let body = await res.json()
+			this.participants = body;
+			console.log(this.participants)
+			//body = await this.request('/findOwner');
+			//this.travels = body;
+			I choose security way no trust of front-end and do 2 state (reserved state and final state)
+			*/
+			let res = await fetch('/joinTravel', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(this.aTravel.id)
+			})
+			let body = await res.json()
+			this.participants = body;
+		},
+
 
 	},
 

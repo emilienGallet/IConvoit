@@ -13,6 +13,7 @@ import javax.inject.Inject;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -62,6 +63,14 @@ public class ControllerRest {
 		return new People(userD.getUsername(), null, null);
 	}
 
+	/**
+	 * Reserch an travel who the use can joint it.
+	 * Return to the vueJS API
+	 * @return
+	 * @throws SlotException
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 */
 	@RequestMapping("/loadFindTravels")
 	@ResponseBody
 	public ArrayList<SlotTravel> findTravels() throws SlotException, IllegalArgumentException, IllegalAccessException {
@@ -90,7 +99,12 @@ public class ControllerRest {
 		return stl;
 	}
 
-	@RequestMapping("/findOwner")
+	/**
+	 * Find participant of an Travel an return it to vueJS
+	 * @param s ID of the travel
+	 * @return
+	 */
+	@RequestMapping("/findParticipant")
 	@ResponseBody
 	public ArrayList<People> findParticipants(@RequestBody Long s) {
 		// ArrayList<Long> ll = listSlots.findParticipant(s);
@@ -118,5 +132,10 @@ public class ControllerRest {
 		// ArrayList<People> lp = (ArrayList<People>) listP.findAllById(p);
 		return lp;
 	}
-
+	
+	@RequestMapping("/joinTravel")
+	@ResponseBody
+	public ArrayList<Object> joinTravel() {
+		return null;
+	}
 }
