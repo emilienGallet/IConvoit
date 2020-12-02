@@ -210,25 +210,23 @@ let app = Vue.createApp({
                 <li>0 car</li>
             </p>
 
-            <p v-if="cars.size>0">
+            <p v-else">
             <li v-for="car in cars">
-                1 car
-            </li>
-            </p>
-            
-        </ul>
-    <!--
-    <ul>
-        <li data-th-each="mycar : {{cars}}">
-            <form method="POST" @submit="suppCar">
+                <form method="POST" @submit="deleteCarIndexVue">
+                {{car.registration}} {{car.nbOfSeats}} {{car.brand}} {{car.Format}}
+                </form>
+                <!-- 
+                <form method="POST" @submit="suppCar">
                 {{mycar.registration}} {{mycar.nbOfSeats}} {{mycar.brand}} {{mycar.Format}}
                 <input type="text" th:value="{{mycar.id}}" name="idCar" hidden>
                 <input class="supp" type="submit" value="X">
             </form>
-
-        </li>
-    </ul>
-   -->
+                -->
+            </li>
+            </p>
+            
+        </ul>
+    
     <h3>add a car</h3>
     <form id="addcarVue" @submit="addcarVue" action="/addcarVue" method="post">
     <!-- <form action=/addcarVue method="POST"> -->
@@ -256,20 +254,7 @@ let app = Vue.createApp({
         </p>
         <input type="submit" value="Send">
     </form>
-    <!-- 
-        
-        <H3>list of my car(s)</H3>
-    <ul>
-        <li data-th-each="mycar : {{cars}}">
-            <form method="POST" @submit="suppCar">
-                {{mycar.registration}} {{mycar.nbOfSeats}} {{mycar.brand}} {{mycar.Format}}
-                <input type="text" th:value="{{mycar.id}}" name="idCar" hidden>
-                <input class="supp" type="submit" value="X">
-            </form>
-        </li>
-    </ul>
-
-   -->
+    
         `,
 
         methods:{
@@ -279,10 +264,12 @@ let app = Vue.createApp({
                 return body
             },
             addcarVue: async function(){
-                return "redirect:/api/car";
+                let newCar={color,brand,registration,nbOfSeats}
+                let res = await this.request('/api/cars')
+                return "redirect:/api/cars";
             },
             deleteCarIndexVue: async function(v){
-                console.log("deleteVegetableIndex " + v)
+                console.log("deleteCarIndex " + v)
 			    console.clear()
             }/*
             AddCar:async function(c,color,brand,registration,nbOfSeats){
@@ -308,11 +295,7 @@ let app = Vue.createApp({
                 carRep.save(c);
                 return "redirect:/car";
             },
-            deleteCarIndex: async function(v){
-                console.log("deleteVegetableIndex " + v)
-			    console.clear()
-            }*/
-            /*
+            
             AddCar:function(Car c,@ModelAttribute("nbSeats") int nbSeats){
                     UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                     People p = peopleDetailsService.findByUsername(userD.getUsername());
