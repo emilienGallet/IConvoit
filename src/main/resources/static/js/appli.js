@@ -148,20 +148,49 @@ let app = Vue.createApp({
 
     })
 
+    /**
+     * @author Christian
+     */
     app.component('planning',{
         props:{
             plannings:Array,
 
         },
-        template:`planning
-            {{plannings}}
+        template:`
+        <button @click="ajoutEvenement"> Ajouter un Evenement </button>
+        <p>
+            <ul> <planning :pl="pl" v-for="pl in {{plannings}}"
+                <p>Name : {{slot.name}}
+                  De : {{slot.start}} 
+                  jusqu'à : {{slot.end}}
+                </p>  
+            </ul>
+        </p>
+        
         `,
         methods:{
+
+            ajoutEvenement :function(){
+
+            },
+
+            loadData: async function(){
+                console.log("load data")
+                let res = await fetch('/api/slots') // hard coded :(, not HATEOAS
+                console.log(res)
+
+                let body = await res.json()
+                console.log(body)
+
+                this.slots = body._embedded.slots
+            },
             request: async function(path){
                 let res = await fetch(path) 
                 let body = await res.json()
                 return body
             },
+
+
         }
     })
 
