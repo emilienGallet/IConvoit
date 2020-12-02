@@ -98,7 +98,7 @@ let app = Vue.createApp({
         </div>
 
         <div v-if="page == 'Car'">
-        <car  :cars="cars" />
+        <car  :cars="cars" :user="user"/>
         </div>
 
         <div v-if="page == 'findTravel'">
@@ -189,11 +189,12 @@ let app = Vue.createApp({
  	 */
     app.component('Car',{
         props:{
-            cars:Array,
+            cars : Array,
+			user : Object,
         },
         data: () => ({
            registration:null,
-           nbSeats:null,
+           nbSeats:0,
            brand:null,
            Format:null,
            color:null,
@@ -228,19 +229,19 @@ let app = Vue.createApp({
         </ul>
     
     <h3>add a car</h3>
-    <form id="addcarVue" @submit="addcarVue" action="/addcarVue" method="post">
+    <form id="addcarVue" @submit.prevent="addcarVue" method="post">
     <!-- <form action=/addcarVue method="POST"> -->
-        <p><input type="text" placeholder="color" id="color" name="color" value="" /></p>
-        <p><input type="text" placeholder="brand" id="brand" name="brand" value="" /></p>
-        <p> model : LL-NNN-LL <input type="text" placeholder="registration" id="registration" name="registration" value="" /></p>
+        <p><input v-model="color" type="text" placeholder="color" id="color" name="color" value="" /></p>
+        <p><input v-model="brand" type="text" placeholder="brand" id="brand" name="brand" value="" /></p>
+        <p> model : LL-NNN-LL <input type="text" v-model="registration" placeholder="registration" id="registration" name="registration" value="" /></p>
         <p>type of car (citadine = 5 seats maximum)
-            <select id="Format" name="Format">
+            <select v-model="Format" id="Format" name="Format">
                 <option value="citadine">citadine</option>
                 <option value="other">other</option>
             </select>
         </p>
         <p>nb of seats
-            <select name="nbSeats">
+            <select v-model="nbSeats" type="number" name="nbSeats">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -264,9 +265,17 @@ let app = Vue.createApp({
                 return body
             },
             addcarVue: async function(){
-                let newCar={color,brand,registration,nbOfSeats}
-                let res = await this.request('/api/cars')
-                return "redirect:/api/cars";
+                let newCar={color : this.color,brand : this.brand,registration : this.registration,Format : this.Format, nbOfSeats : 4, owner : this.user}
+				console.log(newCar)                
+//let res = await this.request('/api/cars')
+			let res = await fetch('/api/cars', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(newCar)
+			})
+			let body = await res.json()
+			this.cars.push(body)
+                return body;
             },
             deleteCarIndexVue: async function(v){
                 console.log("deleteCarIndex " + v)
