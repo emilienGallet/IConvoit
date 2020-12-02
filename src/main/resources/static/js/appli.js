@@ -1,9 +1,9 @@
 let app = Vue.createApp({
   
         data:()=>({
-            user:Object,
-            cars:Array,
-            plannings:Array,
+            user:{},
+            cars:[],
+            plannings:[],
         }),
         mounted: function(){
             this.loadUser()
@@ -156,14 +156,26 @@ let app = Vue.createApp({
             plannings:Array,
 
         },
+        data:()=>({
+            options:{
+                year:"2-digit",
+                month:"2-digit",
+                day:"2-digit",
+                hour:"2-digit",
+                minute:"2-digit",
+                second:"2-digit"
+            },
+        }),
         template:`
         <button @click="ajoutEvenement"> Ajouter un Evenement </button>
         <p>
-            <ul> <planning :pl="pl" v-for="pl in {{plannings}}"
-                <p>Name : {{slot.name}}
-                  De : {{slot.start}} 
-                  jusqu'à : {{slot.end}}
-                </p>  
+            <ul>
+                <li v-for="slot in plannings">
+                    <p>Name : {{slot.slotName}}
+                    De : {{new Date(slot.start).toLocaleDateString("en-US",options)}} 
+                    jusqu'à : {{new Date(slot.end).toLocaleDateString("en-US",options)}}
+                    </p>  
+                </li>
             </ul>
         </p>
         
