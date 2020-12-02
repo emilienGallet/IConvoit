@@ -170,8 +170,16 @@ let app = Vue.createApp({
         `,
         methods:{
 
-            ajoutEvenement :function(){
-
+            ajoutEvenement :async function(){
+                let newSlot={}
+                let res = await fetch('/api/slots',{
+                    method: 'PUT',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify(newslot)
+                })
+                let body = await res.json()
+                this.plannings.push(body)
+                return body;
             },
 
             loadData: async function(){
