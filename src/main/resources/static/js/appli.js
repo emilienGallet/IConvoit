@@ -238,7 +238,7 @@ let app = Vue.createApp({
             </select>
         </p>
         <p>nb of seats
-            <select v-model.number="nbOfSeats" value="nbOfSeats" required>
+            <select v-model.number="nbOfSeats" type="number" value="nbOfSeats" required>
                 <option v-bind:value="{ number: 1 }">1</option>
                 <option v-bind:value="{ number: 2 }">2</option>
                 <option v-bind:value="{ number: 3 }">3</option>
