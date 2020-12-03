@@ -18,13 +18,8 @@ public interface SlotFactory extends CrudRepository<Slot, Long> {
 	//In spite of the creation of a specific builder and the conversion of a BigInteger in Long
 	//ArrayList<Long> findParticipant(Long long1);
 	
-	/**
-	 * 
-	 * @param s slotID 
-	 * @param user Id of current user
-	 * @return
-	 */
-	@Query(value = "SELECT COUNT(*) AS bool "
+
+	/*@Query(value = "SELECT COUNT(*) AS bool "
 			+ "FROM SLOT,SLOT_PEOPLE  "
 			+ "WHERE SLOT.ID=FK_SLOT "
 			+ "AND FK_SLOT = ?1 "
@@ -33,5 +28,5 @@ public interface SlotFactory extends CrudRepository<Slot, Long> {
 				+ "FROM SLOT,SLOT_PEOPLE  "
 				+ "WHERE SLOT.ID=FK_SLOT "
 				+ "AND FK_SLOT = ?1)",nativeQuery = true)
-	Boolean joinSlot(Long s,Long user);
+	Boolean joinSlot(Long s,Long user);*/
 }

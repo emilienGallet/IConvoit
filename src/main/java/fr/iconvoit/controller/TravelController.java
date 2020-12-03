@@ -77,6 +77,7 @@ public class TravelController {
 		m.addAttribute("dateDayOfMonth", start.getDayOfMonth());
 		m.addAttribute("dateHour", start.getHour());
 		m.addAttribute("dateMinute", start.getMinute());
+		m.addAttribute("carList", user.getMyCars());
 		return "travel";
 	}
 

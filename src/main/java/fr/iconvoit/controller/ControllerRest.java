@@ -140,11 +140,13 @@ public class ControllerRest {
 	 * @param s an slotTravel ID
 	 * @return
 	 */
+	//@Transactional(rollbackFor = Exception.class)
 	@RequestMapping("/joinTravel")
 	@ResponseBody
-	@Transactional(rollbackFor = Exception.class)
 	public ArrayList<Object> joinTravel(@RequestBody Long s) {
-		listSlots.joinSlot(s,userConected().getId());
-		return null;
+		System.err.println("JE JOIN LE TRAVEL ");
+		//System.err.println(listSlots.joinSlot(s,userConected().getId()));
+//		listSlots.joinSlot(s,userConected().getId());
+		return new ArrayList<Object>();
 	}
 }
