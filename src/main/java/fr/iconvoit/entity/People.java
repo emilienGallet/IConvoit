@@ -1,6 +1,5 @@
 package fr.iconvoit.entity;
 
-import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,10 +20,9 @@ import javax.persistence.OneToMany;
 
 import com.sun.istack.NotNull;
 
-import fr.iconvoit.graphHopper.Path;
-
 import org.springframework.stereotype.Component;
 
+import fr.iconvoit.graphHopper.Path;
 import lombok.Data;
 
 @Entity

@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -59,8 +60,8 @@ public class ControllerRest {
     @RequestMapping("/createPath")
     @ResponseBody
     public Path createPath(@RequestBody DataCreatePath path) {
-        Localization start = new Localization("", path.getStartLat(),path.getEndLon());
-		Localization end = new Localization("", path.getEndLat(), path.getEndLon());
+        Localization start = new Localization("start", path.getStartLat(),path.getEndLon());
+		Localization end = new Localization("end", path.getEndLat(), path.getEndLon());
         Path p = Graph.planTraject(start, end, null);
         System.err.println(p.getPoints().size());
        return p;
@@ -150,5 +151,58 @@ public class ControllerRest {
 		//System.err.println(listSlots.joinSlot(s,userConected().getId()));
 //		listSlots.joinSlot(s,userConected().getId());
 		return new ArrayList<Object>();
+	}
+
+    @RequestMapping(path = { "/addtravel" }, method = RequestMethod.POST)
+	public void  addTravel(@RequestBody SlotTravel slotTravel) {
+		//get user info
+		UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        People user = peopleDetailsService.findByUsername(userD.getUsername());
+        System.err.println(slotTravel.getStartPlace());
+        System.err.println(slotTravel.getFinishPlace());
+        System.err.println(slotTravel.getPaths());
+        System.err.println(slotTravel.getSlotName());
+        System.err.println(slotTravel.getStart());
+        System.err.println(slotTravel.getEnd());
+        System.err.println(slotTravel.getParticipants());
+
+		/*
+		Localization start = new Localization("", startLat, startLon);
+		Localization end = new Localization("", endLat, endLon);
+
+		lf.save(start);
+		lf.save(end);
+		Path p = Graph.planTraject(start, end, null);
+		p.setName(trajectName);
+		pf.save(p);
+		user.getWays().add(p);
+		pef.save(user);
+		m.addAttribute("list", p.getPoints());
+		if (!user.getWays().isEmpty()) {
+			m.addAttribute("ways", user.getWays());
+		}
+
+		SlotTravel slotTravel = new SlotTravel();
+		slotTravel.setSlotName(trajectName);
+		slotTravel.setStart(LocalDateTime.of(year, month, dayOfMonth, hour, minute));
+		slotTravel.setEnd(slotTravel.getStart().plusMinutes(15));
+		slotTravel.getPaths().add(p);
+		slotTravel.setStartPlace(start);
+		slotTravel.setFinishPlace(end);
+		slotTravel.getParticipants().add(user);
+
+		user.getReserved().add(slotTravel);
+		sf.save(slotTravel);
+		pef.save(user);
+
+		LocalDateTime startD = LocalDateTime.now().plusMinutes(15);
+		m.addAttribute("slotOther", new SlotOther());
+		m.addAttribute("dateYear", startD.getYear());
+		m.addAttribute("dateMonth", startD.getMonth().getValue());
+		m.addAttribute("dateDayOfMonth", startD.getDayOfMonth());
+		m.addAttribute("dateHour", startD.getHour());
+		m.addAttribute("dateMinute", startD.getMinute());
+*/
+		return;
 	}
 }

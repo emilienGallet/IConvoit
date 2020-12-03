@@ -15,7 +15,6 @@ import fr.iconvoit.exceptions.SlotException;
 import fr.iconvoit.graphHopper.Path;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 @Data
 @EqualsAndHashCode(callSuper = true)

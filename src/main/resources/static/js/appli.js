@@ -178,7 +178,6 @@ app.component('planning', {
             ways:Array,
         },
         data: () => ({
-          test:"",
           startLon:"",
           startLat:"",
           endLon  :"",
@@ -188,7 +187,8 @@ app.component('planning', {
           day:new Date().getDate(),
           hour:new Date().getHours(),
           minute:new Date().getMinutes(),
-          selected:0
+          selected:0,
+          trajectName:"",
 
 
         }),
@@ -202,9 +202,8 @@ app.component('planning', {
                 <input type="text" id="startLat" name="startLat" v-model="startLat" hidden>
                 <input type="text" id="endLon"   name="endLon"   v-model="endLon"   hidden>
                 <input type="text" id="endLat"   name="endLat"   v-model="endLat"   hidden>
-                <input type="text" id="test"     name="test"     v-model="test" placeholder="Je suis visible ">
 
-                <input type="text" id="trajectName" name="trajectName" placeholder="Traject Name">
+                <input type="text" id="trajectName" name="trajectName" v-model="trajectName" placeholder="Traject Name" required >
                 <select v-model="selected">
                     <option v-for="(car, index) in cars" :value ="index" >{{cars[index].registration}}</option>
                 </select>
@@ -212,9 +211,9 @@ app.component('planning', {
             </form >
             <label>
                 Start at :
-                <input name="dayOfMonth" type="number" min="1" max="31" v-model="year" >
+                <input name="dayOfMonth" type="number" min="1" max="31" v-model="day" >
                 <input name="month" type="number" min="1" max="12" v-model="month" >
-                <input name="year" type="number" v-model="day">
+                <input name="year" type="number" v-model="year">
                 <input name="hour" type="number" min="0" max="23" v-model="hour">
                 <input name="minute" type="number" min="0" max="59" v-model="minute">
             </label>   
@@ -242,16 +241,60 @@ app.component('planning', {
                 list1 = []
                 list1 = points._embedded.localizations
                     console.log(list1)
+                    console.log(points)
                     showPath()
             },
-            addTravel:function(){
-                console.log("addTravel",new Date(
-               this.year,
-               this.month-1,
-               this.day,
-               this.hour,
-               this.minute))
-               console.log("selected",this.selected)
+            addTravel: async function(){
+                if(this.trajectName == "" || list1.length == 0)
+                    return
+                console.log("TRAJECT NAME",this.trajectName)
+                console.log("DATE",new Date(
+                this.year,
+                this.month-1,
+                this.day,
+                this.hour,
+                this.minute))
+                console.log("selected",this.selected)
+                console.log("list1",list1)
+                console.log("localization",
+                    startLon.value,
+                    startLat.value,
+                    endLon.value,
+                    endLat.value, )
+
+                console.log("START",list1[0])
+                console.log("END",list1[list1.length-1])
+
+                //path = {name:this.trajectName,points:list1}
+                newPath.name= this.trajectName
+                console.log("path",newPath)
+
+                slotTravel = {
+                slotName:this.trajectName,
+                start:new Date(this.year,this.month-1,this.day,this.hour,this.minute),
+                end:new Date(this.year,this.month-1,this.day,this.hour,this.minute),
+              // participants:[this.user],
+                startPlace:list1[0],
+                finishPlace:list1[list1.length-1],
+                paths:[newPath]
+               }
+               console.log("SLOT TRAVEL",slotTravel)
+
+
+               let res = await fetch('/addtravel', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(slotTravel)
+                })
+            //    body = res.json()
+             //   console.log(body)
+            /*   let res = await fetch('/api/slots', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(slotTravel)
+                })
+                body = res.json()
+                console.log(body)*/
             },
 
             request: async function(path){
