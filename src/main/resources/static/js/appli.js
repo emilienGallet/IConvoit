@@ -214,6 +214,99 @@ let app = Vue.createApp({
         }
     })
 
+
+    /**
+     * @author Christian
+     */
+
+    
+     app.component('addEvent',{
+        
+        data:()=>({
+            name:null,
+            daystart:null,
+            monthstart:null,
+            yearstart:null,
+            heurestart:null,
+            minutestart:null,
+            dayend:null,
+            monthend:null,
+            yearend:null,
+            heureend:null,
+            minuteend:null,
+
+        }),
+
+        template:`
+        <h1> Adding your Event </h1>
+        <h2>From an Ics File</h2>
+        <form role=" " @submit="/adding" method="POST">
+            <label>Url link : </label>
+            <input type="text" name="url" placeholder="name" required="required">
+            <input type="submit">
+        </form>
+
+        <h2>Personal insertion</h2>
+         <form role="form" action="/adding" method="POST">
+            <label>
+                Name of this event :
+                <input type="text" {{slotOther.slotName}}" placeholder="name" required="required">
+            </label>
+            <br>
+            <label>
+                Start at :
+                <input v-model="dayOfMonth" type="number" min="1" max="31"  "{{dateDayOfMonth}}">
+                <input v-model="month" type="number" min="1" max="12" "{{dateMonth}}">
+                <input v-model="year" type="number" th:value="{{dateYear}}">
+                <input v-model="hour" type="number" min="0" max="23" "{{dateHour}}">
+                <input v-model="minute" type="number" min="0" max="59"h "{{dateMinute]}">
+            </label>
+            <br>
+            <label>
+               End at :
+               <input v-model="enddayOfMonth" type="number" min="1"max="31" {{enddateDayOfMonth}}">
+               <input v-model="endmonth" type="number" min="1" max="12""{{enddateMonth}}">
+               <input v-model="endyear" type="number" th:min="{{dateYear}}" "{{enddateYear}}">
+               <input v-model="endhour" type="number" min="0" max="23" "{{enddateHour}}">
+               <input v-model="endminute" type="number" min="0" max="59" {{enddateMinute}}">
+            </label>
+            <label>
+               Is for me ?
+               <input v-model="me" type="checkbox" checked="checked">
+            </label>
+            <input type="submit">
+            </form>
+        
+        `,
+
+        methods:{
+
+            request: async function(path){
+                let res = await fetch(path) 
+                let body = await res.json()
+                return body
+            },
+
+            adding: async function(){
+                let newslot = {name:this.name, daystart:this.daystart, monthstart:this.monthstart,
+                    yearstart:this.yearstart, heurestart:this.heurestart, minutestart:this.minutestart,
+                dayend:this.dayend, monthend:this.monthend, yearend:this.yearend,heureend:this.heureend,
+                minuteend:this.minuteend, owner:this.user} 
+                console.log(newslot)
+            
+                let res = await fetch('/api/addEvent',{
+                    method:'POST',
+                    headers:{'content-type':'application/json'},
+                    body : JSON.stringify(newslot)
+                })
+                let body= await res.json()
+                this.slot.push(body)
+            }
+        },
+
+    }) 
+
+
     app.component('travel',{
         template:`
             <div id="demoMap" style="height: 500px; width: 1000px"></div>
