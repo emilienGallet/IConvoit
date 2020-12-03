@@ -1,5 +1,6 @@
 package fr.iconvoit.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import fr.iconvoit.exceptions.SlotException;
 import fr.iconvoit.graphHopper.Path;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
+import lombok.ToString;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -28,11 +29,11 @@ import lombok.EqualsAndHashCode;
  */
 public final class SlotTravel extends Slot {
 
-	//Emmit an error for REST
-	//@Id
-	//@GeneratedValue(strategy = GenerationType.AUTO)
-	//private Long id;
-	//--------
+	// Emmit an error for REST
+	// @Id
+	// @GeneratedValue(strategy = GenerationType.AUTO)
+	// private Long id;
+	// --------
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	Localization startPlace;
@@ -41,6 +42,9 @@ public final class SlotTravel extends Slot {
 
 	@OneToMany(cascade = CascadeType.ALL)
 	List<Path> paths = new ArrayList<Path>();
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	Car car;
 
 	public SlotTravel() {
 
@@ -51,6 +55,13 @@ public final class SlotTravel extends Slot {
 		super(name, start, end);
 		this.startPlace = startPlace;
 		this.finishPlace = finishPlace;
+	}
+
+	public SlotTravel(Long id, String slotName, LocalDateTime start, LocalDateTime end) {
+		super(id);
+		this.setSlotName(slotName);
+		this.setStart(start);
+		this.setEnd(end);
 	}
 
 	/**

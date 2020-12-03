@@ -1,3 +1,4 @@
+var timer = 0;
 let app = Vue.createApp({
   
         data:()=>({
@@ -109,16 +110,16 @@ let app = Vue.createApp({
         <findTravel :user="user"/>
         </div>
         `
-    })
+})
 
-    app.component('profile',{
-        props:{
-            user:Object,
-        },
-        data: () => ({
-           
-            }),
-        template:`
+app.component('profile', {
+	props: {
+		user: Object,
+	},
+	data: () => ({
+
+	}),
+	template: `
            
         
         
@@ -126,38 +127,38 @@ let app = Vue.createApp({
             <p>Firstname : {{user.firstname}}</p>
             
             `
-            ,
+	,
 
-            mounted: function (){
-              //  this.loadData()
-            },
-            methods: {
-                loadData: async function(){
-                    console.log("load data")
-                    let res = await fetch('/api/peoples') // hard coded :(, not HATEOAS
-                    console.log(res)
+	mounted: function() {
+		//  this.loadData()
+	},
+	methods: {
+		loadData: async function() {
+			console.log("load data")
+			let res = await fetch('/api/peoples') // hard coded :(, not HATEOAS
+			console.log(res)
 
-                    let body = await res.json()
-                    console.log(body)
+			let body = await res.json()
+			console.log(body)
 
-                    this.peoples = body._embedded.peoples
-                },
-                request: async function(path){
-                    let res = await fetch(path) 
-                    let body = await res.json()
-                    return body
-                },
-                
-            },
+			this.peoples = body._embedded.peoples
+		},
+		request: async function(path) {
+			let res = await fetch(path)
+			let body = await res.json()
+			return body
+		},
 
-    })
+	},
 
-    app.component('planning',{
-        props:{
-            plannings:Array,
+})
 
-        },
-        template:`planning
+app.component('planning', {
+	props: {
+		plannings: Array,
+
+	},
+	template: `planning
             {{plannings}}
         `,
         methods:{
@@ -269,43 +270,156 @@ let app = Vue.createApp({
         {{cars}}
         `,
 
-        methods:{
-            request: async function(path){
-                let res = await fetch(path) 
-                let body = await res.json()
-                return body
-            },
-        }
-    })
-
-   
-	/**
- 	 * @author Emilien Gallet
- 	 */
-
-	app.component('findTravel',{
-        props:{
-            user:Object,
-
-        },
-	        template:`{{user}}<p>No travel are avaiable</p><listTravel/>`,
-			methods:{
-				loadData: async function() {
-				let res = await fetch('/api/vegetables'); // hard coded :(, not HATEOAS 
-				let body = await res.json();
-				this.veges = body._embedded.vegetables;
-
-                },
-                request: async function(path){
-                    let res = await fetch(path) 
-                    let body = await res.json()
-                    return body
-                },
+	methods: {
+		request: async function(path) {
+			let res = await fetch(path)
+			let body = await res.json()
+			return body
 		},
-    })
-
-	/* End */
-    
+	}
+})
 
 
-    app.mount('#container')
+/**
+   * @author Emilien Gallet
+   */
+
+app.component('findTravel', {
+	data: () => ({
+		travels: [{ "id": 1, "slotName": "y", "start": "2020-11-28T21:52:42.989982", "end": "2020-11-28T22:07:42.990018", "url": null, "uid": null, "lastModified": null, "participants": [], "startPlace": null, "finishPlace": null, "paths": [] },
+		{ "id": 2, "slotName": "s", "start": "2020-11-28T21:52:42.990234", "end": "2020-11-28T22:07:42.990241", "url": null, "uid": null, "lastModified": null, "participants": [], "startPlace": null, "finishPlace": null, "paths": [] }],
+	}),
+	props: {
+		user: Object,
+	},
+	mounted: function() {
+		console.log("mounted")
+		this.loadTravels()
+	},
+	template: `
+	<ul v-if="travels.length!=0">
+		<findTravelDisplay v-for="(travel,index) in travels" :aTravel="travel" :indexTravel="index"></findTravelDisplay>
+	</ul>
+	<div v-else><p>No travel are avaiable</p></div><listTravel/>`,
+	methods: {
+		request: async function(path) {
+			let res = await fetch(path)
+			let body = await res.json()
+			return body
+		},
+		loadTravels: async function() {
+			/*let res = await fetch('/loadFindTravels', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(this.user)
+			})
+			let body = await res.json()*/
+
+			body = await this.request('/loadFindTravels');
+			this.travels = body;
+
+		}
+
+	},
+})
+app.component('findTravelDisplay', {
+	data: () => ({
+		participants: [],
+	}),
+	props: ["aTravel", "indexTravel"],
+	beforeMount: function() {
+		console.log("beforeMount")
+		this.loadParticipant()
+	},
+	updated: function() {
+		console.log("MISE A JOUR")
+		this.loadParticipant();
+
+	},
+	template: `
+		<li>
+			<form method="POST" action="/findTravel" @sumbit.preevent="join">
+			"{{aTravel.slotName}}" De
+		                {{aTravel.start}}
+		                jusqu'à {{aTravel.end}} 
+		                <ul>
+		                    <displayParticipant v-for="people in participants" :aPeople="people"></displayParticipant>
+		                </ul>
+		                <input type="text" :value="aTravel.id" name="idSlot" hidden>
+		
+		                <input type="submit" value="Join">
+		            </form>
+			</li>
+		`,
+	methods: {
+		request: async function(path) {
+			let res = await fetch(path)
+			let body = await res.json()
+			return body
+		},
+		loadParticipant: async function() {
+			console.log("JE SUIS LE NUMERO " + this.aTravel.id)
+			let res = await fetch('/findParticipant', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(this.aTravel.id)
+			})
+			let body = await res.json()
+			this.participants = body;
+			console.log(this.participants)
+			//body = await this.request('/findOwner');
+			//this.travels = body;
+
+		},
+		join: async function() {
+			/* We can do that but it's unsafe! 
+			should i use knowlege of my couses or security++ ? ><""
+			console.log("Rejoint le voyage n°" + this.aTravel.id)
+			let res = await fetch('/api/slotTravels/'+this.aTravel.id+'/participants', {
+				method: 'PUT',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(this.participants)
+			})
+			let body = await res.json()
+			this.participants = body;
+			console.log(this.participants)
+			//body = await this.request('/findOwner');
+			//this.travels = body;
+			I choose security way no trust of front-end and do 2 state (reserved state and final state)
+			*/
+			let res = await fetch('/joinTravel', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(this.aTravel.id)
+			})
+			let body = await res.json()
+			this.participants = body;
+		},
+
+
+	},
+
+})
+
+app.component('displayParticipant', {
+	props: ["aPeople"],
+	template: `
+	<li>
+		Name :  {{aPeople.name}} Firstname : {{aPeople.firstname}}
+	</li>
+		`,
+	methods: {
+		request: async function(path) {
+			let res = await fetch(path)
+			let body = await res.json()
+			return body
+		},
+	},
+
+})
+
+/* End */
+
+
+
+app.mount('#container')

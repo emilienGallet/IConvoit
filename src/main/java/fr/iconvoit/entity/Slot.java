@@ -6,6 +6,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +20,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import fr.iconvoit.IcsParser;
 import fr.iconvoit.exceptions.SlotException;
@@ -74,7 +76,8 @@ public abstract class Slot{
 	@JoinTable(name = "slot_people", joinColumns = { @JoinColumn(name = "fk_slot") }, inverseJoinColumns = {
 			@JoinColumn(name = "fk_people") })
 	private List<People> participants = new ArrayList<People>();
-
+	
+	private Integer limitParticipate;
 	
 	public Slot() {
 
@@ -92,6 +95,10 @@ public abstract class Slot{
 		} catch (DateTimeParseException e) {
 			new SlotException();
 		}
+	}
+
+	public Slot(Long id2) {
+		this.setId(id2);
 	}
 /*
 	public boolean checkSlot(){

@@ -1,5 +1,10 @@
 package fr.iconvoit.controller;
 
+import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +20,11 @@ import fr.iconvoit.entity.CarRepository;
 import fr.iconvoit.entity.Localization;
 import fr.iconvoit.entity.People;
 import fr.iconvoit.entity.PeopleDetailsService;
+import fr.iconvoit.entity.SlotTravel;
+import fr.iconvoit.exceptions.SlotException;
+import fr.iconvoit.factory.PeopleFactory;
+import fr.iconvoit.factory.SlotFactory;
+import fr.iconvoit.factory.SlotTravelFactory;
 import fr.iconvoit.graphHopper.Path;
 
 /**
@@ -22,13 +32,22 @@ import fr.iconvoit.graphHopper.Path;
  */
 @RestController
 public class ControllerRest {
-    @Inject
-    PeopleDetailsService peopleDetailsService;
+	@Inject
+	PeopleDetailsService peopleDetailsService;
+
+	@Inject
+	CarRepository carRep;
+
+	@Inject
+	PeopleFactory listP;
+
+	@Inject
+	SlotTravelFactory listTravels;
+
+	@Inject
+	SlotFactory listSlots;
+
     
-    @Inject
-    CarRepository carRep;
-
-
     @RequestMapping("/user")
     @ResponseBody
     public People userConected(){
@@ -47,4 +66,89 @@ public class ControllerRest {
        return p;
     }
 
+	
+
+	/**
+	 * Reserch an travel who the use can joint it.
+	 * Return to the vueJS API
+	 * @return
+	 * @throws SlotException
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 */
+	@RequestMapping("/loadFindTravels")
+	@ResponseBody
+	public ArrayList<SlotTravel> findTravels() throws SlotException, IllegalArgumentException, IllegalAccessException {
+		UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		People p = listP.findByUsername(userD.getUsername());
+		System.err.println("ID : " + p.getId());
+		ArrayList<Object> l = listTravels.findTravelsOfOthers(p.getId());
+		ArrayList<SlotTravel> stl = new ArrayList<>();
+		for (Object object : l) {
+			Object[] tab = (Object[]) object;
+			// SLOT.ID,SLOT_NAME,START,END, FINISH_PLACE_ID, START_PLACE_ID
+			BigInteger b = (BigInteger) tab[0];
+			Long id = b.longValueExact();// object.getClass();// lf[0].get(object);
+			String slotName = (String) tab[1];// lf[1].get(object);
+			Timestamp TtoLdt = (Timestamp) tab[2];// lf[2].get(object);
+			LocalDateTime start = TtoLdt.toLocalDateTime();
+			TtoLdt = (Timestamp) tab[3];// lf[3].get(object);
+			LocalDateTime end = TtoLdt.toLocalDateTime();
+			/*
+			 * b = (BigInteger) tab[4]; Long finishPlaceId =
+			 * b.longValueExact();//lf[4].get(object); b = (BigInteger) tab[5]; Long
+			 * startPlaceId = b.longValueExact();//lf[5].get(object);
+			 */
+			stl.add(new SlotTravel(id, slotName, start, end));
+		}
+		return stl;
+	}
+
+	/**
+	 * Find participant of an Travel an return it to vueJS
+	 * @param s ID of the travel
+	 * @return
+	 */
+	@RequestMapping("/findParticipant")
+	@ResponseBody
+	public ArrayList<People> findParticipants(@RequestBody Long s) {
+		// ArrayList<Long> ll = listSlots.findParticipant(s);
+		ArrayList<People> lp;
+		ArrayList<Object> ll;
+		try {
+			ll = listSlots.findParticipant(s);
+			// ID,USERNAME,FIRSTNAME,NAME,ID_SOURCE
+			lp = new ArrayList<People>();
+			for (Object object : ll) {
+				Object[] tab = (Object[]) object;
+				BigInteger b = (BigInteger) tab[0];
+				Long id = b.longValueExact();
+				String username = (String) tab[1];
+				String firstName = (String) tab[2];
+				String name = (String) tab[3];
+				lp.add(new People(id, username, firstName, name));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			lp = new ArrayList<People>();
+			System.err.println("Exception");
+		}
+		System.err.println(s);
+		// ArrayList<People> lp = (ArrayList<People>) listP.findAllById(p);
+		return lp;
+	}
+	/**
+	 * 
+	 * @param s an slotTravel ID
+	 * @return
+	 */
+	//@Transactional(rollbackFor = Exception.class)
+	@RequestMapping("/joinTravel")
+	@ResponseBody
+	public ArrayList<Object> joinTravel(@RequestBody Long s) {
+		System.err.println("JE JOIN LE TRAVEL ");
+		//System.err.println(listSlots.joinSlot(s,userConected().getId()));
+//		listSlots.joinSlot(s,userConected().getId());
+		return new ArrayList<Object>();
+	}
 }
