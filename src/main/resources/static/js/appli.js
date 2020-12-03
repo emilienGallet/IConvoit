@@ -215,7 +215,7 @@ let app = Vue.createApp({
                 <form method="POST" @submit="deleteCarIndexVue(id)">
                 {{car.registration}} {{car.nbOfSeats}} {{car.brand}} {{car.color}} 
                 <input v-model="id" type="text" hidden>
-                <input  class="supp" type="submit" value="X">
+                <input @onClick="deleteCarIndexVue(id)" class="supp" type="submit" value="X">
                 </form>
                 
             </li>
@@ -226,7 +226,6 @@ let app = Vue.createApp({
     <h3>add a car</h3>
 
     <form id="addcarVue" @submit.prevent="addcarVue" method="post">
-    <!-- <form action=/addcarVue method="POST"> -->
         <p><input v-model="color" type="text" placeholder="color" id="color" required/></p>
         <p><input v-model="brand" type="text" placeholder="brand" id="brand" required/></p>
         <p> model : LL-NNN-LL <input type="text" v-model="registration" placeholder="registration" id="registration" required/></p>
