@@ -67,8 +67,8 @@ public class ControllerRest {
 	}
 
 	/**
-	 * Reserch an travel who the use can joint it.
-	 * Return to the vueJS API
+	 * Reserch an travel who the use can joint it. Return to the vueJS API
+	 * 
 	 * @return
 	 * @throws SlotException
 	 * @throws IllegalArgumentException
@@ -104,6 +104,7 @@ public class ControllerRest {
 
 	/**
 	 * Find participant of an Travel an return it to vueJS
+	 * @author Émilien
 	 * @param s ID of the travel
 	 * @return
 	 */
@@ -135,18 +136,30 @@ public class ControllerRest {
 		// ArrayList<People> lp = (ArrayList<People>) listP.findAllById(p);
 		return lp;
 	}
+
 	/**
-	 * 
+	 * Permit to join an travel by this id
+	 * @author Émilien
 	 * @param s an slotTravel ID
 	 * @return
 	 */
-	//@Transactional(rollbackFor = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	@RequestMapping("/joinTravel")
 	@ResponseBody
 	public ArrayList<Object> joinTravel(@RequestBody Long s) {
-		System.err.println("JE JOIN LE TRAVEL ");
-		//System.err.println(listSlots.joinSlot(s,userConected().getId()));
-//		listSlots.joinSlot(s,userConected().getId());
-		return new ArrayList<Object>();
+		UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		People p = listP.findByUsername(userD.getUsername());
+		ArrayList<Object> list = new ArrayList<Object>();
+		System.err.println("JE JOIN LE TRAVEL "+s+" "+p.getId());
+		System.err.println("=> "+listSlots.joinSlot(s,p.getId()).toString());
+		BigInteger b = listSlots.joinSlot(s,p.getId());
+		if (b.intValueExact()>0) {
+			System.out.println("WE CAN JOIN");
+			listTravels.join(s,p.getId());
+		}else {
+			System.out.println("WE CAN'T JOIN");
+		}
+		//listSlots.joinSlot(s,userConected().getId());
+		return list;
 	}
 }
