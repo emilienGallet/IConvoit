@@ -196,11 +196,11 @@ let app = Vue.createApp({
            registration:null,
            nbOfSeats:null,
            brand:"",
-           Format:"citadine",
+           Format:null,
            color:"",
            id:null
         }),
-        template:`car
+        template:`car {{cars}}
         
          
         <h3>list of my car(s)</h3>
@@ -212,7 +212,6 @@ let app = Vue.createApp({
 
             <p v-else>
             <li v-for="car in cars">
-                {{car}}
                 <form method="POST" @submit="deleteCarIndexVue(id)">
                 {{car.registration}} {{car.nbOfSeats}} {{car.brand}} {{car.color}} 
                 <input v-model="id" type="text" hidden>
@@ -232,19 +231,14 @@ let app = Vue.createApp({
         <p><input v-model="brand" type="text" placeholder="brand" id="brand" required/></p>
         <p> model : LL-NNN-LL <input type="text" v-model="registration" placeholder="registration" id="registration" required/></p>
         <p>type of car (citadine = 5 seats maximum)
-            <select v-model="Format" id="Format" required>
-                <option>citadine</option>
-                <option>other</option>
-            </select>
+            <input v-model="Format" list="formats" id="Format" required>
+            <datalist id="formats">
+                <option value="citadine"></option>
+                <option value="other"></option>
+            </datalist>
         </p>
         <p>nb of seats
-            <select v-model.number="nbOfSeats" type="number" value="nbOfSeats" required>
-                <option v-bind:value="{ number: 1 }">1</option>
-                <option v-bind:value="{ number: 2 }">2</option>
-                <option v-bind:value="{ number: 3 }">3</option>
-                <option v-bind:value="{ number: 4 }">4</option>
-                <option v-bind:value="{ number: 5 }">5</option>
-            </select>
+            <input v-model="nbOfSeats" type="number" min="1" max="5" required>
         </p>
         <input type="submit" value="Send">
     </form>
