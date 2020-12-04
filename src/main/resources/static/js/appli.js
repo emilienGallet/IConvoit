@@ -335,7 +335,7 @@ app.component('displayParticipant', {
 	<li v-if="indexPeople == 0">
 		Name :  {{aPeople.name}} Firstname : {{aPeople.firstname}} DRIVER
 	</li>
-	<li v-else>
+	<li v-if="indexPeople > 0">
 		Name :  {{aPeople.name}} Firstname : {{aPeople.firstname}}
 	</li>
 	
