@@ -107,7 +107,7 @@ let app = Vue.createApp({
         </div>
 
         <div v-if="page == 'findTravel'">
-        <findTravel :user="user"/>
+        <findTravel :user="user" />
         </div>
         `
 })
@@ -375,7 +375,7 @@ app.component('findTravel', {
 	},
 	template: `
 	<ul v-if="travels.length!=0">
-		<findTravelDisplay v-for="(travel,index) in travels" :aTravel="travel" :indexTravel="index"></findTravelDisplay>
+		<findTravelDisplay v-for="(travel,index) in travels" :aTravel="travel" :indexTravel="index" :travels="travels"></findTravelDisplay>
 	</ul>
 	<div v-else><p>No travel are avaiable</p></div><listTravel/>`,
 	methods: {
@@ -403,7 +403,7 @@ app.component('findTravelDisplay', {
 	data: () => ({
 		participants: [],
 	}),
-	props: ["aTravel", "indexTravel"],
+	props: ["aTravel", "indexTravel", "travels"],
 	beforeMount: function() {
 		console.log("beforeMount")
 		this.loadParticipant()
@@ -415,18 +415,19 @@ app.component('findTravelDisplay', {
 	},
 	template: `
 		<li>
-			<form method="POST" action="/findTravel" @sumbit.preevent="join">
+		<<{{aTravel.id}}>>
+			<form method="POST" @submit.prevent="join">
 			"{{aTravel.slotName}}" De
 		                {{aTravel.start}}
 		                jusqu'à {{aTravel.end}} 
 		                <ul>
-		                    <displayParticipant v-for="people in participants" :aPeople="people"></displayParticipant>
+		                    <displayParticipant v-for="(people,index) in participants" :aPeople="people" :indexPeople="index"></displayParticipant>
 		                </ul>
 		                <input type="text" :value="aTravel.id" name="idSlot" hidden>
 		
 		                <input type="submit" value="Join">
-		            </form>
-			</li>
+		    </form>
+		</li>
 		`,
 	methods: {
 		request: async function(path) {
@@ -435,15 +436,17 @@ app.component('findTravelDisplay', {
 			return body
 		},
 		loadParticipant: async function() {
-			console.log("JE SUIS LE NUMERO " + this.aTravel.id)
+			let idTravel = this.aTravel.id;
+			//console.log("JE SUIS LE NUMERO " + idTravel)
 			let res = await fetch('/findParticipant', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(this.aTravel.id)
+				body: JSON.stringify(idTravel)
 			})
+			//console.log("DONE")
 			let body = await res.json()
 			this.participants = body;
-			console.log(this.participants)
+			//console.log(body)
 			//body = await this.request('/findOwner');
 			//this.travels = body;
 
@@ -462,15 +465,16 @@ app.component('findTravelDisplay', {
 			console.log(this.participants)
 			//body = await this.request('/findOwner');
 			//this.travels = body;
-			I choose security way no trust of front-end and do 2 state (reserved state and final state)
+			I choose security way no trust of front-end and do transaction in restController
 			*/
+			let idTravel = this.aTravel.id;
 			let res = await fetch('/joinTravel', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(this.aTravel.id)
+				body: JSON.stringify(idTravel)
 			})
 			let body = await res.json()
-			this.participants = body;
+			this.travels = this.travels.splice(this.indexTravel, 1);
 		},
 
 
@@ -479,11 +483,15 @@ app.component('findTravelDisplay', {
 })
 
 app.component('displayParticipant', {
-	props: ["aPeople"],
+	props: ["aPeople", "indexPeople"],
 	template: `
-	<li>
+	<li v-if="indexPeople == 0">
+		Name :  {{aPeople.name}} Firstname : {{aPeople.firstname}} DRIVER
+	</li>
+	<li v-if="indexPeople > 0">
 		Name :  {{aPeople.name}} Firstname : {{aPeople.firstname}}
 	</li>
+	
 		`,
 	methods: {
 		request: async function(path) {

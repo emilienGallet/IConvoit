@@ -122,6 +122,7 @@ public class TravelController {
 		slotTravel.setFinishPlace(end);
 		slotTravel.getParticipants().add(user);
 		slotTravel.setCar(carSelect);
+		slotTravel.setLimitParticipate(carSelect.getNbOfSeats()); // new ADDED
 
 		user.getReserved().add(slotTravel);
 		sf.save(slotTravel);
