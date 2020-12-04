@@ -70,3 +70,7 @@ header{
   color: red;
   padding: 0px;
 }
+
+#miniMap ,#demoMap{
+  border: solid 5px burlywood;
+}

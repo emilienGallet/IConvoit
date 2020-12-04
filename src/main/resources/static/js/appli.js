@@ -153,6 +153,40 @@ app.component('profile', {
 
 })
 
+app.component('display-map',{
+    props: {
+        index: Number,
+        ways:Array,
+
+	},
+    mounted() {
+        let travelManagement = document.createElement('script')
+        travelManagement.setAttribute('src', '/js/miniMap.js')
+        document.head.appendChild(travelManagement)
+        this.choosePath()
+    },
+
+    template:`
+        <div id="miniMap" style="height: 250px; width: 500px"></div>
+
+
+    `,
+    methods:{
+        choosePath: async function (){
+            points = await this.request(this.ways[this.index]._links.points.href)
+            miniList = []
+            miniList = points._embedded.localizations
+            showPath()
+        },
+        request: async function(path){
+            let res = await fetch(path) 
+            let body = await res.json()
+            return body
+        },
+    }
+    
+})
+
 app.component('planning', {
 	props: {
 		plannings: Array,
@@ -196,7 +230,7 @@ app.component('planning', {
         template:`
         
             <div id="demoMap" style="height: 500px; width: 1000px"></div>
-            
+            <display-map :ways="ways" :index="1"/>
             <form @submit.prevent="addTravel">
                 <input type="text" id="startLon" name="startLon" v-model="startLon" hidden>
                 <input type="text" id="startLat" name="startLat" v-model="startLat" hidden>
