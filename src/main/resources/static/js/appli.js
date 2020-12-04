@@ -214,7 +214,7 @@ let app = Vue.createApp({
             <li v-for="(car,id) in cars">
                 <form method="POST" @submit.prevent="deleteCarIndexVue(id)">
                 {{car.registration}} {{car.nbOfSeats}} {{car.brand}} {{car.color}} 
-                <input v-model="id" type="text" hidden>
+                
                 <input @onClick="deleteCarIndexVue(id)" class="supp" type="submit" value="X">
                 </form>
                 
