@@ -200,7 +200,7 @@ let app = Vue.createApp({
            color:"",
            id:null
         }),
-        template:`car {{cars}}
+        template:`
         
          
         <h3>list of my car(s)</h3>
@@ -211,10 +211,9 @@ let app = Vue.createApp({
             </p>
 
             <p v-else>
-            <li v-for="car in cars">
-                <form method="POST" @submit="deleteCarIndexVue(id)">
+            <li v-for="(car,id) in cars">
+                <form method="POST" @submit.prevent="deleteCarIndexVue(id)">
                 {{car.registration}} {{car.nbOfSeats}} {{car.brand}} {{car.color}} 
-                <input v-model="id" type="text" hidden>
                 <input  class="supp" type="submit" value="X">
                 </form>
                 
@@ -252,31 +251,39 @@ let app = Vue.createApp({
                 return body
             },
             addcarVue: async function(){
-                let newCar={color : this.color,brand : this.brand,registration : this.registration,Format : this.Format, nbOfSeats : parseInt(this.nbOfSeats), owner : this.user}
-				console.log(newCar)                
+                let newCar={color : this.color, brand : this.brand, registration : this.registration, format : this.Format,
+                             nbOfSeats : parseInt(this.nbOfSeats), owner : this.user._links.self.href }
+                
 			    let res = await fetch('/api/cars', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(newCar)
-			})
-			let body = await res.json()
-			this.cars.push(body)
-                return body;
+			    })
+			    let body = await res
+				console.log("body",body)                
+                this.cars.push(newCar)
+                this.registration=null
+                this.nbOfSeats=null
+                this.brand=""
+                this.Format=null
+                this.color=""
+                this.id=null
+            
             },
             deleteCarIndexVue: async function(v){
-                console.log("deleteCarIndexVue" + v)
                 console.clear()
+                console.log("deleteCarIndexVue" + v)
                 console.log(this.cars[v]._links.self.href)
                 let href = this.cars[v]._links.self.href;
-                this.cars.splice(v,1)
                 
                 let res = await fetch(href, {
                     method: 'DELETE',
                     headers: { 'Content-Type': 'application/json' },
                 })
-                let body = await res.json()
-                this.cars.push(body)
-                
+                let body = await res
+                if(body.ok){
+                    this.cars.splice(v,1)
+                }
             }/*
             AddCar:async function(c,color,brand,registration,nbOfSeats){
                 let userD = new UserDetails
