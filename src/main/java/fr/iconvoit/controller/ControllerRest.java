@@ -1,6 +1,8 @@
 package fr.iconvoit.controller;
 
+import java.io.IOException;
 import java.math.BigInteger;
+import java.net.MalformedURLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import javax.inject.Inject;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,10 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fr.iconvoit.DataCreatePath;
 import fr.iconvoit.Graph;
+import fr.iconvoit.IcsParser;
 import fr.iconvoit.entity.CarRepository;
 import fr.iconvoit.entity.Localization;
 import fr.iconvoit.entity.People;
 import fr.iconvoit.entity.PeopleDetailsService;
+import fr.iconvoit.entity.Slot;
+import fr.iconvoit.entity.SlotOther;
 import fr.iconvoit.entity.SlotTravel;
 import fr.iconvoit.exceptions.SlotException;
 import fr.iconvoit.factory.PeopleFactory;
@@ -53,7 +59,6 @@ public class ControllerRest {
     @ResponseBody
     public People userConected(){
         UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         return new People(userD.getUsername(),null,null);
     }
 
@@ -218,4 +223,63 @@ public class ControllerRest {
 */
 		return;
 	}
+    
+    
+
+    @RequestMapping("/addslot")
+    @ResponseBody
+    public void addslot(@RequestBody SlotOther slot){
+        UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		People p = peopleDetailsService.findByUsername(userD.getUsername());
+        System.err.println(slot);
+        System.err.println(slot.getSlotName());
+        System.err.println(slot.getStart());
+        System.err.println(slot.getEnd());
+        System.err.println(slot.getParticipants());
+        slot.getParticipants().add(p);
+    	listSlots.save(slot);
+        return;
+    }
+
+
+    @RequestMapping(path = {"/addslotIcs"},method = RequestMethod.POST)
+    @ResponseBody
+	public void addSlotFromUrl(@RequestBody String url) {
+        url = url.substring(1, url.length()-1);
+
+		if (url.isEmpty() || url == null) {
+			
+			//TODO redirect to an non valid link
+			return;
+        }
+        UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		People user =  peopleDetailsService.findByUsername(userD.getUsername());
+		
+		ArrayList<Slot> sl = null;
+		try {
+			sl = IcsParser.parsing(url);
+		} catch (MalformedURLException e) {
+			// TODO URL unreachable
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Reading error
+			e.printStackTrace();
+		}
+		if (sl == null) {
+			//TODO send error display
+			return;
+		}
+		//TODO Link with the People
+		//
+		for (Slot s : sl) {
+			user.getReserved().add(s);
+			s.getParticipants().add(user);
+			listSlots.save(s);
+		}
+				
+		//TODO Send success display
+		return;
+	}
+
+
 }

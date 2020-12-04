@@ -73,4 +73,34 @@ header{
 
 #miniMap ,#demoMap{
   border: solid 5px burlywood;
+
+.offset{
+  padding: 10px;
+
+}
+
+h4{
+  display: inline;
+  margin-left: 10px;
+  padding: 10px;
+}
+
+.border{
+  vertical-align: top;
+  display: inline-block;
+  border: solid black 1px;
+  background-color: aliceblue;
+  width: fit-content;
+  margin: 10px;
+}
+
+ul{
+  list-style: none;
+}
+
+.addEvent{
+  border: solid black 1px;
+  border-radius: 3%;
+  background-color: antiquewhite;
+  padding: 10px;
 }
