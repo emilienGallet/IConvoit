@@ -1,6 +1,7 @@
 package fr.iconvoit.factory;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -9,6 +10,8 @@ import org.springframework.data.repository.CrudRepository;
 import fr.iconvoit.entity.SlotTravel;
 
 public interface SlotTravelFactory extends CrudRepository<SlotTravel, Long> {
+
+	
 
 	// @Query(value = "SELECT * FROM SLOT,SLOT_TRAVEL WHERE SLOT.ID=SLOT_TRAVEL.ID
 	// AND SLOT_TRAVEL.ID NOT IN (SELECT FK_SLOT FROM SLOT_PEOPLE WHERE FK_PEOPLE=

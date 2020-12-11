@@ -37,6 +37,8 @@ let app = Vue.createApp({
                                     return new Date(a.start) - new Date(b.start);
                                 });
                             }
+                        }else{
+                            slots.slotOthers = []
                         }
 
                         if(slots.hasOwnProperty('slotTravels')){
@@ -46,9 +48,12 @@ let app = Vue.createApp({
                                     return new Date(a.start) - new Date(b.start);
                                 });
                             }
+                        }else{
+                            slots.slotTravels = []
                         }
-                        this.plannings = slots
 
+                        this.plannings = slots
+                        console.log("this.plannings",this.plannings)
                         ways = await this.request(users[i]._links.ways.href)
                         // console.log(ways)
                          ways = ways._embedded.paths
@@ -103,11 +108,11 @@ let app = Vue.createApp({
         </div>
 
         <div v-if="page == 'Car'">
-        <car  :cars="cars" />
+        <car  :cars="cars" :user="user" />
         </div>
 
         <div v-if="page == 'findTravel'">
-        <findTravel :user="user" />
+        <findTravel :user="user" :plannings="plannings"/>
         </div>
         `
 })
@@ -705,9 +710,9 @@ app.component('display-map',{
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(newCar)
 			    })
-			    let body = await res
+			    let body = await res.json()
 				console.log("body",body)                
-                this.cars.push(newCar)
+                this.cars.push(body)
                 this.registration=null
                 this.nbOfSeats=null
                 this.brand=""
@@ -730,36 +735,7 @@ app.component('display-map',{
                 if(body.ok){
                     this.cars.splice(v,1)
                 }
-            }/*
-            AddCar:async function(c,color,brand,registration,nbOfSeats){
-                let userD = new UserDetails
-                // let sc = new SecurityContextHolder
-                // userD =(UserDetails) sc.getContext().getAuthentication().getPrincipal();
-                // People p = peopleDetailsService.findByUsername(userD.getUsername());
-                if(c.verifRegistration(c.getRegistration()) == false){
-                    return "/car";
-                }
-                c.setNbOfSeats(nbSeats);
-                c.setOwner(p);
-                p.addCar(c);
-                carRep.save(c);
-                return "redirect:/car";
-            },
-            
-            AddCar:function(Car c,@ModelAttribute("nbSeats") int nbSeats){
-                    UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-                    People p = peopleDetailsService.findByUsername(userD.getUsername());
-            
-                    if(c.verifRegistration(c.getRegistration()) == false){
-                        return "/car";
-                    }
-                    c.setNbOfSeats(nbSeats);
-                    c.setOwner(p);
-                    p.addCar(c);
-                    
-                    carRep.save(c);
-                }
-            },*/
+            }
         },
         
     })
@@ -775,15 +751,17 @@ app.component('findTravel', {
 		{ "id": 2, "slotName": "s", "start": "2020-11-28T21:52:42.990234", "end": "2020-11-28T22:07:42.990241", "url": null, "uid": null, "lastModified": null, "participants": [], "startPlace": null, "finishPlace": null, "paths": [] }],
 	}),
 	props: {
-		user: Object,
+        user: Object,
+        plannings:Object,
 	},
 	mounted: function() {
-		console.log("mounted")
+        console.log("mounted")
+        console.log("this.plannings.slotTravels",this.plannings.slotTravels)
 		this.loadTravels()
 	},
 	template: `
 	<ul v-if="travels.length!=0">
-		<findTravelDisplay v-for="(travel,index) in travels" :aTravel="travel" :indexTravel="index" :travels="travels"></findTravelDisplay>
+		<findTravelDisplay v-for="(travel,index) in travels" :aTravel="travel" :indexTravel="index" :travels="travels"   :plannings="plannings" ></findTravelDisplay>
 	</ul>
 	<div v-else><p>No travel are avaiable</p></div><listTravel/>`,
 	methods: {
@@ -812,14 +790,18 @@ app.component('findTravelDisplay', {
         participants: [],
         ways:[]
 	}),
-	props: ["aTravel", "indexTravel", "travels"],
+	props: {aTravel:Object, indexTravel:Number, travels:Object,plannings:Object},
 	beforeMount: function() {
 		console.log("beforeMount")
 		this.loadParticipant()
     },
+    mounted: function() {
+        console.log("findTravelDisplay")
+        console.log("this.plannings.slotTravels",this.plannings.slotTravels)
+	},
 	updated: function() {
-		console.log("MISE A JOUR")
-        this.loadParticipant();
+	//	console.log("MISE A JOUR")
+      //  this.loadParticipant();
 
 	},
 	template: `
@@ -883,8 +865,15 @@ app.component('findTravelDisplay', {
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(idTravel)
 			})
-			let body = await res.json()
-			this.travels = this.travels.splice(this.indexTravel, 1);
+            let body = await res.json()
+            
+            res =  await this.request("/api/slotTravels/"+idTravel)
+            slt = await res
+            console.log(slt)
+
+         //   console.log("this.travels[this.indexTravel]",this.travels[this.indexTravel])
+            this.plannings.slotTravels.push(slt); 
+            this.travels = this.travels.splice(this.indexTravel, 1);
 		},
 
 

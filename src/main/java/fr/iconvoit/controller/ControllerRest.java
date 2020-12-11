@@ -149,88 +149,33 @@ public class ControllerRest {
 	}
 
 	/**
-	 * Permit to join an travel by this id
-	 * @author Émilien
-	 * @param s an slotTravel ID
-	 * @return
-	 */
-	@Transactional(rollbackFor = Exception.class)
-	@RequestMapping("/joinTravel")
-	@ResponseBody
-	public ArrayList<Object> joinTravel(@RequestBody Long s) {
-		UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		People p = listP.findByUsername(userD.getUsername());
-		ArrayList<Object> list = new ArrayList<Object>();
-		System.err.println("JE JOIN LE TRAVEL "+s+" "+p.getId());
-		System.err.println("=> "+listSlots.joinSlot(s,p.getId()).toString());
-		BigInteger b = listSlots.joinSlot(s,p.getId());
-		if (b.intValueExact()>0) {
-			System.out.println("WE CAN JOIN");
-			listTravels.join(s,p.getId());
-		}else {
-			System.out.println("WE CAN'T JOIN");
-		}
-		//listSlots.joinSlot(s,userConected().getId());
-		return list;
-	}
+     * Permit to join an travel by this id
+     * @author Émilien
+     * @param s an slotTravel ID
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @RequestMapping("/joinTravel")
+    @ResponseBody
+    public ArrayList<Object> joinTravel(@RequestBody Long s) {
+        UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        People p = listP.findByUsername(userD.getUsername());
+        ArrayList<Object> list = new ArrayList<Object>();
+        System.err.println("JE JOIN LE TRAVEL "+s+" "+p.getId());
+        System.err.println("=> "+listSlots.joinSlot(s,p.getId()).toString());
+        BigInteger b = listSlots.joinSlot(s,p.getId());
+        if (b.intValueExact()>0) {
+            System.out.println("WE CAN JOIN");
+            listTravels.join(s,p.getId());
+        }else {
+            System.out.println("WE CAN'T JOIN");
+        }
+        //listSlots.joinSlot(s,userConected().getId());
+        return list;
+    }
 
-    @RequestMapping(path = { "/addtravel" }, method = RequestMethod.POST)
-	public void  addTravel(@RequestBody SlotTravel slotTravel) {
-		//get user info
-        System.err.println(slotTravel);
-
-		UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        People user = peopleDetailsService.findByUsername(userD.getUsername());
-        System.err.println(slotTravel.getStartPlace());
-        System.err.println(slotTravel.getFinishPlace());
-        System.err.println(slotTravel.getPaths());
-        System.err.println(slotTravel.getSlotName());
-        System.err.println(slotTravel.getStart());
-        System.err.println(slotTravel.getEnd());
-        System.err.println(slotTravel.getParticipants());
-
-		/*
-		Localization start = new Localization("", startLat, startLon);
-		Localization end = new Localization("", endLat, endLon);
-
-		lf.save(start);
-		lf.save(end);
-		Path p = Graph.planTraject(start, end, null);
-		p.setName(trajectName);
-		pf.save(p);
-		user.getWays().add(p);
-		pef.save(user);
-		m.addAttribute("list", p.getPoints());
-		if (!user.getWays().isEmpty()) {
-			m.addAttribute("ways", user.getWays());
-		}
-
-		SlotTravel slotTravel = new SlotTravel();
-		slotTravel.setSlotName(trajectName);
-		slotTravel.setStart(LocalDateTime.of(year, month, dayOfMonth, hour, minute));
-		slotTravel.setEnd(slotTravel.getStart().plusMinutes(15));
-		slotTravel.getPaths().add(p);
-		slotTravel.setStartPlace(start);
-		slotTravel.setFinishPlace(end);
-		slotTravel.getParticipants().add(user);
-
-		user.getReserved().add(slotTravel);
-		sf.save(slotTravel);
-		pef.save(user);
-
-		LocalDateTime startD = LocalDateTime.now().plusMinutes(15);
-		m.addAttribute("slotOther", new SlotOther());
-		m.addAttribute("dateYear", startD.getYear());
-		m.addAttribute("dateMonth", startD.getMonth().getValue());
-		m.addAttribute("dateDayOfMonth", startD.getDayOfMonth());
-		m.addAttribute("dateHour", startD.getHour());
-		m.addAttribute("dateMinute", startD.getMinute());
-*/
-		return;
-	}
+ 
     
-    
-
     @RequestMapping("/addslot")
     @ResponseBody
     public void addslot(@RequestBody SlotOther slot){
