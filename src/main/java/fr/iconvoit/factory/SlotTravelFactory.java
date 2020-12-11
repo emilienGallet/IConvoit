@@ -1,6 +1,5 @@
 package fr.iconvoit.factory;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 import org.springframework.data.jpa.repository.Modifying;

@@ -73,6 +73,7 @@ header{
 
 #miniMap ,#demoMap{
   border: solid 5px burlywood;
+}
 
 .offset{
   padding: 10px;

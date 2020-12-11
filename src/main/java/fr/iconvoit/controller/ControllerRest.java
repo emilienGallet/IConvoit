@@ -65,7 +65,7 @@ public class ControllerRest {
     @RequestMapping("/createPath")
     @ResponseBody
     public Path createPath(@RequestBody DataCreatePath path) {
-        Localization start = new Localization("start", path.getStartLat(),path.getEndLon());
+        Localization start = new Localization("start", path.getStartLat(),path.getStartLon());
 		Localization end = new Localization("end", path.getEndLat(), path.getEndLon());
         Path p = Graph.planTraject(start, end, null);
         System.err.println(p.getPoints().size());
@@ -174,6 +174,8 @@ public class ControllerRest {
     @RequestMapping(path = { "/addtravel" }, method = RequestMethod.POST)
 	public void  addTravel(@RequestBody SlotTravel slotTravel) {
 		//get user info
+        System.err.println(slotTravel);
+
 		UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         People user = peopleDetailsService.findByUsername(userD.getUsername());
         System.err.println(slotTravel.getStartPlace());

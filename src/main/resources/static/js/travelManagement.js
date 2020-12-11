@@ -61,6 +61,8 @@
           for(let i = 0; i < list1.length; i++){
                list2.push( {lon : list1[i].longitude, lat: list1[i].latitude} )
           }
+          position = new OpenLayers.LonLat( list2[0].lon, list2[0].lat).transform(fromProjection, toProjection)
+
           for(let i = 0; i < list2.length; i++){
                list2[i] = new OpenLayers.LonLat( list2[i].lon, list2[i].lat).transform(fromProjection, toProjection)
                list2[i]=  new OpenLayers.Geometry.Point(list2[i].lon,list2[i].lat)
@@ -68,6 +70,8 @@
           lineFeature = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(list2), null, style_green);
           
           vectorLayer.addFeatures(lineFeature)
+          map.setCenter(position, zoom);
+
         }
 
           vectorLayer.addFeatures(lineFeature)
@@ -92,12 +96,10 @@
                   if(markers.markers.length == 1){
                        startLon.value = opx.lon
                        startLat.value = opx.lat
-                       
                     }
                     else{
                          endLon.value = opx.lon
                          endLat.value = opx.lat
-
                          let res = await fetch('/createPath', {
                               method: 'POST',
                               headers: { 'Content-Type': 'application/json' },

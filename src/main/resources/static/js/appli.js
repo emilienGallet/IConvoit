@@ -176,7 +176,7 @@ app.component('display-map',{
             points = await this.request(this.ways[this.index]._links.points.href)
             miniList = []
             miniList = points._embedded.localizations
-            showPath()
+            showPath(miniList)
         },
         request: async function(path){
             let res = await fetch(path) 
@@ -248,9 +248,14 @@ app.component('display-map',{
             },
             visible:false,
             participants:[],
+            ways:null,
+            car:null,
         }),
         mounted: function(){
             this.loadParticipants()
+            this.loadWays()
+            this.loadCar()
+            
         },
         template:`
         {{new Date(slot.start).toLocaleDateString("en-US",options)}} 
@@ -271,14 +276,26 @@ app.component('display-map',{
                     <span v-if="index == 0">Driver</span> 
                     {{participant.firstname}} {{participant.name}}
                 </span>
+                <br> Car :
+                 {{car.color}} {{car.brand}} {{car.registration}}
+                <display-map :ways="ways" :index="0"/>
             </div>
         </div>
         `,
         methods:{
-            loadParticipants:async function(){
+            loadCar :async function(){
+                res = await this.request(this.slot._links.car.href)
+                this.car = res
+            },
+            loadParticipants: async function(){
                 res = await this.request(this.slot._links.participants.href)
                 res = res._embedded.peoples
                 this.participants = res
+            },
+            loadWays : async function(){
+                res = await this.request(this.slot._links.paths.href)
+                this.ways = res._embedded.paths
+
             },
             request: async function(path){
                 let res = await fetch(path) 
@@ -450,7 +467,7 @@ app.component('display-map',{
         props:{
             user:Object,
             cars:Array,
-            plannings:Array,
+            plannings:Object,
             ways:Array,
         },
         data: () => ({
@@ -472,7 +489,6 @@ app.component('display-map',{
         template:`
         
             <div id="demoMap" style="height: 500px; width: 1000px"></div>
-            <display-map :ways="ways" :index="1"/>
             <form @submit.prevent="addTravel">
                 <input type="text" id="startLon" name="startLon" v-model="startLon" hidden>
                 <input type="text" id="startLat" name="startLat" v-model="startLat" hidden>
@@ -504,14 +520,6 @@ app.component('display-map',{
             document.head.appendChild(travelManagement)
           },
         methods:{
-            createPath: async function(){
-                let res = await fetch('/createPath', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({oldPass:oldPass,newPass:newPass})
-                })
-            },
-
             choosePath: async function (index){
                 points = await this.request(this.ways[index]._links.points.href)
                 list1 = []
@@ -520,16 +528,14 @@ app.component('display-map',{
                     console.log(points)
                     showPath()
             },
+
             addTravel: async function(){
+                console.log(this.user._links.ways.href)
                 if(this.trajectName == "" || list1.length == 0)
                     return
                 console.log("TRAJECT NAME",this.trajectName)
-                console.log("DATE",new Date(
-                this.year,
-                this.month-1,
-                this.day,
-                this.hour,
-                this.minute))
+                console.log("DATE",new Date(this.year, this.month-1, this.day,
+                            this.hour,this.minute))
                 console.log("selected",this.selected)
                 console.log("list1",list1)
                 console.log("localization",
@@ -541,36 +547,78 @@ app.component('display-map',{
                 console.log("START",list1[0])
                 console.log("END",list1[list1.length-1])
 
-                //path = {name:this.trajectName,points:list1}
-                newPath.name= this.trajectName
                 console.log("path",newPath)
+                
+                newPaths = {name : this.trajectName, points : []}
 
+                // Localization
+                for(loc of newPath.points){
+                    let res = await fetch('/api/localizations', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(loc)
+                    })
+                    body = await res.json()
+                    newPaths.points.push(body._links.self.href)
+                }
+
+                // Paths
+                let res = await fetch('/api/paths', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newPaths)
+                })
+                paths = await res.json()
+
+                console.log("------",paths)
+                console.log( "startPlace" ,newPaths.points[0],
+                    "finishPlace" , newPaths.points[newPath.points.length-1])
+
+                    //User Ways
+                    console.log(this.user)
+
+                    console.log(this.user._links.ways.href)
+
+                    idPeople = this.user._links.self.href
+                    idPath = paths._links.self.href
+                    idPeople = idPeople.split("/")
+                    idPeople = idPeople[idPeople.length-1]
+                    idPath = idPath.split("/")
+                    idPath = idPath[idPath.length-1]
+
+                    res = await fetch('/api/peoples/search/linkPathPeople?idPeople='+idPeople+'&idPath='+idPath, {
+                        method: 'GET',
+                        headers: { 'Content-Type': 'application/json' },
+                        })
+               // rep = await res
+               // console.log("REP  ",rep)
+
+                // SlotTravel
                 slotTravel = {
-                slotName:this.trajectName,
-                start:new Date(this.year,this.month-1,this.day,this.hour,this.minute),
-                end:new Date(this.year,this.month-1,this.day,this.hour,this.minute),
-              // participants:[this.user],
-                startPlace:list1[0],
-                finishPlace:list1[list1.length-1],
-                paths:[newPath]
-               }
-               console.log("SLOT TRAVEL",slotTravel)
+                    slotName:this.trajectName,
+                    start:new Date(this.year,this.month-1,this.day,this.hour,this.minute),
+                    end:new Date(this.year,this.month-1,this.day,this.hour,this.minute),
+                    participants:[this.user._links.self.href],
+                    startPlace : newPaths.points[0],
+                    finishPlace : newPaths.points[newPath.points.length-1],
+                    paths : [paths._links.self.href],
+                    car : this.cars[this.selected]._links.self.href
+                }
+
+                console.log("CAR",this.cars[this.selected]._links.self.href)
+                console.log("SLOT TRAVEL",slotTravel)
 
 
-               let res = await fetch('/addtravel', {
+                let res2 = await fetch('/api/slotTravels', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(slotTravel)
                 })
-            //    body = res.json()
-             //   console.log(body)
-            /*   let res = await fetch('/api/slots', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(slotTravel)
-                })
-                body = res.json()
-                console.log(body)*/
+                sl = await res2.json()
+                this.plannings.slotTravels.push(sl)
+                this.ways.push(paths)
+                console.log("SLOT TRAVEL",sl)
+            
             },
 
             request: async function(path){
@@ -643,21 +691,22 @@ app.component('findTravel', {
 })
 app.component('findTravelDisplay', {
 	data: () => ({
-		participants: [],
+        participants: [],
+        ways:[]
 	}),
 	props: ["aTravel", "indexTravel", "travels"],
 	beforeMount: function() {
 		console.log("beforeMount")
 		this.loadParticipant()
-	},
+    },
 	updated: function() {
 		console.log("MISE A JOUR")
-		this.loadParticipant();
+        this.loadParticipant();
 
 	},
 	template: `
 		<li>
-		<<{{aTravel.id}}>>
+		
 			<form method="POST" @submit.prevent="join">
 			"{{aTravel.slotName}}" De
 		                {{aTravel.start}}
@@ -666,7 +715,8 @@ app.component('findTravelDisplay', {
 		                    <displayParticipant v-for="(people,index) in participants" :aPeople="people" :indexPeople="index"></displayParticipant>
 		                </ul>
 		                <input type="text" :value="aTravel.id" name="idSlot" hidden>
-		
+                     <!--   <display-map :ways="ways" :index="1"/>
+		-->
 		                <input type="submit" value="Join">
 		    </form>
 		</li>

@@ -1,5 +1,6 @@
           //By Jeremy
-          var miniList = [];
+          function showPath(miniList){
+         
 
           //Init map
           minimap = new OpenLayers.Map("miniMap");
@@ -29,7 +30,6 @@
                title: "this is a green line"
           };
 
-          function showPath(){
              list2 = []
              console.log("showPath",miniList)
           for(let i = 0; i < miniList.length; i++){
