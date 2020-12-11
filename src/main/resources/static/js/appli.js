@@ -538,7 +538,8 @@ app.component('display-map',{
 
             addTravel: async function(){
                 console.log(this.user._links.ways.href)
-                if(this.trajectName == "" || list1.length == 0)
+                
+                if(this.trajectName == "" || list1.length == 0 || this.cars.length == 0)
                     return
                 console.log("TRAJECT NAME",this.trajectName)
                 console.log("DATE",new Date(this.year, this.month-1, this.day,
@@ -599,8 +600,11 @@ app.component('display-map',{
                         })
                // rep = await res
                // console.log("REP  ",rep)
-
                 // SlotTravel
+                        res = await this.request(this.cars[this.selected]._links.self.href)
+                        carT = await res
+                        console.log("CAR----",car)
+
                 slotTravel = {
                     slotName:this.trajectName,
                     start:new Date(this.year,this.month-1,this.day,this.hour,this.minute),
@@ -609,7 +613,8 @@ app.component('display-map',{
                     startPlace : newPaths.points[0],
                     finishPlace : newPaths.points[newPath.points.length-1],
                     paths : [paths._links.self.href],
-                    car : this.cars[this.selected]._links.self.href
+                    car : this.cars[this.selected]._links.self.href,
+                    limitParticipate : carT.nbOfSeats
                 }
 
                 console.log("CAR",this.cars[this.selected]._links.self.href)
@@ -626,6 +631,19 @@ app.component('display-map',{
                 this.ways.push(paths)
                 console.log("SLOT TRAVEL",sl)
             
+               this.startLon=""
+               this.startLat=""
+               this.endLon  =""
+               this.endLat  =""
+               this.year=new Date().getFullYear()
+               this.month=new Date().getMonth()+1
+               this.day=new Date().getDate()
+               this.hour=new Date().getHours()
+               this.minute=new Date().getMinutes()
+               this.trajectName=""
+
+               list1 = []
+                showPath()
             },
 
          
