@@ -632,22 +632,137 @@ app.component('display-map',{
         }
     })
 
-    app.component('Car',{
+  /**
+ 	 * @author Mélanie EYRAUD
+ 	 */
+     app.component('Car',{
         props:{
-            cars:Array,
+            cars : Array,
+			user : Object,
         },
-        template:`car
-        {{cars}}
+        data: () => ({
+           registration:null,
+           nbOfSeats:null,
+           brand:"",
+           Format:null,
+           color:"",
+           id:null
+        }),
+        template:`
+        
+         
+        <h3>list of my car(s)</h3>
+        <ul id="displayListCars">
+            
+            <p v-if="cars.size=0">
+                <li>0 car</li>
+            </p>
+            <p v-else>
+            <li v-for="(car,id) in cars">
+                <form method="POST" @submit.prevent="deleteCarIndexVue(id)">
+                {{car.registration}} {{car.nbOfSeats}} {{car.brand}} {{car.color}} 
+                
+                <input @onClick="deleteCarIndexVue(id)" class="supp" type="submit" value="X">
+                </form>
+                
+            </li>
+            </p>
+            
+        </ul>
+    
+    <h3>add a car</h3>
+    <form id="addcarVue" @submit.prevent="addcarVue" method="post">
+        <p><input v-model="color" type="text" placeholder="color" id="color" required/></p>
+        <p><input v-model="brand" type="text" placeholder="brand" id="brand" required/></p>
+        <p> model : LL-NNN-LL <input type="text" v-model="registration" placeholder="registration" id="registration" required/></p>
+        <p>type of car (citadine = 5 seats maximum)
+            <input v-model="Format" list="formats" id="Format" required>
+            <datalist id="formats">
+                <option value="citadine"></option>
+                <option value="other"></option>
+            </datalist>
+        </p>
+        <p>nb of seats
+            <input v-model="nbOfSeats" type="number" min="1" max="5" required>
+        </p>
+        <input type="submit" value="Send">
+    </form>
+    
         `,
 
-	methods: {
-		request: async function(path) {
-			let res = await fetch(path)
-			let body = await res.json()
-			return body
-		},
-	}
-})
+        methods:{
+            request: async function(path){
+                let res = await fetch(path) 
+                let body = await res.json()
+                return body
+            },
+            addcarVue: async function(){
+                let newCar={color : this.color, brand : this.brand, registration : this.registration, format : this.Format,
+                             nbOfSeats : parseInt(this.nbOfSeats), owner : this.user._links.self.href }
+                
+			    let res = await fetch('/api/cars', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(newCar)
+			    })
+			    let body = await res
+				console.log("body",body)                
+                this.cars.push(newCar)
+                this.registration=null
+                this.nbOfSeats=null
+                this.brand=""
+                this.Format=null
+                this.color=""
+                this.id=null
+            
+            },
+            deleteCarIndexVue: async function(v){
+                console.clear()
+                console.log("deleteCarIndexVue" + v)
+                console.log(this.cars[v]._links.self.href)
+                let href = this.cars[v]._links.self.href;
+                
+                let res = await fetch(href, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                })
+                let body = await res
+                if(body.ok){
+                    this.cars.splice(v,1)
+                }
+            }/*
+            AddCar:async function(c,color,brand,registration,nbOfSeats){
+                let userD = new UserDetails
+                // let sc = new SecurityContextHolder
+                // userD =(UserDetails) sc.getContext().getAuthentication().getPrincipal();
+                // People p = peopleDetailsService.findByUsername(userD.getUsername());
+                if(c.verifRegistration(c.getRegistration()) == false){
+                    return "/car";
+                }
+                c.setNbOfSeats(nbSeats);
+                c.setOwner(p);
+                p.addCar(c);
+                carRep.save(c);
+                return "redirect:/car";
+            },
+            
+            AddCar:function(Car c,@ModelAttribute("nbSeats") int nbSeats){
+                    UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                    People p = peopleDetailsService.findByUsername(userD.getUsername());
+            
+                    if(c.verifRegistration(c.getRegistration()) == false){
+                        return "/car";
+                    }
+                    c.setNbOfSeats(nbSeats);
+                    c.setOwner(p);
+                    p.addCar(c);
+                    
+                    carRep.save(c);
+                }
+            },*/
+        },
+        
+    })
 
 
 /**
