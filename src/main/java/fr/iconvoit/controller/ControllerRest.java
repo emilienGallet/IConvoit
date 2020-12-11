@@ -12,13 +12,16 @@ import javax.inject.Inject;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import fr.iconvoit.ChangePassResponse;
 import fr.iconvoit.DataCreatePath;
+import fr.iconvoit.FormChangePassVue;
 import fr.iconvoit.Graph;
 import fr.iconvoit.IcsParser;
 import fr.iconvoit.entity.CarRepository;
@@ -284,4 +287,22 @@ public class ControllerRest {
 	}
 
 
+
+    @PostMapping("/changePass")
+    @ResponseBody
+    public ChangePassResponse changePassword(@RequestBody FormChangePassVue formData) {
+        UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        People user = peopleDetailsService.findByUsername(userD.getUsername());
+
+        ChangePassResponse rep = new ChangePassResponse(false);
+        if (peopleDetailsService.bCryptPasswordEncoder.matches(formData.getOldPass(), user.getPassword()) == false) {
+            return rep;
+        }
+        user.setPassword(formData.getNewPass());
+        peopleDetailsService.save(user);
+        rep.setSucces(true);
+        return rep;
+    }
+
+  
 }

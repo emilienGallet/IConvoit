@@ -112,45 +112,48 @@ let app = Vue.createApp({
         `
 })
 
-app.component('profile', {
-	props: {
-		user: Object,
-	},
-	data: () => ({
+app.component('profile',{
+    props:{
+        user:Object,
+    },
+    data: () => ({
+       oldPass: "",
+       newPass:"",
+       fail:false,
+       succes:false,
+    }),
+    template:`
+        <p>Name : {{user.name}}</p>
+        <p>Firstname : {{user.firstname}}</p>
 
-	}),
-	template: `
-           
-        
-        
-            <p>Name : {{user.name}}</p>
-            <p>Firstname : {{user.firstname}}</p>
-            
-            `
-	,
+        <form @submit.prevent="changePass" class="center"  >
+            <h2 >Change password</h2>
+            <h3 class="success" v-if="succes == true" >Password has been changed</h3> 
+            <span class="error" v-if="fail == true" >Wrong Password</span> 
+            <input class="form-horizontal" type="password" v-model="oldPass" placeholder="Password" required>
+            <input class="form-horizontal" type="password" v-model="newPass" placeholder="New Password" required>
+            <input class="form-horizontal" type="submit" value="Submit" >
+        </form>
 
-	mounted: function() {
-		//  this.loadData()
-	},
-	methods: {
-		loadData: async function() {
-			console.log("load data")
-			let res = await fetch('/api/peoples') // hard coded :(, not HATEOAS
-			console.log(res)
+        `,
+    methods: {
+        changePass: async function(){
+            if(this.oldPass == "" || this.newPass == ""){
+                return
+            }
+            let res = await fetch('/changePass', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({oldPass:this.oldPass,newPass:this.newPass})
+            })
+            body = await res.json()
 
-			let body = await res.json()
-			console.log(body)
-
-			this.peoples = body._embedded.peoples
-		},
-		request: async function(path) {
-			let res = await fetch(path)
-			let body = await res.json()
-			return body
-		},
-
-	},
-
+            this.oldPass= ""
+            this.newPass=""
+            this.succes = body.succes
+            this.fail = !body.succes
+        },
+    },
 })
 
 app.component('display-map',{
@@ -208,8 +211,7 @@ app.component('display-map',{
             },
             visible:false,
         }),
-
-        
+    
         template:`
         {{new Date(slot.start).toLocaleDateString("en-US",options)}} 
 
@@ -621,6 +623,7 @@ app.component('display-map',{
             
             },
 
+         
             request: async function(path){
                 let res = await fetch(path) 
                 let body = await res.json()
