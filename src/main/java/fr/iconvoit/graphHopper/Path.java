@@ -34,13 +34,16 @@ public class Path {
 
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Localization> points;
+	
+	private Integer trajectTime;
 
 	public Path() {
 		
 	}
 	
-	public Path(ArrayList<Localization> jsonArrayToList) {
+	public Path(ArrayList<Localization> jsonArrayToList, Integer time) {
 		this.points = jsonArrayToList;
+		this.trajectTime = time;
 	}
 
 }
