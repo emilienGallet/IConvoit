@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import fr.iconvoit.Graph;
+import fr.iconvoit.entity.Car;
 import fr.iconvoit.entity.Localization;
 import fr.iconvoit.entity.People;
 import fr.iconvoit.entity.PeopleDetailsService;
@@ -56,9 +57,18 @@ public class TravelController {
 		UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		People user = peopleDetailsService.findByUsername(userD.getUsername());
 		//if the list of ways is empty don't display the list
+		//In theory i should do an service. However, no time is available.
+		ArrayList<SlotTravel> travelList = new ArrayList<>();
+		ArrayList<Object> tmp;
+			tmp = slotTravelFactory.findIdOfSlotTravelByCar(user.getId());
+			//tmp = slotTravelFactory.findSlotTravel(car);//I can improve that by personalize query. No time
+			//travelList.addAll(tmp);
+		
+		/* TODO DELETE THIS */
 		if (!user.getWays().isEmpty()) {
 			m.addAttribute("ways", user.getWays());
-		}
+		}/*-------------------------------*/
+		m.addAttribute("ways", user.getWays());
 		//pre filled fields
 		LocalDateTime start = LocalDateTime.now().plusMinutes(15);
 		m.addAttribute("slotOther", new SlotOther());
@@ -67,6 +77,7 @@ public class TravelController {
 		m.addAttribute("dateDayOfMonth", start.getDayOfMonth());
 		m.addAttribute("dateHour", start.getHour());
 		m.addAttribute("dateMinute", start.getMinute());
+		m.addAttribute("carList", user.getMyCars());
 		return "travel";
 	}
 
@@ -80,12 +91,13 @@ public class TravelController {
 			@ModelAttribute(value = "hour") @Validated Integer hour,
 			@ModelAttribute(value = "minute") @Validated Integer minute, @ModelAttribute("startLon") float startLon,
 			@ModelAttribute("startLat") float startLat, @ModelAttribute("endLon") float endLon,
-			@ModelAttribute("endLat") float endLat, @ModelAttribute("trajectName") String trajectName) {
+			@ModelAttribute("endLat") float endLat, @ModelAttribute("trajectName") String trajectName,
+			@ModelAttribute("carSelect") Car carSelect) {
 
 		//get user info
 		UserDetails userD = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		People user = peopleDetailsService.findByUsername(userD.getUsername());
-		
+		//TODO if user is null
 		Localization start = new Localization("", startLat, startLon);
 		Localization end = new Localization("", endLat, endLon);
 
@@ -109,6 +121,8 @@ public class TravelController {
 		slotTravel.setStartPlace(start);
 		slotTravel.setFinishPlace(end);
 		slotTravel.getParticipants().add(user);
+		slotTravel.setCar(carSelect);
+		slotTravel.setLimitParticipate(carSelect.getNbOfSeats()); // new ADDED
 
 		user.getReserved().add(slotTravel);
 		sf.save(slotTravel);

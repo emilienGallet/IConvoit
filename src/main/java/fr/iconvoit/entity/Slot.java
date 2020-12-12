@@ -32,7 +32,7 @@ import lombok.Data;
 @Inheritance(strategy = InheritanceType.JOINED)
 /**
  * 
- * @author emilien An generic abstract class who's contain the start time and
+ * @author Émilien An generic abstract class who's contain the start time and
  *         end time. Use to display planning as an List<Slot>
  */
 public abstract class Slot{
@@ -74,7 +74,8 @@ public abstract class Slot{
 	@JoinTable(name = "slot_people", joinColumns = { @JoinColumn(name = "fk_slot") }, inverseJoinColumns = {
 			@JoinColumn(name = "fk_people") })
 	private List<People> participants = new ArrayList<People>();
-
+	@Column(nullable = true)
+	private Integer limitParticipate;
 	
 	public Slot() {
 
@@ -92,6 +93,10 @@ public abstract class Slot{
 		} catch (DateTimeParseException e) {
 			new SlotException();
 		}
+	}
+
+	public Slot(Long id2) {
+		this.setId(id2);
 	}
 /*
 	public boolean checkSlot(){

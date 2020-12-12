@@ -39,9 +39,11 @@ public class Graph {
 			/* END code from graphHooper */
 			s = response.body().string();
 			JSONObject json = new JSONObject(s);
+			System.err.println(json.toString());
+			Integer time = tempsDeRoute(json);
 			JSONArray jsArry = pointsListCoordinates(json);
 			//TODO convert JSONArray to ArrayList<Localization>
-			return new Path(JsonArrayToList(jsArry));
+			return new Path(JsonArrayToList(jsArry),time);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -83,6 +85,7 @@ public class Graph {
 		url += "&point=" + end.getLatitude() + "," + end.getLongitude();
 		url += "&points_encoded=false";
 		url += "&vehicle=car" + "&locale=en";
+		url += "&turn_costs=true";
 		url += "&key=" + apiKey;
 		return url;
 	}
@@ -94,6 +97,10 @@ public class Graph {
 	 */
 	private static JSONArray pointsListCoordinates(JSONObject o) {
 		return o.getJSONArray("paths").getJSONObject(0).getJSONObject("points").getJSONArray("coordinates");
+	}
+	
+	private static Integer tempsDeRoute(JSONObject o) {
+		return o.getJSONArray("paths").getJSONObject(0).getInt("time");
 	}
 
 	public static void main(String[] args) {
