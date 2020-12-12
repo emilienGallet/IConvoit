@@ -3,6 +3,7 @@
           var pointList = [];
           var list1 = [];
           var newPath = []
+          var trajectTime =0
 
          var testTM = "travel Management"
           //Init map
@@ -107,6 +108,9 @@
                          })
                          body = await res.json()
                          console.log("RESPONSE",body.points)
+                         trajectTime = body.trajectTime
+                         console.log("trajectTime",trajectTime)
+
                          list1 = body.points
                          newPath = body
                          console.log("RESPONSE body",body)

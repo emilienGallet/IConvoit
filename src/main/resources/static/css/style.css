@@ -75,6 +75,9 @@ header{
   border: solid 5px burlywood;
 }
 
+#demoMap{
+  display: inline-block;
+}
 .offset{
   padding: 10px;
 
@@ -104,4 +107,34 @@ ul{
   border-radius: 3%;
   background-color: antiquewhite;
   padding: 10px;
+  width: max-content;
+}
+
+.listWay{
+  display: inline-block;
+  vertical-align: top;
+  padding: 10px;
+  height: 480px;
+  width: 200px;
+  overflow-y: scroll;
+  border: solid 5px brown;
+  background-color: burlywood;
+}
+
+.listWay button{
+  background-color: aliceblue;
+  padding: 5px;
+  width: 150px;
+  text-align: left;
+}
+.listWay ul{
+  padding-left: 10px;
+}
+
+.listWay button:hover{
+  background-color: lightblue;
+}
+
+html{
+background-color:silver;
 }
