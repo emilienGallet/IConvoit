@@ -11,6 +11,16 @@
 	</parent>
 	<groupId>org.univ</groupId>
 	<artifactId>IConvoit</artifactId>
+	<contributors>
+		<contributor>
+			<name>Gallet Emilien</name>
+			<email>emilienflorentclaude.gallet@gmail.com</email>
+			<url>https://emiliengallet.fr</url>
+		</contributor>
+		<contributor>
+			<name>Goutelle Jeremy</name>
+		</contributor>
+	</contributors>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>IConvoit</name>
