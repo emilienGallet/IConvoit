@@ -6,8 +6,9 @@ Mélanie EYRAUD : ~ 20 hours
 Christian OUKOUERET :  30 hours  
 
 ## Part of work for each member
-All : Specifications ,UML at https://app.lucidchart.com/documents/edit/45b3bf73-b9fe-4632-a62e-983e615e05ea/0_0?shared=true#?folder_id=home&browser=icon
-Émilien : Slot implementation, Planning , IcsParser, Put in prod , join travel in VueJS, minimum file requires (.md).
+All : Specifications ,UML at https://app.lucidchart.com/documents/edit/45b3bf73-b9fe-4632-a62e-983e615e05ea/0_0?shared=true#?folder_id=home&browser=icon  
+Émilien : Slot implementation, Planning , IcsParser, Put in prod , join travel in VueJS, minimum file requires (.md).  
+Jérémy : Authentication/Registration, Profile , Travel  in thymeleaf and VueJS.  
 
 ## For each "Good Practice" per member
 ### Émilien GALLET
