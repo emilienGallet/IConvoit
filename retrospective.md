@@ -1,13 +1,13 @@
-# Rétrospactive
+# Rétrospective
 
 
 ## Émilien
 ### Organisation du travail : 
-Bien séparé, Moi et Jérémy nous avons su pallier au difficultés qu'avais les autres membrees du groupe et nous avions la gestion des parties critquees de l'application.
+Bien séparé, Moi et Jérémy nous avons su pallier au difficultés qu'avais les autres membrees du groupe et nous avions la gestion des parties critques de l'application.
 
 ### Difficultés :
 Appréhender JPA et les notations. Difficulté avec l'héritage a traduire avec JPA et les reequetes proposé par JPA (je n'en suis pas dutout fan, #TeamPurSQL).
-Le déploiement a été souce de problème dont je vous en ai fait part ét résolut en mettant ne place le HSTS.
+Le déploiement a été souce de problème dont je vous en ai fait part ét résolut en mettant en place le HSTS.
 
 ### Ce que j'ai Appris : 
  * Le HSTS
