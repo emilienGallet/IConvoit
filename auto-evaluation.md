@@ -2,7 +2,7 @@
 ## Time per hour for each member
 Émilien GALLET : 55 hours 00 minutes (Use Pomodoro) + ~10-20 h to put in prod on my server
 Jérémy GOUTELLE : 48 hours 27 minutes  
-Mélanie EYRAUD :  
+Mélanie EYRAUD : ~ 20 hours
 Christian OUKOUERET :  
 
 ## Part of work for each member
