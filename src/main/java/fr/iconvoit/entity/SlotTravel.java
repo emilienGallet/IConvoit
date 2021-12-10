@@ -34,6 +34,38 @@ public final class SlotTravel extends Slot {
 	// private Long id;
 	// --------
 
+	public Localization getStartPlace() {
+		return startPlace;
+	}
+
+	public void setStartPlace(Localization startPlace) {
+		this.startPlace = startPlace;
+	}
+
+	public Localization getFinishPlace() {
+		return finishPlace;
+	}
+
+	public void setFinishPlace(Localization finishPlace) {
+		this.finishPlace = finishPlace;
+	}
+
+	public List<Path> getPaths() {
+		return paths;
+	}
+
+	public void setPaths(List<Path> paths) {
+		this.paths = paths;
+	}
+
+	public Car getCar() {
+		return car;
+	}
+
+	public void setCar(Car car) {
+		this.car = car;
+	}
+
 	@ManyToOne(cascade = CascadeType.ALL)
 	Localization startPlace;
 	@ManyToOne(cascade = CascadeType.ALL)

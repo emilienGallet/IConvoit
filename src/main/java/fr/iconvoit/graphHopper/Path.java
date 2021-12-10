@@ -26,6 +26,38 @@ import lombok.Data;
 @Component
 public class Path {
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public List<Localization> getPoints() {
+		return points;
+	}
+
+	public void setPoints(List<Localization> points) {
+		this.points = points;
+	}
+
+	public Integer getTrajectTime() {
+		return trajectTime;
+	}
+
+	public void setTrajectTime(Integer trajectTime) {
+		this.trajectTime = trajectTime;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;

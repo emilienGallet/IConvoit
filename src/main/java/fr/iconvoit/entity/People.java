@@ -50,6 +50,79 @@ public class People {
 	private String password;
 
 	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Long getIdSource() {
+		return idSource;
+	}
+	public void setIdSource(Long idSource) {
+		this.idSource = idSource;
+	}
+	public Organisation getOrg() {
+		return org;
+	}
+	public void setOrg(Organisation org) {
+		this.org = org;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getFirstname() {
+		return firstname;
+	}
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public List<Path> getWays() {
+		return ways;
+	}
+	public void setWays(List<Path> ways) {
+		this.ways = ways;
+	}
+	public Set<PeopleRole> getRoles() {
+		return roles;
+	}
+	public void setRoles(Set<PeopleRole> roles) {
+		this.roles = roles;
+	}
+	public List<People> getFriend() {
+		return friend;
+	}
+	public void setFriend(List<People> friend) {
+		this.friend = friend;
+	}
+	public List<Slot> getReserved() {
+		return reserved;
+	}
+	public void setReserved(List<Slot> reserved) {
+		this.reserved = reserved;
+	}
+	public List<Car> getMyCars() {
+		return myCars;
+	}
+	public void setMyCars(List<Car> myCars) {
+		this.myCars = myCars;
+	}
+
 	/**
 	 * It's suposed to bed the way saved. (way who the user want to store it. 
 	 */

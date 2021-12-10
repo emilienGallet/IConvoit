@@ -30,6 +30,14 @@ public class SlotOther extends Slot {
 	@ManyToOne(cascade = CascadeType.ALL)
 	Localization place;
 
+	public Localization getPlace() {
+		return place;
+	}
+
+	public void setPlace(Localization place) {
+		this.place = place;
+	}
+
 	public SlotOther() {
 
 	}

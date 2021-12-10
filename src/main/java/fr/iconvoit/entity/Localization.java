@@ -29,6 +29,38 @@ public class Localization {
 	@Column(nullable = true)
 	private ArrayList<Localization> subLocalization;
 	private Double longitude;
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNameLocation() {
+		return nameLocation;
+	}
+
+	public void setNameLocation(String nameLocation) {
+		this.nameLocation = nameLocation;
+	}
+
+	public Double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
+
+	public Double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
+	}
+
 	private Double latitude;
 
 	

@@ -26,7 +26,55 @@ import lombok.Data;
 @Component
 public class Car /* extends CrudRepository<People,Long> */ {
 
-    @Id
+    public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public People getOwner() {
+		return owner;
+	}
+
+	public void setOwner(People owner) {
+		this.owner = owner;
+	}
+
+	public String getFormat() {
+		return Format;
+	}
+
+	public void setFormat(String format) {
+		Format = format;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public String getBrand() {
+		return brand;
+	}
+
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
+
+	public String getRegistration() {
+		return registration;
+	}
+
+	public int getNbOfSeats() {
+		return nbOfSeats;
+	}
+
+	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 

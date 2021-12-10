@@ -39,6 +39,78 @@ public abstract class Slot{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	protected Long id;
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getSlotName() {
+		return slotName;
+	}
+
+	public void setSlotName(String slotName) {
+		this.slotName = slotName;
+	}
+
+	public LocalDateTime getStart() {
+		return start;
+	}
+
+	public void setStart(LocalDateTime start) {
+		this.start = start;
+	}
+
+	public LocalDateTime getEnd() {
+		return end;
+	}
+
+	public void setEnd(LocalDateTime end) {
+		this.end = end;
+	}
+
+	public URL getUrl() {
+		return url;
+	}
+
+	public void setUrl(URL url) {
+		this.url = url;
+	}
+
+	public String getUid() {
+		return uid;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
+
+	public LocalDateTime getLastModified() {
+		return lastModified;
+	}
+
+	public void setLastModified(LocalDateTime lastModified) {
+		this.lastModified = lastModified;
+	}
+
+	public List<People> getParticipants() {
+		return participants;
+	}
+
+	public void setParticipants(List<People> participants) {
+		this.participants = participants;
+	}
+
+	public Integer getLimitParticipate() {
+		return limitParticipate;
+	}
+
+	public void setLimitParticipate(Integer limitParticipate) {
+		this.limitParticipate = limitParticipate;
+	}
+
 	@Column(nullable = false)
 	/**
 	 * Name of this slot

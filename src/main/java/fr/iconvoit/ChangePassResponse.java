@@ -11,5 +11,13 @@ public class ChangePassResponse {
         this.succes = succes;
     }
 
+	public boolean isSucces() {
+		return succes;
+	}
+
+	public void setSucces(boolean succes) {
+		this.succes = succes;
+	}
+
     
 }
